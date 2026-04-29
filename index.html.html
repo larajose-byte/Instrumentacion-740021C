@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instrumentación Industrial & Protocolos de Comunicación</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;800&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --panel: #0f1626;
+    --panel2: #151d30;
+    --border: #1e2d4a;
+    --accent: #00d4ff;
+    --accent2: #ff6b35;
+    --accent3: #39ff14;
+    --accent4: #ffd700;
+    --text: #c8d8f0;
+    --text-dim: #5a7a9a;
+    --glow: 0 0 20px rgba(0,212,255,0.3);
+    --glow2: 0 0 20px rgba(255,107,53,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+  /* HEADER */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 30px 0 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+
+  .header-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    opacity: 0.7;
+  }
+
+  h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-top: 8px;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 1px;
+  }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 20px 0 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex-wrap: wrap;
+  }
+
+  .nav-tabs::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    padding: 8px 18px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .tab-btn.active {
+    background: rgba(0,212,255,0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: var(--glow);
+  }
+
+  /* SECTIONS */
+  .section { display: none; padding: 30px 0 60px; }
+  .section.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .section-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .section-desc {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 30px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  /* CARDS */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 24px;
+    position: relative;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform 0.3s;
+    transform-origin: bottom;
+  }
+
+  .card:hover { border-color: var(--accent); box-shadow: var(--glow); transform: translateY(-2px); }
+  .card:hover::before { transform: scaleY(1); }
+
+  .card.orange::before { background: var(--accent2); }
+  .card.orange:hover { border-color: var(--accent2); box-shadow: var(--glow2); }
+
+  .card.green::before { background: var(--accent3); }
+  .card.green:hover { border-color: var(--accent3); box-shadow: 0 0 20px rgba(57,255,20,0.2); }
+
+  .card.gold::before { background: var(--accent4); }
+  .card.gold:hover { border-color: var(--accent4); box-shadow: 0 0 20px rgba(255,215,0,0.2); }
+
+  .card-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .card-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .card-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .card-body { font-size: 13px; color: var(--text); line-height: 1.7; }
+
+  .spec-list { list-style: none; margin-top: 12px; }
+  .spec-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 13px;
+  }
+  .spec-list li:last-child { border-bottom: none; }
+  .spec-list li::before { content: '▸'; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+
+  /* PROCESS CHAIN */
+  .process-chain {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 30px 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .chain-item {
+    flex-shrink: 0;
+    text-align: center;
+    padding: 20px 16px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    min-width: 130px;
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .chain-item:hover { border-color: var(--accent); box-shadow: var(--glow); }
+
+  .chain-arrow {
+    flex-shrink: 0;
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    position: relative;
+  }
+
+  .chain-arrow::after {
+    content: '▶';
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent2);
+    font-size: 12px;
+  }
+
+  .chain-icon { font-size: 32px; margin-bottom: 8px; display: block; }
+  .chain-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .chain-sublabel {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  /* PROTOCOL LAYERS */
+  .layers-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 30px;
+  }
+
+  .layer {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .layer:hover { border-color: var(--accent); background: var(--panel2); }
+
+  .layer-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .layer-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .layer-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .layer-badge {
+    padding: 4px 12px;
+    border: 1px solid;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  /* COMPARISON TABLE */
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 30px;
+  }
+
+  .comp-table th {
+    background: var(--panel2);
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    border: 1px solid var(--border);
+  }
+
+  .comp-table td {
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .comp-table tr:hover td { background: rgba(0,212,255,0.03); }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin: 2px;
+  }
+
+  .badge-blue { background: rgba(0,212,255,0.15); color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
+  .badge-orange { background: rgba(255,107,53,0.15); color: var(--accent2); border: 1px solid rgba(255,107,53,0.3); }
+  .badge-green { background: rgba(57,255,20,0.1); color: var(--accent3); border: 1px solid rgba(57,255,20,0.3); }
+  .badge-gold { background: rgba(255,215,0,0.1); color: var(--accent4); border: 1px solid rgba(255,215,0,0.3); }
+
+  /* SIGNAL DIAGRAM */
+  .signal-demo {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .signal-demo canvas { width: 100%; }
+
+  /* INFO BOX */
+  .info-box {
+    background: rgba(0,212,255,0.05);
+    border: 1px solid rgba(0,212,255,0.2);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .info-box::before {
+    content: 'ℹ';
+    position: absolute;
+    top: 14px; left: 16px;
+    color: var(--accent);
+    font-size: 16px;
+  }
+
+  .info-box .ib-content { padding-left: 28px; font-size: 13px; line-height: 1.7; }
+
+  .warn-box {
+    background: rgba(255,107,53,0.05);
+    border: 1px solid rgba(255,107,53,0.2);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .warn-box::before {
+    content: '⚡';
+    position: absolute;
+    top: 14px; left: 16px;
+    font-size: 16px;
+  }
+
+  .warn-box .ib-content { padding-left: 28px; font-size: 13px; line-height: 1.7; color: #e0c0a0; }
+
+  /* INDUSTRIAL EXAMPLE */
+  .industrial-example {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent3);
+    padding: 20px;
+    margin: 20px 0;
+  }
+
+  .ie-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--accent3);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .ie-body { font-size: 13px; line-height: 1.7; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 30px; }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, var(--accent), transparent);
+  }
+
+  .tl-item {
+    position: relative;
+    padding: 0 0 24px 20px;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -26px;
+    top: 6px;
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  .tl-year {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .tl-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .tl-body { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+
+  /* ACCORDION */
+  .accordion-item {
+    border: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+
+  .accordion-header {
+    padding: 14px 20px;
+    background: var(--panel);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+  }
+
+  .accordion-header:hover { background: var(--panel2); border-color: var(--accent); }
+
+  .accordion-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .accordion-icon { color: var(--accent); font-size: 18px; transition: transform 0.3s; }
+  .accordion-item.open .accordion-icon { transform: rotate(45deg); }
+
+  .accordion-body {
+    display: none;
+    padding: 16px 20px 20px;
+    background: var(--panel2);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .accordion-item.open .accordion-body { display: block; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 20px 0;
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    position: relative;
+    z-index: 1;
+  }
+
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .layer { grid-template-columns: 80px 1fr; }
+    .layer-badge { display: none; }
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-tag">// CURSO 740021C — INSTRUMENTACIÓN Y CONTROL DE PROCESOS — 8° SEM IQ</div>
+    <h1>Instrumentación Industrial<br>& Protocolos de Comunicación</h1>
+    <div class="subtitle">[ ENFOQUE INDUSTRIAL · PROCESOS CONTINUOS · NORMA ISA-5.1 ]</div>
+
+    <nav class="nav-tabs">
+      <button class="tab-btn active" onclick="showSection('cadena')">Cadena de Instrumentación</button>
+      <button class="tab-btn" onclick="showSection('elementos')">Elementos del Lazo</button>
+      <button class="tab-btn" onclick="showSection('señales')">Señales & Estándares</button>
+      <button class="tab-btn" onclick="showSection('protocolos')">Protocolos</button>
+      <button class="tab-btn" onclick="showSection('capas')">Modelo OSI Industrial</button>
+      <button class="tab-btn" onclick="showSection('comparativa')">Comparativa</button>
+      <button class="tab-btn" onclick="showSection('casos')">Casos Industriales</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ==================== CADENA ==================== -->
+  <div id="cadena" class="section active">
+    <div class="section-title">Cadena de Instrumentación Industrial</div>
+    <div class="section-desc">// FLUJO DE INFORMACIÓN: PROCESO → SENSOR → TRANSMISOR → CONTROLADOR → ACTUADOR → PROCESO</div>
+
+    <div class="info-box">
+      <div class="ib-content">
+        En un lazo de control industrial, la información fluye desde el proceso hacia el sistema de control y de vuelta al proceso. Cada elemento tiene una función específica y características normalizadas para garantizar la interoperabilidad. Las normas <strong>ISA-5.1, IEC 61511</strong> y <strong>ISA-18.2</strong> rigen la nomenclatura y el diseño de estos lazos.
+      </div>
+    </div>
+
+    <div class="process-chain" style="overflow-x:auto;">
+      <div class="chain-item">
+        <span class="chain-icon">⚙️</span>
+        <div class="chain-label">PROCESO</div>
+        <div class="chain-sublabel">Variable física</div>
+      </div>
+      <div class="chain-arrow"></div>
+      <div class="chain-item">
+        <span class="chain-icon">🔬</span>
+        <div class="chain-label">SENSOR</div>
+        <div class="chain-sublabel">Transducción</div>
+      </div>
+      <div class="chain-arrow"></div>
+      <div class="chain-item">
+        <span class="chain-icon">📡</span>
+        <div class="chain-label">TRANSMISOR</div>
+        <div class="chain-sublabel">4–20 mA / HART</div>
+      </div>
+      <div class="chain-arrow"></div>
+      <div class="chain-item">
+        <span class="chain-icon">🖥️</span>
+        <div class="chain-label">CONTROLADOR</div>
+        <div class="chain-sublabel">PLC / DCS / PID</div>
+      </div>
+      <div class="chain-arrow"></div>
+      <div class="chain-item">
+        <span class="chain-icon">🔧</span>
+        <div class="chain-label">ACTUADOR</div>
+        <div class="chain-sublabel">Señal de mando</div>
+      </div>
+      <div class="chain-arrow"></div>
+      <div class="chain-item">
+        <span class="chain-icon">🚪</span>
+        <div class="chain-label">EFC</div>
+        <div class="chain-sublabel">Válvula / motor</div>
+      </div>
+      <div class="chain-arrow"></div>
+      <div class="chain-item">
+        <span class="chain-icon">⚙️</span>
+        <div class="chain-label">PROCESO</div>
+        <div class="chain-sublabel">Variable corregida</div>
+      </div>
+    </div>
+
+    <div class="industrial-example">
+      <div class="ie-title">▸ EJEMPLO REAL — INGENIO MANUELITA, VALLE DEL CAUCA</div>
+      <div class="ie-body">
+        <strong>Control de nivel en evaporadores de jugo de caña:</strong><br>
+        El sensor de presión diferencial (DP cell) mide el nivel de jugo en el evaporador → el transmisor Rosemount 3051 convierte la señal a 4–20 mA → el DCS Honeywell Experion procesa la señal y ejecuta el algoritmo PID → envía señal 4–20 mA al posicionador → la válvula de control Fisher D4 (EFC) regula el flujo de entrada al evaporador. El protocolo HART permite leer el diagnóstico del instrumento sin interrumpir el lazo de control de 4–20 mA.
+      </div>
+    </div>
+
+    <div class="warn-box">
+      <div class="ib-content">
+        <strong>Punto clave de diseño:</strong> La selección del protocolo de comunicación depende de la velocidad de actualización requerida, la distancia, la cantidad de instrumentos en el bus y los requisitos de seguridad funcional (SIL). No existe un protocolo universal para todas las aplicaciones.
+      </div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-tag">CONCEPTO CLAVE</div>
+        <div class="card-title">Lazo de Control Cerrado</div>
+        <div class="card-body">
+          El lazo cerrado compara continuamente el valor medido (PV) con el set-point (SP). El error <em>e = SP − PV</em> es procesado por el controlador para generar la señal de salida (MV) que actúa sobre el proceso a través del elemento final de control.
+        </div>
+      </div>
+      <div class="card orange">
+        <div class="card-tag">CONCEPTO CLAVE</div>
+        <div class="card-title">Variable de Proceso (PV)</div>
+        <div class="card-body">
+          Magnitud física que se desea controlar: temperatura (°C/K), presión (kPa/bar), caudal (m³/h), nivel (%), composición (% v/v), pH, conductividad. El sensor convierte la PV en una señal eléctrica procesable.
+        </div>
+      </div>
+      <div class="card green">
+        <div class="card-tag">NORMA ISA</div>
+        <div class="card-title">Tag de Instrumento</div>
+        <div class="card-body">
+          Según ISA-5.1: <code>FIC-101</code> = Flow (F) · Indicating (I) · Controller (C) · Loop 101. El tag identifica inequívocamente cada instrumento en los P&ID de la planta, facilitando el mantenimiento y la documentación.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ELEMENTOS ==================== -->
+  <div id="elementos" class="section">
+    <div class="section-title">Elementos del Lazo de Control</div>
+    <div class="section-desc">// SENSOR · TRANSDUCTOR · TRANSMISOR · CONTROLADOR · ACTUADOR · EFC</div>
+
+    <div class="cards-grid">
+
+      <div class="card">
+        <span class="card-icon">🔬</span>
+        <div class="card-tag">ELEMENTO 1 — SENSOR</div>
+        <div class="card-title">Sensor</div>
+        <div class="card-body">
+          Elemento en contacto directo con el proceso que <strong>percibe la variable física</strong> y genera una respuesta proporcional (generalmente una variación de resistencia, capacitancia, voltaje o frecuencia). No necesariamente genera señal normalizada.
+        </div>
+        <ul class="spec-list">
+          <li><strong>Thermocouple (TC):</strong> Efecto Seebeck → μV proporcional a ΔT. Tipos J, K, T, E, R, S, B.</li>
+          <li><strong>RTD Pt-100:</strong> Variación de resistencia con temperatura (0.385 Ω/°C).</li>
+          <li><strong>Sensor capacitivo de nivel:</strong> Cambio de capacitancia C = εA/d.</li>
+          <li><strong>Celda de presión diferencial:</strong> Diafragma → deformación → señal.</li>
+          <li><strong>Electrodo de pH:</strong> FEM proporcional a log[H⁺].</li>
+        </ul>
+        <div style="margin-top:12px;">
+          <span class="badge badge-blue">EXACTITUD</span>
+          <span class="badge badge-blue">REPETIBILIDAD</span>
+          <span class="badge badge-orange">RANGO</span>
+          <span class="badge badge-orange">RESOLUCIÓN</span>
+        </div>
+      </div>
+
+      <div class="card orange">
+        <span class="card-icon">🔄</span>
+        <div class="card-tag">ELEMENTO 2 — TRANSDUCTOR</div>
+        <div class="card-title">Transductor</div>
+        <div class="card-body">
+          Dispositivo que <strong>convierte energía de una forma a otra</strong>. En instrumentación industrial, convierte la señal del sensor a una forma más adecuada para transmisión. El transductor puede ser parte del sensor o un elemento separado.
+        </div>
+        <ul class="spec-list">
+          <li><strong>I/P (Current-to-Pressure):</strong> Convierte 4–20 mA a 3–15 psi neumático.</li>
+          <li><strong>P/I (Pressure-to-Current):</strong> Convierte presión neumática a señal eléctrica.</li>
+          <li><strong>Piezoeléctrico:</strong> Fuerza mecánica → carga eléctrica (cuarzo).</li>
+          <li><strong>Strain gauge:</strong> Deformación mecánica → variación de resistencia.</li>
+          <li><strong>LVDT:</strong> Desplazamiento lineal → voltaje AC.</li>
+        </ul>
+        <div style="margin-top:12px;">
+          <span class="badge badge-orange">LINEALIDAD</span>
+          <span class="badge badge-orange">HISTÉRESIS</span>
+          <span class="badge badge-gold">SENSIBILIDAD</span>
+        </div>
+      </div>
+
+      <div class="card green">
+        <span class="card-icon">📡</span>
+        <div class="card-tag">ELEMENTO 3 — TRANSMISOR</div>
+        <div class="card-title">Transmisor</div>
+        <div class="card-body">
+          Convierte la señal del sensor/transductor a una <strong>señal normalizada estándar de industria</strong> (4–20 mA, 1–5 V, HART, Profibus PA, Foundation Fieldbus) para transmisión a larga distancia al sistema de control. Incluye acondicionamiento de señal.
+        </div>
+        <ul class="spec-list">
+          <li><strong>Transmisores inteligentes:</strong> Microprocesador interno → auto-calibración, diagnóstico, HART.</li>
+          <li><strong>Loop-powered (2 hilos):</strong> Se alimenta del mismo lazo 4–20 mA.</li>
+          <li><strong>Span y Zero ajustables:</strong> Reconfiguración local o remota vía HART.</li>
+          <li><strong>Ejemplo:</strong> Yokogawa EJX110A para presión diferencial.</li>
+          <li><strong>Protección:</strong> ATEX / IECEx para zonas clasificadas.</li>
+        </ul>
+        <div style="margin-top:12px;">
+          <span class="badge badge-green">4–20 mA</span>
+          <span class="badge badge-green">HART</span>
+          <span class="badge badge-blue">FF H1</span>
+          <span class="badge badge-blue">PA</span>
+        </div>
+      </div>
+
+      <div class="card gold">
+        <span class="card-icon">🖥️</span>
+        <div class="card-tag">ELEMENTO 4 — CONTROLADOR</div>
+        <div class="card-title">Controlador</div>
+        <div class="card-body">
+          Recibe la señal de la variable de proceso (PV), la compara con el set-point (SP) y <strong>calcula la acción de control</strong> (MV) para minimizar el error. Implementa los algoritmos de control (PID, cascada, feedforward, IMC).
+        </div>
+        <ul class="spec-list">
+          <li><strong>PLC (Programmable Logic Controller):</strong> Control discreto y continuo. Siemens S7, Allen-Bradley.</li>
+          <li><strong>DCS (Distributed Control System):</strong> Control distribuido para plantas grandes. Emerson DeltaV, ABB 800xA.</li>
+          <li><strong>SCADA:</strong> Supervisión y adquisición de datos a nivel de planta.</li>
+          <li><strong>Control PID:</strong> Proporcional + Integral + Derivativo.</li>
+          <li><strong>Safety PLC (SIS):</strong> IEC 61511 para funciones de seguridad SIL 1-3.</li>
+        </ul>
+        <div style="margin-top:12px;">
+          <span class="badge badge-gold">PID</span>
+          <span class="badge badge-gold">CASCADE</span>
+          <span class="badge badge-orange">FEEDFORWARD</span>
+          <span class="badge badge-blue">IMC</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">⚡</span>
+        <div class="card-tag">ELEMENTO 5 — ACTUADOR</div>
+        <div class="card-title">Actuador</div>
+        <div class="card-body">
+          Convierte la <strong>señal eléctrica del controlador en acción mecánica</strong> sobre el elemento final de control. El actuador recibe la señal de mando (4–20 mA) y genera la fuerza/torque necesario.
+        </div>
+        <ul class="spec-list">
+          <li><strong>Actuador neumático:</strong> Señal neumática 3–15 psi → fuerza sobre vástago de válvula. Requiere I/P transductor.</li>
+          <li><strong>Actuador eléctrico:</strong> Motor eléctrico con encoder de posición. Señal 4–20 mA directa.</li>
+          <li><strong>Actuador hidráulico:</strong> Alta fuerza, válvulas grandes. Servo-válvula hidráulica.</li>
+          <li><strong>Posicionador:</strong> Dispositivo de retroalimentación que asegura posición exacta del actuador.</li>
+        </ul>
+        <div style="margin-top:12px;">
+          <span class="badge badge-blue">NEUMÁTICO</span>
+          <span class="badge badge-orange">ELÉCTRICO</span>
+          <span class="badge badge-green">HIDRÁULICO</span>
+        </div>
+      </div>
+
+      <div class="card orange">
+        <span class="card-icon">🚪</span>
+        <div class="card-tag">ELEMENTO 6 — EFC</div>
+        <div class="card-title">Elemento Final de Control</div>
+        <div class="card-body">
+          Es el elemento que <strong>físicamente modifica la variable manipulada</strong> del proceso (flujo, temperatura, composición). Actúa directamente sobre el fluido o la energía del proceso.
+        </div>
+        <ul class="spec-list">
+          <li><strong>Válvula de control:</strong> EFC más común. Características: lineal, equal %, quick-opening.</li>
+          <li><strong>Variador de frecuencia (VFD):</strong> Modifica velocidad de bomba/compresor.</li>
+          <li><strong>Damper (compuerta):</strong> Control de flujo de gases en ductos.</li>
+          <li><strong>Resistencia eléctrica:</strong> Control de temperatura por calor Joule.</li>
+          <li><strong>Criterio Cv:</strong> Capacidad de flujo de válvula (gal/min @ ΔP=1 psi).</li>
+        </ul>
+        <div style="margin-top:12px;">
+          <span class="badge badge-orange">FC / FO</span>
+          <span class="badge badge-gold">Cv / Kv</span>
+          <span class="badge badge-green">RANGEABILITY</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="industrial-example">
+      <div class="ie-title">▸ CASO ECOPETROL — REFINERÍA DE BARRANCABERMEJA</div>
+      <div class="ie-body">
+        <strong>Control de temperatura en horno de crudo (Crude Heater):</strong><br>
+        <strong>Sensor:</strong> Termopar tipo K instalado en tubo de radiación → <strong>Transmisor:</strong> Rosemount 848T (multicanal, Foundation Fieldbus) → <strong>Bus FF H1:</strong> 31.25 kbps hasta la sala de control → <strong>DCS:</strong> Emerson DeltaV ejecuta control en cascada (temperatura de salida del crudo / flujo de combustible) → <strong>Actuador:</strong> Posicionador Fisher DVC6200 con diagnóstico HART → <strong>EFC:</strong> Válvula de control de combustible Fisher ED de 4" Class 300 (Fail-Close para seguridad).
+      </div>
+    </div>
+
+    <!-- Accordion de características metrológicas -->
+    <div style="margin-top:30px;">
+      <div class="section-title" style="font-size:20px;margin-bottom:16px;">Características Metrológicas de los Instrumentos</div>
+
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          <div class="accordion-title">📐 Rango, Span y Campo de Medida</div>
+          <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-body">
+          <strong>Rango (Range):</strong> Conjunto de valores de la variable comprendidos entre los límites superior e inferior de la escala del instrumento. Ej: −50 a 150°C.<br><br>
+          <strong>Span (Alcance):</strong> Diferencia algebraica entre los límites superior e inferior del rango. Span = LimSup − LimInf. Ej: Span = 150 − (−50) = 200°C.<br><br>
+          <strong>Campo de medida elevado (Elevated zero):</strong> Cuando el cero del instrumento se ha desplazado hacia arriba del punto de referencia. Ej: instrumento calibrado de 50 a 150°C (rango elevado).<br><br>
+          <strong>Campo de medida suprimido (Suppressed zero):</strong> Cuando el cero está por debajo del límite inferior de la escala. Importante en transmisores de presión diferencial para medición de nivel.
+        </div>
+      </div>
+
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          <div class="accordion-title">🎯 Exactitud, Precisión y Resolución</div>
+          <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-body">
+          <strong>Exactitud (Accuracy):</strong> Grado de concordancia entre el valor medido y el valor verdadero. Se expresa como % del span (±0.1% span) o % del valor leído.<br><br>
+          <strong>Precisión (Precision):</strong> Dispersión de las medidas repetidas alrededor de la media. Un instrumento puede ser preciso sin ser exacto (sesgo sistemático).<br><br>
+          <strong>Resolución:</strong> Variación mínima detectable de la variable de entrada. En transmisores inteligentes con conversores A/D de 16 bits: resolución = Span/65535.<br><br>
+          <strong>Repetibilidad:</strong> Capacidad del instrumento de reproducir lecturas idénticas bajo condiciones iguales. Crítico en lazos de control tight.<br><br>
+          <strong>Ejemplo industrial:</strong> Transmisor Endress+Hauser Promag 55S para flujo de ácido sulfúrico: exactitud ±0.2% del valor medido, repetibilidad ±0.1%.
+        </div>
+      </div>
+
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          <div class="accordion-title">⏱️ Dinámica del Instrumento: Tiempo de Respuesta y Lag</div>
+          <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-body">
+          <strong>Tiempo de respuesta (t₉₀):</strong> Tiempo para que el instrumento alcance el 90% del valor final ante un escalón. Crítico cuando la dinámica del instrumento compite con la del proceso.<br><br>
+          <strong>Tiempo muerto (Dead time θ):</strong> Retardo puro desde que ocurre el cambio hasta que el instrumento comienza a responder. Termopozo largo → mayor θ.<br><br>
+          <strong>Constante de tiempo τ:</strong> Tiempo para alcanzar el 63.2% del valor final. Para un instrumento de 1er orden: G(s) = K/(τs+1).<br><br>
+          <strong>Regla práctica:</strong> Para control efectivo, τ_instrumento < τ_proceso/10. Si el instrumento es 10 veces más lento que el proceso, se convierte en el elemento dominante del lazo.<br><br>
+          <strong>Termopozos:</strong> Añaden dinámica adicional al lazo de temperatura. Se modela como sistema de 2do orden o sistema con tiempo muerto equivalente.
+        </div>
+      </div>
+
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          <div class="accordion-title">📊 Histéresis, Zona Muerta y Deriva</div>
+          <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-body">
+          <strong>Histéresis:</strong> Diferencia máxima entre las lecturas ascendentes y descendentes del instrumento para el mismo valor de entrada. Causa oscilaciones en lazos de control con alta ganancia. Se expresa como % del span.<br><br>
+          <strong>Zona muerta (Dead band):</strong> Rango de variaciones de la entrada alrededor de un punto dado para el cual no se produce cambio en la salida. En válvulas de control: stiction (fricción estática) genera zona muerta que causa cycling.<br><br>
+          <strong>Deriva (Drift):</strong> Variación lenta y gradual de la lectura del instrumento bajo condiciones constantes de la variable. Causa: cambios de temperatura ambiente, envejecimiento de componentes.<br><br>
+          <strong>Solución práctica:</strong> Programa de calibración periódica según ISA-18.2. Transmisores inteligentes con diagnóstico de deriva integrado (Emerson AMS Suite).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SEÑALES ==================== -->
+  <div id="señales" class="section">
+    <div class="section-title">Señales & Estándares Industriales</div>
+    <div class="section-desc">// 4–20 mA · HART · 1–5V · NAMUR · DISCRETA · DIGITAL</div>
+
+    <div class="cards-grid">
+      <div class="card green">
+        <span class="card-icon">〜</span>
+        <div class="card-tag">SEÑAL ANALÓGICA ESTÁNDAR</div>
+        <div class="card-title">4–20 mA (Loop Current)</div>
+        <div class="card-body">
+          Estándar dominante en instrumentación de proceso industrial desde los años 60. La corriente (no el voltaje) garantiza inmunidad al ruido en distancias largas. El valor de 4 mA representa el 0% de la escala (no cero), permitiendo detectar cables cortados (0 mA = falla).
+        </div>
+        <ul class="spec-list">
+          <li><strong>Rango vivo:</strong> 4 mA (0%) → 20 mA (100%)</li>
+          <li><strong>Falla de cable:</strong> 0 mA → alarma de bajo nivel</li>
+          <li><strong>Saturación:</strong> 3.8 mA / 20.5 mA (bajo/alto alarm)</li>
+          <li><strong>Distancia:</strong> Hasta 1 km con resistencia de loop ≤ 600 Ω</li>
+          <li><strong>Alimentación:</strong> 24 VDC loop-powered (2 hilos)</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">📶</span>
+        <div class="card-tag">PROTOCOLO HÍBRIDO</div>
+        <div class="card-title">HART (Highway Addressable Remote Transducer)</div>
+        <div class="card-body">
+          Superpone una señal digital FSK (±0.5 mA, 1200/2200 Hz) sobre el lazo 4–20 mA. No interfiere con la señal analógica. Permite comunicación bidireccional con el instrumento sin interrumpir el control. Estándar de facto para mantenimiento y diagnóstico.
+        </div>
+        <ul class="spec-list">
+          <li><strong>Velocidad:</strong> 1200 bps (lento, pero suficiente para configuración)</li>
+          <li><strong>Variables de proceso:</strong> Hasta 4 PV por dispositivo</li>
+          <li><strong>Modo multidrop:</strong> Hasta 15 dispositivos en un bus (sin señal analógica)</li>
+          <li><strong>WirelessHART:</strong> ISA100.11a → HART sin cableado (mesh network)</li>
+          <li><strong>Uso típico:</strong> Calibración remota, diagnóstico, configuración de span/zero</li>
+        </ul>
+      </div>
+
+      <div class="card orange">
+        <span class="card-icon">💡</span>
+        <div class="card-tag">SEÑAL DISCRETA</div>
+        <div class="card-title">NAMUR & Señales On/Off</div>
+        <div class="card-body">
+          Para instrumentos de seguridad en áreas clasificadas. La norma NAMUR (EN 60947-5-6) define señales de corriente pequeña (1–8 mA) para sensores de proximidad, finales de carrera y válvulas. Permite distinguir entre "abierto", "cerrado" y "falla de cable".
+        </div>
+        <ul class="spec-list">
+          <li><strong>Activo (ON):</strong> 6–8 mA</li>
+          <li><strong>Inactivo (OFF):</strong> 1–1.8 mA</li>
+          <li><strong>Cortocircuito:</strong> > 8 mA → falla detectada</li>
+          <li><strong>Cable abierto:</strong> < 1 mA → falla detectada</li>
+          <li><strong>Aplicación:</strong> Detectores de llama, sensores de posición en válvulas</li>
+        </ul>
+      </div>
+
+      <div class="card gold">
+        <span class="card-icon">🌐</span>
+        <div class="card-tag">SEÑAL DIGITAL</div>
+        <div class="card-title">Foundation Fieldbus H1 & PA</div>
+        <div class="card-body">
+          Bus de campo digital completamente digital para el nivel de campo. Elimina la señal analógica 4–20 mA. Los dispositivos son inteligentes con bloques funcionales que ejecutan control localmente. Soporta alimentación y comunicación en el mismo par de hilos.
+        </div>
+        <ul class="spec-list">
+          <li><strong>FF H1:</strong> 31.25 kbps, hasta 32 dispositivos por segmento</li>
+          <li><strong>FF HSE:</strong> 100 Mbps, Ethernet industrial en sala de control</li>
+          <li><strong>Profibus PA:</strong> 31.25 kbps, protocolo alemán (Siemens), compatible H1</li>
+          <li><strong>Ventaja:</strong> Control en el campo → menor dependencia del DCS</li>
+          <li><strong>Diagnóstico avanzado:</strong> Señales de diagnóstico estandarizadas</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="industrial-example">
+      <div class="ie-title">▸ CONVERSIÓN DE SEÑAL: CÁLCULO PRÁCTICO</div>
+      <div class="ie-body">
+        <strong>Ejemplo:</strong> Transmisor de presión, rango 0–600 kPa, señal 4–20 mA.<br>
+        Si el transmisor envía 12 mA, ¿cuál es la presión medida?<br><br>
+        <strong>Fórmula:</strong> PV = PV_min + [(I − 4 mA) / 16 mA] × (PV_max − PV_min)<br>
+        PV = 0 + [(12 − 4) / 16] × 600 = (8/16) × 600 = <strong>300 kPa</strong><br><br>
+        <strong>Para la señal HART superpuesta:</strong> Las frecuencias de 1200 Hz (lógico "1") y 2200 Hz (lógico "0") no afectan la medición del multímetro de corriente porque el promedio de la señal FSK es cero.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PROTOCOLOS ==================== -->
+  <div id="protocolos" class="section">
+    <div class="section-title">Protocolos de Comunicación Industrial</div>
+    <div class="section-desc">// NIVEL DE CAMPO · NIVEL DE CONTROL · NIVEL DE PLANTA</div>
+
+    <div class="info-box">
+      <div class="ib-content">
+        La arquitectura de comunicación industrial sigue el modelo de <strong>pirámide de automatización CIM (Computer Integrated Manufacturing)</strong>: nivel de campo → nivel de control → nivel de planta → nivel corporativo. Cada nivel tiene requisitos de velocidad, determinismo y capacidad de datos diferentes.
+      </div>
+    </div>
+
+    <div style="margin-bottom:30px;">
+      <div class="section-title" style="font-size:18px;margin-bottom:16px;">Nivel de Campo (Field Level)</div>
+
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          <div class="accordion-title">🔗 HART — Highway Addressable Remote Transducer</div>
+          <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-body">
+          <strong>Año:</strong> 1986 (Rosemount Inc.) → Ahora administrado por FieldComm Group.<br>
+          <strong>Física:</strong> FSK sobre 4–20 mA. Modulación Bell 202.<br>
+          <strong>Velocidad:</strong> 1200 bps.<br>
+          <strong>Topología:</strong> Punto a punto (con señal analógica) o multidrop (sin analógica).<br>
+          <strong>Protocolo:</strong> Maestro-esclavo. Soporta 2 maestros (primario y secundario).<br>
+          <strong>Uso industrial:</strong> >80% de los instrumentos de campo actuales tienen HART. Es el protocolo de mantenimiento estándar en la industria. Herramientas: AMS, FieldCare, PDM.<br>
+          <strong>WirelessHART (IEC 62591):</strong> Red mesh 2.4 GHz, seguridad AES-128, latencia ajustable.
+        </div>
+      </div>
+
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          <div class="accordion-title">🔗 Foundation Fieldbus (FF H1)</div>
+          <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-body">
+          <strong>Año:</strong> 1994. Estándar IEC 61158.<br>
+          <strong>Física:</strong> Par trenzado, 31.25 kbps. Alimentación y datos en el mismo bus.<br>
+          <strong>Topología:</strong> Bus, árbol, cascada (con repetidores). Hasta 32 dispositivos / segmento (12 con certificación Ex).<br>
+          <strong>Protocolo:</strong> Basado en bloques funcionales (FB): AI, AO, PID, Cascade, etc. Control se puede ejecutar en el dispositivo de campo.<br>
+          <strong>Ventaja clave:</strong> Comunicación determinista con LAS (Link Active Scheduler). Latencia determinista garantizada.<br>
+          <strong>Uso en Colombia:</strong> Planta de fertilizantes Abocol (Cartagena), Ecopetrol Barrancabermeja.<br>
+          <strong>Limitación:</strong> Desplazado por HART+AMS y Ethernet industrial en instalaciones nuevas.
+        </div>
+      </div>
+
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          <div class="accordion-title">🔗 Profibus PA / DP</div>
+          <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-body">
+          <strong>Año:</strong> 1989 (Siemens). Estándar IEC 61158 / EN 50170.<br>
+          <strong>Profibus DP (Decentralized Periphery):</strong> RS-485, hasta 12 Mbps, para I/O distribuido (conexión PLC ↔ remote I/O). Alta velocidad, determinismo.<br>
+          <strong>Profibus PA (Process Automation):</strong> 31.25 kbps, IEC 61158-2 (idéntico a FF H1 físicamente). Para instrumentación de proceso en áreas clasificadas.<br>
+          <strong>DP/PA coupler:</strong> Dispositivo que une los dos buses (conversión de velocidad).<br>
+          <strong>Uso masivo:</strong> Plantas Siemens, BASF, industria química alemana/europea. Dominante en Europa, competidor directo de FF en procesos continuos.<br>
+          <strong>Diagnóstico:</strong> Profibus Profile 3.02 → diagnóstico extendido de dispositivos.
+        </div>
+      </div>
+
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          <div class="accordion-title">🔗 Modbus RTU / TCP-IP</div>
+          <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-body">
+          <strong>Año:</strong> 1979 (Modicon). Protocolo abierto más antiguo y simple.<br>
+          <strong>Modbus RTU:</strong> RS-232 / RS-485, hasta 115 kbps. Protocolo maestro-esclavo. Registros de 16 bits (Holding Registers, Input Registers, Coils, Discrete Inputs).<br>
+          <strong>Modbus TCP/IP:</strong> Modbus sobre Ethernet (puerto 502). Sin cambios en la estructura del mensaje, solo encapsulado en TCP.<br>
+          <strong>Uso masivo:</strong> PLCs, drives, medidores de energía (Power meters), analizadores de gas, UPS industriales. Omnipresente por su simplicidad.<br>
+          <strong>Limitación:</strong> No determinista en TCP. Sin seguridad nativa. Sin mecanismos de diagnóstico avanzado.<br>
+          <strong>Ejemplo:</strong> Medidores de energía Schneider PM8000 en subestaciones de plantas.
+        </div>
+      </div>
+
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          <div class="accordion-title">🔗 OPC UA (OLE for Process Control Unified Architecture)</div>
+          <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-body">
+          <strong>Año:</strong> 2008 (OPC Foundation). Estándar IEC 62541.<br>
+          <strong>Descripción:</strong> Arquitectura orientada a servicios (SOA) para intercambio de datos industriales. Independiente de plataforma, SO, lenguaje de programación.<br>
+          <strong>Características clave:</strong> Seguridad integrada (certificados X.509, encriptación AES-256), modelo de información semántico (nodos con metadatos), comunicación pub/sub y cliente/servidor.<br>
+          <strong>Rol en Industria 4.0:</strong> Es el "lenguaje universal" para integración PLC ↔ MES ↔ ERP ↔ Cloud. Todos los fabricantes (Siemens, ABB, Emerson, Rockwell) lo soportan.<br>
+          <strong>OPC UA over MQTT:</strong> Para IIoT y edge computing. Latencia baja, escalable a millones de dispositivos.<br>
+          <strong>Uso en Colombia:</strong> Integración de SCADA con SAP en plantas de Ecopetrol, Bavaria, Postobón.
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:30px;">
+      <div class="section-title" style="font-size:18px;margin-bottom:16px;">Nivel de Control y Planta</div>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-tag">NIVEL DE CONTROL</div>
+          <div class="card-title">Ethernet Industrial</div>
+          <div class="card-body">
+            <span class="badge badge-blue">PROFINET</span>
+            <span class="badge badge-orange">EtherNet/IP</span>
+            <span class="badge badge-green">EtherCAT</span>
+            <br><br>
+            100 Mbps / 1 Gbps. Determinismo logrado por mecanismos adicionales sobre Ethernet estándar IEEE 802.3. PROFINET IO para integración PLC Siemens. EtherNet/IP para ecosistema Rockwell/Allen-Bradley.
+          </div>
+        </div>
+        <div class="card orange">
+          <div class="card-tag">INDUSTRIA 4.0</div>
+          <div class="card-title">MQTT & IIoT</div>
+          <div class="card-body">
+            Protocolo publish/subscribe ligero sobre TCP/IP. Broker central (Mosquitto, HiveMQ). QoS 0/1/2. Ideal para transmisión de datos de proceso hacia Cloud (AWS IoT, Azure IoT Hub). Sparkplug B: perfil MQTT para datos industriales con timestamps y valores de calidad OPC UA.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CAPAS OSI ==================== -->
+  <div id="capas" class="section">
+    <div class="section-title">Modelo OSI Industrial</div>
+    <div class="section-desc">// CAPAS DE COMUNICACIÓN — DE LA FÍSICA AL USUARIO</div>
+
+    <div class="info-box">
+      <div class="ib-content">
+        El modelo OSI (Open Systems Interconnection, ISO/IEC 7498) define 7 capas de comunicación. Los protocolos industriales implementan un subconjunto de estas capas. Por ejemplo, <strong>Modbus RTU solo implementa las capas 1, 2 y 7</strong> (sin capas 3–6). Foundation Fieldbus utiliza las capas 1, 2 y 7, con el "User Layer" adicional para bloques funcionales.
+      </div>
+    </div>
+
+    <div class="layers-stack">
+      <div class="layer" style="background:linear-gradient(90deg, rgba(255,215,0,0.08), var(--panel))">
+        <div>
+          <div class="layer-num">CAPA 7</div>
+          <div class="layer-name">Aplicación</div>
+          <div class="layer-desc">Interfaz con el usuario/sistema</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--text);">Servicios de comunicación para la aplicación. Define cómo se accede a los datos del instrumento.</div>
+          <div style="margin-top:6px;">
+            <span class="badge badge-gold">HART DDL</span>
+            <span class="badge badge-gold">FF FMS</span>
+            <span class="badge badge-gold">Modbus FC</span>
+            <span class="badge badge-gold">OPC UA</span>
+          </div>
+        </div>
+        <div class="layer-badge" style="color:var(--accent4);border-color:var(--accent4);">APLICACIÓN</div>
+      </div>
+
+      <div class="layer" style="opacity:0.4">
+        <div>
+          <div class="layer-num">CAPA 6</div>
+          <div class="layer-name">Presentación</div>
+          <div class="layer-desc">Codificación de datos</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--text-dim);">Formatos de datos, encriptación, compresión. Generalmente no implementada en protocolos industriales simples (Modbus, FF, HART).</div>
+        </div>
+        <div class="layer-badge" style="color:var(--text-dim);border-color:var(--border);">NO USADA*</div>
+      </div>
+
+      <div class="layer" style="opacity:0.4">
+        <div>
+          <div class="layer-num">CAPA 5</div>
+          <div class="layer-name">Sesión</div>
+          <div class="layer-desc">Gestión de sesiones</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--text-dim);">Establecimiento, mantenimiento y terminación de sesiones. Tampoco implementada en la mayoría de protocolos de campo industriales.</div>
+        </div>
+        <div class="layer-badge" style="color:var(--text-dim);border-color:var(--border);">NO USADA*</div>
+      </div>
+
+      <div class="layer" style="background:linear-gradient(90deg, rgba(0,212,255,0.05), var(--panel))">
+        <div>
+          <div class="layer-num">CAPA 4</div>
+          <div class="layer-name">Transporte</div>
+          <div class="layer-desc">Transferencia extremo a extremo</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--text);">Control de flujo, segmentación, detección de errores end-to-end. TCP para Modbus TCP y OPC UA.</div>
+          <div style="margin-top:6px;">
+            <span class="badge badge-blue">TCP</span>
+            <span class="badge badge-blue">UDP</span>
+            <span class="badge badge-orange">Solo en protocolos IP</span>
+          </div>
+        </div>
+        <div class="layer-badge" style="color:var(--accent);border-color:var(--accent);">TRANSPORTE</div>
+      </div>
+
+      <div class="layer" style="background:linear-gradient(90deg, rgba(0,212,255,0.05), var(--panel))">
+        <div>
+          <div class="layer-num">CAPA 3</div>
+          <div class="layer-name">Red</div>
+          <div class="layer-desc">Enrutamiento de paquetes</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--text);">Direccionamiento lógico (IP) y enrutamiento. Necesaria en Modbus TCP, OPC UA, PROFINET. No en HART, Modbus RTU, FF H1.</div>
+          <div style="margin-top:6px;">
+            <span class="badge badge-blue">IPv4</span>
+            <span class="badge badge-blue">IPv6</span>
+            <span class="badge badge-orange">Solo en protocolos IP</span>
+          </div>
+        </div>
+        <div class="layer-badge" style="color:var(--accent);border-color:var(--accent);">RED</div>
+      </div>
+
+      <div class="layer" style="background:linear-gradient(90deg, rgba(57,255,20,0.05), var(--panel))">
+        <div>
+          <div class="layer-num">CAPA 2</div>
+          <div class="layer-name">Enlace de Datos</div>
+          <div class="layer-desc">Acceso al medio / tramas</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--text);">Control de acceso al medio (MAC), formación de tramas, detección de errores (CRC/LRC). Arbitraje del bus.</div>
+          <div style="margin-top:6px;">
+            <span class="badge badge-green">HART Token-pass</span>
+            <span class="badge badge-green">FF LAS</span>
+            <span class="badge badge-green">Modbus M/S</span>
+            <span class="badge badge-green">Ethernet MAC</span>
+          </div>
+        </div>
+        <div class="layer-badge" style="color:var(--accent3);border-color:var(--accent3);">ENLACE</div>
+      </div>
+
+      <div class="layer" style="background:linear-gradient(90deg, rgba(255,107,53,0.08), var(--panel))">
+        <div>
+          <div class="layer-num">CAPA 1</div>
+          <div class="layer-name">Física</div>
+          <div class="layer-desc">Señal eléctrica / medio</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--text);">Medio físico, señales eléctricas, conectores, velocidad de transmisión. La capa que vemos en campo.</div>
+          <div style="margin-top:6px;">
+            <span class="badge badge-orange">4–20 mA FSK (HART)</span>
+            <span class="badge badge-orange">IEC 61158-2 (FF/PA)</span>
+            <span class="badge badge-orange">RS-485 (Modbus/Profibus DP)</span>
+            <span class="badge badge-orange">IEEE 802.3 (Ethernet)</span>
+          </div>
+        </div>
+        <div class="layer-badge" style="color:var(--accent2);border-color:var(--accent2);">FÍSICA</div>
+      </div>
+    </div>
+
+    <div class="industrial-example">
+      <div class="ie-title">▸ ANÁLISIS DE CAPAS POR PROTOCOLO</div>
+      <div class="ie-body">
+        <strong>Modbus RTU:</strong> Capa 1 (RS-485) + Capa 2 (trama Modbus, CRC-16) + Capa 7 (Function Codes). Capas 3-6: <em>vacías</em>.<br><br>
+        <strong>HART:</strong> Capa 1 (4–20 mA FSK) + Capa 2 (trama HART, CRC) + Capa 7 (HART Commands, DDL). Capas 3-6: <em>vacías</em>.<br><br>
+        <strong>Foundation Fieldbus H1:</strong> Capa 1 (IEC 61158-2) + Capa 2 (DLL con LAS scheduler) + Capa 7 (FMS/FAS) + User Layer (bloques funcionales). Capas 3-6: <em>vacías</em>.<br><br>
+        <strong>OPC UA sobre TCP/IP:</strong> Todas las 7 capas + seguridad adicional (TLS, certificados X.509). Protocolo más completo.
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="section-title" style="font-size:18px;margin-bottom:12px;">Capa Física: Comparativa de Medios</div>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>MEDIO / PROTOCOLO</th>
+            <th>VELOCIDAD</th>
+            <th>DISTANCIA MÁX.</th>
+            <th>TOPOLOGÍA</th>
+            <th>ZONA CLASIFICADA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>HART (4–20 mA)</strong></td>
+            <td>1200 bps</td>
+            <td>~1 km</td>
+            <td>Punto a punto / Multidrop</td>
+            <td>✅ ATEX/IECEx</td>
+          </tr>
+          <tr>
+            <td><strong>FF H1 / Profibus PA</strong></td>
+            <td>31.25 kbps</td>
+            <td>1900 m (sin rep.)</td>
+            <td>Bus / Árbol</td>
+            <td>✅ IS (Ex ia)</td>
+          </tr>
+          <tr>
+            <td><strong>Profibus DP (RS-485)</strong></td>
+            <td>9.6 kbps–12 Mbps</td>
+            <td>1200 m @ 9.6k</td>
+            <td>Bus lineal</td>
+            <td>⚠️ Con barreras</td>
+          </tr>
+          <tr>
+            <td><strong>Modbus RTU (RS-485)</strong></td>
+            <td>Hasta 115 kbps</td>
+            <td>1200 m</td>
+            <td>Bus / Multidrop</td>
+            <td>⚠️ Con barreras</td>
+          </tr>
+          <tr>
+            <td><strong>Ethernet (IEEE 802.3)</strong></td>
+            <td>100 Mbps–10 Gbps</td>
+            <td>100 m (Cat6)</td>
+            <td>Estrella / Anillo</td>
+            <td>⚠️ Equipos Ex especiales</td>
+          </tr>
+          <tr>
+            <td><strong>WirelessHART</strong></td>
+            <td>250 kbps</td>
+            <td>250 m nodo</td>
+            <td>Mesh (IEEE 802.15.4)</td>
+            <td>✅ IS disponible</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== COMPARATIVA ==================== -->
+  <div id="comparativa" class="section">
+    <div class="section-title">Comparativa de Protocolos</div>
+    <div class="section-desc">// HART vs FOUNDATION FIELDBUS vs PROFIBUS vs MODBUS vs OPC UA</div>
+
+    <table class="comp-table" style="overflow-x:auto;display:block;">
+      <thead>
+        <tr>
+          <th>CARACTERÍSTICA</th>
+          <th>HART</th>
+          <th>FF H1</th>
+          <th>PROFIBUS PA</th>
+          <th>MODBUS RTU</th>
+          <th>OPC UA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Tipo de señal</strong></td>
+          <td>Híbrido (4–20mA + digital)</td>
+          <td>Digital puro</td>
+          <td>Digital puro</td>
+          <td>Digital puro</td>
+          <td>Digital (Ethernet/IP)</td>
+        </tr>
+        <tr>
+          <td><strong>Velocidad</strong></td>
+          <td>1200 bps</td>
+          <td>31.25 kbps</td>
+          <td>31.25 kbps</td>
+          <td>hasta 115 kbps</td>
+          <td>100 Mbps+</td>
+        </tr>
+        <tr>
+          <td><strong>Determinismo</strong></td>
+          <td>No (maestro-esclavo)</td>
+          <td>✅ Sí (LAS)</td>
+          <td>✅ Sí</td>
+          <td>Parcial (M/S)</td>
+          <td>Pub/Sub configurable</td>
+        </tr>
+        <tr>
+          <td><strong>Nivel de uso</strong></td>
+          <td>Campo (mantenimiento)</td>
+          <td>Campo (proceso)</td>
+          <td>Campo (proceso)</td>
+          <td>Campo/Control</td>
+          <td>Control/Planta/Cloud</td>
+        </tr>
+        <tr>
+          <td><strong>Seguridad</strong></td>
+          <td>Básica</td>
+          <td>Básica</td>
+          <td>Básica</td>
+          <td>Sin seguridad</td>
+          <td>✅ TLS, X.509, RBAC</td>
+        </tr>
+        <tr>
+          <td><strong>Diagnóstico</strong></td>
+          <td>✅ Bueno (AMS)</td>
+          <td>✅ Excelente</td>
+          <td>✅ Bueno</td>
+          <td>Limitado</td>
+          <td>✅ Excelente</td>
+        </tr>
+        <tr>
+          <td><strong>Inversión existente</strong></td>
+          <td>✅✅✅ Enorme</td>
+          <td>✅✅ Grande</td>
+          <td>✅✅ Grande</td>
+          <td>✅✅✅ Enorme</td>
+          <td>✅ Creciente</td>
+        </tr>
+        <tr>
+          <td><strong>Industria 4.0</strong></td>
+          <td>WirelessHART</td>
+          <td>Limitado</td>
+          <td>Limitado</td>
+          <td>Modbus TCP</td>
+          <td>✅✅✅ Nativo</td>
+        </tr>
+        <tr>
+          <td><strong>Estándar</strong></td>
+          <td>IEC 62591</td>
+          <td>IEC 61158</td>
+          <td>IEC 61158</td>
+          <td>Abierto (Modicon)</td>
+          <td>IEC 62541</td>
+        </tr>
+        <tr>
+          <td><strong>Caso Colombia</strong></td>
+          <td>Ecopetrol, Ingenios</td>
+          <td>Abocol, Ecopetrol</td>
+          <td>Cementos, Petroquímica</td>
+          <td>Agua, Energía</td>
+          <td>Integración MES/ERP</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="warn-box" style="margin-top:20px;">
+      <div class="ib-content">
+        <strong>Tendencia 2024–2030:</strong> La industria está migrando hacia <strong>APL (Advanced Physical Layer)</strong> — un nuevo estándar que lleva Ethernet (10 Mbps) hasta el nivel de campo con alimentación en el mismo par trenzado, reemplazando gradualmente HART, FF H1 y Profibus PA. APL soporta OPC UA de forma nativa y es compatible con zonas clasificadas Ex. Emerson, Endress+Hauser y Yokogawa ya tienen productos APL comerciales.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CASOS ==================== -->
+  <div id="casos" class="section">
+    <div class="section-title">Casos Industriales Colombianos</div>
+    <div class="section-desc">// APLICACIONES REALES — SECTOR AZUCARERO · PETROQUÍMICA · AGUA · FERTILIZANTES</div>
+
+    <div class="cards-grid">
+
+      <div class="card green">
+        <span class="card-icon">🌿</span>
+        <div class="card-tag">SECTOR AZUCARERO — VALLE DEL CAUCA</div>
+        <div class="card-title">Ingenios: Manuelita, Riopaila-Castilla, Incauca</div>
+        <div class="card-body">
+          <strong>Aplicación:</strong> Control de evaporadores de jugo de caña, pH en tratamiento de aguas, flujo másico de vapor.<br><br>
+          <strong>Arquitectura:</strong> Transmisores HART 4–20 mA → Módulos I/O remotos → DCS Honeywell Experion o Emerson DeltaV → SCADA con OPC DA/UA → MES de gestión de producción (ERP SAP).
+        </div>
+        <ul class="spec-list">
+          <li>pH en clarificadores: electrodo Mettler Toledo → transmisor M800 → HART → DCS → control dosificación Ca(OH)₂</li>
+          <li>Nivel en tachos: DP cell Rosemount 3051 → 4–20 mA → control de tiro en cristalización</li>
+          <li>Caudal de vapor: vórtex Endress+Hauser → Profibus PA → DCS</li>
+          <li>Red WirelessHART para puntos remotos en el campo (distancias >500 m)</li>
+        </ul>
+      </div>
+
+      <div class="card orange">
+        <span class="card-icon">🛢️</span>
+        <div class="card-tag">SECTOR PETROQUÍMICO</div>
+        <div class="card-title">Ecopetrol — Refinería Barrancabermeja</div>
+        <div class="card-body">
+          <strong>Aplicación:</strong> Hornos de crudo, torres de destilación, sistemas de gas natural, compresores de alta presión.<br><br>
+          <strong>Arquitectura:</strong> Instrumentos FF H1 / HART → Emerson DeltaV DCS → OPC UA → SAP PM para mantenimiento predictivo → Emerson AMS Device Manager para diagnóstico de campo.
+        </div>
+        <ul class="spec-list">
+          <li>Temperatura: Termopares tipo K + transmisor Rosemount 848T (FF multicanal)</li>
+          <li>Presión: Yokogawa EJX Series (HART) en servicios criogénicos</li>
+          <li>Flujo másico: Micromotion Elite (Coriolis) → Foundation Fieldbus</li>
+          <li>Safety: SIS Triconex con protocolo propietario → IEC 61511 SIL 2/3</li>
+          <li>Gas cromatógrafo: Siemens MAXUM → Modbus TCP → DCS</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">💧</span>
+        <div class="card-tag">SECTOR AGUA — CALI</div>
+        <div class="card-title">PTAR Cañaveralejo / EMCALI</div>
+        <div class="card-body">
+          <strong>Aplicación:</strong> Monitoreo de calidad de agua tratada, control de dosificación de cloro, caudales de entrada/salida.<br><br>
+          <strong>Arquitectura:</strong> Sensores en campo → RTU (Remote Terminal Unit) → Comunicación Modbus RTU/TCP → SCADA Wonderware → Red GPRS/4G para puntos remotos.
+        </div>
+        <ul class="spec-list">
+          <li>pH, OD, turbidez: Sondas Hach → transmisor SC1500 → Modbus RTU → RTU → SCADA</li>
+          <li>Caudal: Caudalímetro electromagnético Siemens MAG5100 → Profibus DP → PLC S7-300</li>
+          <li>Nivel en tanques: Radar Vega → 4–20 mA HART → RTU → SCADA</li>
+          <li>Telemetría: Protocolo DNP3 para comunicación con centros de control remotos</li>
+          <li>Dosificación de cloro: Control en cascada, señal de pH como variable primaria</li>
+        </ul>
+      </div>
+
+      <div class="card gold">
+        <span class="card-icon">🧪</span>
+        <div class="card-tag">SECTOR FERTILIZANTES</div>
+        <div class="card-title">Monómeros Colombo-Venezolanos (Cartagena)</div>
+        <div class="card-body">
+          <strong>Aplicación:</strong> Producción de ácido nítrico, nitrato de amonio, urea. Procesos altamente exotérmicos con requisitos SIL 2.<br><br>
+          <strong>Arquitectura:</strong> FF H1 para instrumentación de proceso → DCS ABB 800xA → Safety system HIMA HIMax (SIL 2/3) → OPC UA → MES Aspentech.
+        </div>
+        <ul class="spec-list">
+          <li>Temperatura en reactor de oxidación: Termopares PT-100 + transmisor FF → control crítico a 850–900°C</li>
+          <li>Concentración HNO₃: Analizador de densidad (Micromotion) → FF H1</li>
+          <li>SIS: Válvulas de corte rápido con posicionador HART y diagnóstico partial-stroke test</li>
+          <li>Vibración compresores: Sistema CSi 6500 Emerson → OPC UA → SAP PM</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="industrial-example" style="margin-top:10px;">
+      <div class="ie-title">▸ PREGUNTA DE REFLEXIÓN PARA LA CLASE</div>
+      <div class="ie-body">
+        En el PTAR Cañaveralejo se usa Modbus RTU para la mayoría de los instrumentos. Sin embargo, para la nueva expansión se propone migrar a OPC UA con WirelessHART.<br><br>
+        <strong>Analice:</strong> (1) ¿Qué ventajas ofrece la migración en términos de capas OSI? (2) ¿Qué instrumentos existentes son compatibles con ambos protocolos usando gateways? (3) ¿Cuál sería el impacto en el tiempo de respuesta del lazo de control de pH si se introduce una red WirelessHART (latencia ~100 ms) en comparación con el lazo 4–20 mA actual?
+      </div>
+    </div>
+
+    <div style="margin-top:30px;">
+      <div class="section-title" style="font-size:20px;margin-bottom:16px;">Evolución Histórica: Señales de Campo</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">1940–1950s</div>
+          <div class="tl-title">Era Neumática</div>
+          <div class="tl-body">Señal neumática 3–15 psi (0.2–1 bar). Instrumentos puramente mecánicos. Aún presente en válvulas actuadas neumáticamente como estándar de facto.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1960–1970s</div>
+          <div class="tl-title">Señal 4–20 mA</div>
+          <div class="tl-body">ISA 50.1: señal eléctrica analógica estándar. Reemplaza paulatinamente la señal neumática para transmisión. Inmunidad al ruido, cable fino, detección de rotura.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1986</div>
+          <div class="tl-title">HART Protocol</div>
+          <div class="tl-body">Rosemount superpone comunicación digital sobre 4–20 mA. Primera vez que es posible configurar un instrumento desde la sala de control sin interrumpir el lazo de control.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1990s</div>
+          <div class="tl-title">Buses de Campo (Fieldbus Wars)</div>
+          <div class="tl-body">IEC y ISA intentan estandarizar: Foundation Fieldbus vs Profibus vs DeviceNet vs Interbus vs... Resultado: múltiples estándares coexistentes (IEC 61158 incluye 8 tipos).</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2000s</div>
+          <div class="tl-title">Ethernet Industrial</div>
+          <div class="tl-body">PROFINET, EtherNet/IP, EtherCAT llevan Ethernet determinista al nivel de control. OPC DA/UA para integración vertical. El bus de campo pierde terreno en plantas nuevas.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2010s–Hoy</div>
+          <div class="tl-title">IIoT, Cloud & Industria 4.0</div>
+          <div class="tl-body">OPC UA como lingua franca. WirelessHART e ISA100. Digital Twin, edge computing, ML para mantenimiento predictivo. APL (Advanced Physical Layer): Ethernet hasta el sensor.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  <div class="container">
+    <span>// CURSO 740021C — INSTRUMENTACIÓN Y CONTROL DE PROCESOS</span>
+    &nbsp;·&nbsp;
+    <span>ESCUELA DE INGENIERÍA QUÍMICA — UNIVALLE</span>
+    &nbsp;·&nbsp;
+    <span>GRUPO GAOX — MINCIENCIAS A1</span>
+  </div>
+</footer>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleAccordion(item) {
+    item.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
