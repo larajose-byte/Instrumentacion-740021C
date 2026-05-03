@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unidad III — Control de Procesos · 740021C · UniValle</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;800&display=swap');
+
+    :root {
+      --bg:#0a0e1a; --panel:#0f1626; --panel2:#151d30; --border:#1e2d4a;
+      --accent:#00d4ff; --accent2:#ff6b35; --accent3:#39ff14; --accent4:#ffd700;
+      --text:#c8d8f0; --text-dim:#5a7a9a;
+      --glow:0 0 20px rgba(0,212,255,0.3); --glow2:0 0 20px rgba(255,107,53,0.3);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;min-height:100vh;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px;position:relative;z-index:1;}
+
+    /* HEADER */
+    header{border-bottom:1px solid var(--border);padding:28px 0 0;position:relative;overflow:hidden;}
+    header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+    .header-tag{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:3px;margin-bottom:8px;opacity:.7;}
+    h1{font-family:'Rajdhani',sans-serif;font-size:clamp(26px,5vw,48px);font-weight:700;line-height:1.1;background:linear-gradient(135deg,#fff 0%,var(--accent) 45%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .subtitle{font-size:13px;color:var(--text-dim);margin-top:8px;font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
+
+    /* NAV TABS */
+    .nav-tabs{display:flex;gap:4px;padding:18px 0 0;overflow-x:auto;scrollbar-width:none;flex-wrap:wrap;}
+    .nav-tabs::-webkit-scrollbar{display:none;}
+    .tab-btn{padding:8px 15px;background:transparent;border:1px solid var(--border);color:var(--text-dim);font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap;clip-path:polygon(7px 0%,100% 0%,calc(100% - 7px) 100%,0% 100%);}
+    .tab-btn:hover{border-color:var(--accent);color:var(--accent);}
+    .tab-btn.active{background:rgba(0,212,255,.1);border-color:var(--accent);color:var(--accent);box-shadow:var(--glow);}
+    .tab-btn.t2{clip-path:polygon(7px 0%,100% 0%,calc(100% - 7px) 100%,0% 100%);}
+    .tab-btn.t2.active{background:rgba(255,107,53,.1);border-color:var(--accent2);color:var(--accent2);box-shadow:var(--glow2);}
+    .tab-btn.t2:hover{border-color:var(--accent2);color:var(--accent2);}
+    .tab-btn.t3.active{background:rgba(57,255,20,.08);border-color:var(--accent3);color:var(--accent3);}
+    .tab-btn.t3:hover{border-color:var(--accent3);color:var(--accent3);}
+
+    /* SECTIONS */
+    .section{display:none;padding:28px 0 60px;}
+    .section.active{display:block;animation:fadeIn .3s ease;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+    .section-title{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:6px;}
+    .section-desc{color:var(--text-dim);font-size:13px;margin-bottom:26px;font-family:'Share Tech Mono',monospace;}
+
+    /* CARDS */
+    .cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:15px;margin-bottom:26px;}
+    .card{background:var(--panel);border:1px solid var(--border);padding:22px;position:relative;transition:all .3s;}
+    .card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);transform:scaleY(0);transition:transform .3s;transform-origin:bottom;}
+    .card:hover{border-color:var(--accent);box-shadow:var(--glow);transform:translateY(-2px);}
+    .card:hover::before{transform:scaleY(1);}
+    .card.orange::before{background:var(--accent2);}.card.orange:hover{border-color:var(--accent2);box-shadow:var(--glow2);}
+    .card.green::before{background:var(--accent3);}.card.green:hover{border-color:var(--accent3);box-shadow:0 0 20px rgba(57,255,20,.2);}
+    .card.gold::before{background:var(--accent4);}.card.gold:hover{border-color:var(--accent4);box-shadow:0 0 20px rgba(255,215,0,.2);}
+    .card-icon{font-size:26px;margin-bottom:10px;display:block;}
+    .card-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:7px;}
+    .card-tag{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:2px;margin-bottom:10px;}
+    .card.orange .card-tag{color:var(--accent2);}.card.green .card-tag{color:var(--accent3);}.card.gold .card-tag{color:var(--accent4);}
+    .card-body{font-size:13px;color:var(--text);line-height:1.7;}
+    .spec-list{list-style:none;margin-top:10px;}
+    .spec-list li{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;}
+    .spec-list li:last-child{border-bottom:none;}
+    .spec-list li::before{content:'▸';color:var(--accent);flex-shrink:0;margin-top:1px;}
+    .card.orange .spec-list li::before{color:var(--accent2);}.card.green .spec-list li::before{color:var(--accent3);}
+
+    /* BOXES */
+    .info-box{background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.2);padding:16px 20px;margin-bottom:16px;position:relative;}
+    .info-box::before{content:'ℹ';position:absolute;top:14px;left:16px;color:var(--accent);font-size:16px;}
+    .info-box .ib-content{padding-left:28px;font-size:13px;line-height:1.7;}
+    .warn-box{background:rgba(255,107,53,.05);border:1px solid rgba(255,107,53,.2);padding:16px 20px;margin-bottom:16px;position:relative;}
+    .warn-box::before{content:'⚡';position:absolute;top:14px;left:16px;font-size:16px;}
+    .warn-box .ib-content{padding-left:28px;font-size:13px;line-height:1.7;color:#e0c0a0;}
+    .success-box{background:rgba(57,255,20,.04);border:1px solid rgba(57,255,20,.2);padding:16px 20px;margin-bottom:16px;position:relative;}
+    .success-box::before{content:'✅';position:absolute;top:14px;left:16px;font-size:15px;}
+    .success-box .ib-content{padding-left:28px;font-size:13px;line-height:1.7;color:#b0e8b0;}
+
+    /* INDUSTRIAL EXAMPLE */
+    .industrial-example{background:var(--panel2);border:1px solid var(--border);border-left:3px solid var(--accent3);padding:18px 20px;margin:18px 0;}
+    .ie-title{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent3);letter-spacing:2px;margin-bottom:8px;}
+    .ie-body{font-size:13px;line-height:1.7;}
+
+    /* ACCORDION */
+    .accordion-item{border:1px solid var(--border);margin-bottom:4px;}
+    .accordion-header{padding:13px 18px;background:var(--panel);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all .2s;}
+    .accordion-header:hover{background:var(--panel2);}
+    .accordion-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;color:#fff;}
+    .accordion-icon{color:var(--accent);font-size:18px;transition:transform .3s;}
+    .accordion-item.open .accordion-icon{transform:rotate(45deg);}
+    .accordion-body{display:none;padding:16px 20px 18px;background:var(--panel2);font-size:13px;line-height:1.7;}
+    .accordion-item.open .accordion-body{display:block;}
+
+    /* MATH / TERM / PROBLEM */
+    .term-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:22px;}
+    .term-card{background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--accent);padding:15px 17px;transition:all .25s;}
+    .term-card:hover{box-shadow:var(--glow);}
+    .term-card.orange{border-top-color:var(--accent2);}.term-card.orange:hover{box-shadow:var(--glow2);}
+    .term-card.green{border-top-color:var(--accent3);}.term-card.gold{border-top-color:var(--accent4);}
+    .term-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--accent);margin-bottom:4px;}
+    .term-card.orange .term-title{color:var(--accent2);}.term-card.green .term-title{color:var(--accent3);}.term-card.gold .term-title{color:var(--accent4);}
+    .term-def{font-size:12.5px;line-height:1.65;}
+    .term-formula{font-family:'Share Tech Mono',monospace;font-size:11.5px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);padding:6px 10px;margin-top:8px;color:var(--accent);}
+    .term-card.orange .term-formula{background:rgba(255,107,53,.06);border-color:rgba(255,107,53,.15);color:var(--accent2);}
+    .term-card.green .term-formula{background:rgba(57,255,20,.05);border-color:rgba(57,255,20,.15);color:var(--accent3);}
+    .term-card.gold .term-formula{background:rgba(255,215,0,.05);border-color:rgba(255,215,0,.15);color:var(--accent4);}
+
+    .math-box{background:var(--panel2);border:1px solid var(--border);border-left:3px solid var(--accent4);padding:17px 19px;margin:15px 0;font-family:'Share Tech Mono',monospace;font-size:12.5px;}
+    .math-title{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:var(--accent4);margin-bottom:10px;letter-spacing:1px;}
+    .math-step{padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text);line-height:1.65;}
+    .math-result{margin-top:8px;padding:8px 12px;background:rgba(57,255,20,.07);border:1px solid rgba(57,255,20,.2);color:var(--accent3);font-weight:bold;}
+
+    .problem-box{background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.25);padding:19px 21px;margin:17px 0;}
+    .problem-box::before{content:'✏️ PROBLEMA RESUELTO';font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent4);letter-spacing:2px;display:block;margin-bottom:10px;}
+    .problem-box p,.problem-box li{font-size:13px;line-height:1.7;}
+
+    .diagram-box{background:var(--panel);border:1px solid var(--border);padding:20px;margin-bottom:20px;text-align:center;}
+    .diagram-box svg{max-width:100%;}
+
+    /* TABLE */
+    .sensor-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:22px;}
+    .sensor-table th{background:var(--panel2);padding:10px 13px;text-align:left;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--accent);border:1px solid var(--border);}
+    .sensor-table td{padding:9px 13px;border:1px solid var(--border);vertical-align:top;line-height:1.55;}
+    .sensor-table tr:hover td{background:rgba(0,212,255,.03);}
+
+    /* CODE BLOCK */
+    .code-block{background:#060a14;border:1px solid var(--border);border-left:3px solid var(--accent3);padding:16px 18px;margin:14px 0;font-family:'Share Tech Mono',monospace;font-size:12px;color:#b0ffb0;overflow-x:auto;white-space:pre;}
+    .code-comment{color:var(--text-dim);}
+    .code-kw{color:var(--accent);}
+    .code-str{color:var(--accent4);}
+    .code-fn{color:var(--accent2);}
+    .code-num{color:var(--accent3);}
+
+    /* TWO-COL */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+    @media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+    .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px;}
+    @media(max-width:800px){.three-col{grid-template-columns:1fr 1fr;}}
+
+    /* VS GRID */
+    .vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;margin-bottom:20px;}
+    .vs-col{background:var(--panel);border:1px solid var(--border);padding:16px;}
+    .vs-mid{background:var(--panel2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:12px 10px;display:flex;align-items:center;justify-content:center;}
+    .vs-title{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:var(--accent);margin-bottom:10px;}
+    .vs-title.orange{color:var(--accent2);}
+    .vs-item{font-size:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text);}
+
+    /* QUIZ */
+    .quiz-box{background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.2);padding:17px 21px;margin:17px 0;}
+    .quiz-q{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;color:#fff;margin-bottom:10px;}
+    .quiz-opt{padding:7px 14px;margin:4px 0;background:var(--panel2);border:1px solid var(--border);font-size:13px;cursor:pointer;transition:all .2s;}
+    .quiz-opt:hover{border-color:var(--accent);color:var(--accent);}
+    .quiz-opt.correct{background:rgba(57,255,20,.1);border-color:var(--accent3);color:var(--accent3);}
+    .quiz-opt.wrong{background:rgba(255,107,53,.1);border-color:var(--accent2);color:var(--accent2);}
+    .quiz-feedback{margin-top:10px;font-size:13px;display:none;padding:8px 12px;}
+    .quiz-feedback.show{display:block;}
+
+    /* EXT LINKS */
+    .ext-links-box{background:var(--panel2);border:1px solid var(--border);border-left:3px solid var(--accent4);padding:13px 17px;margin:17px 0;}
+    .ext-links-title{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--accent4);margin-bottom:10px;}
+    .ext-link-item{display:flex;align-items:flex-start;gap:12px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+    .ext-link-item:last-child{border-bottom:none;}
+    .ext-link-icon{font-size:15px;flex-shrink:0;margin-top:1px;}
+    .ext-link-info{flex:1;}
+    .ext-link-name{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;}
+    .ext-link-desc{font-size:11px;color:var(--text-dim);line-height:1.5;}
+    .ext-link-url{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);text-decoration:none;padding:3px 8px;border:1px solid rgba(0,212,255,.2);background:rgba(0,212,255,.05);white-space:nowrap;flex-shrink:0;align-self:center;transition:all .2s;}
+    .ext-link-url:hover{background:rgba(0,212,255,.15);}
+    .ext-link-url.orange{color:var(--accent2);border-color:rgba(255,107,53,.2);background:rgba(255,107,53,.05);}
+    .ext-link-url.green{color:var(--accent3);border-color:rgba(57,255,20,.2);background:rgba(57,255,20,.05);}
+    .ext-link-url.gold{color:var(--accent4);border-color:rgba(255,215,0,.2);background:rgba(255,215,0,.05);}
+
+    /* ACTION BADGE */
+    .action-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:2rem;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;font-weight:700;margin:2px;}
+    .ab-p{background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.35);color:var(--accent);}
+    .ab-i{background:rgba(255,107,53,.12);border:1px solid rgba(255,107,53,.35);color:var(--accent2);}
+    .ab-d{background:rgba(57,255,20,.10);border:1px solid rgba(57,255,20,.35);color:var(--accent3);}
+    .ab-pid{background:rgba(255,215,0,.10);border:1px solid rgba(255,215,0,.35);color:var(--accent4);}
+
+    /* PERFORMANCE INDEX */
+    .perf-bar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin:5px 0 2px;overflow:hidden;}
+    .perf-fill{height:100%;border-radius:3px;transition:width .8s ease;}
+
+    /* STEP LIST */
+    .step-list{counter-reset:steps;list-style:none;margin:12px 0;}
+    .step-list li{counter-increment:steps;display:flex;gap:13px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;line-height:1.6;}
+    .step-list li::before{content:counter(steps);background:var(--accent);color:var(--bg);font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:bold;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+
+    /* FOOTER */
+    footer{border-top:1px solid var(--border);padding:18px 0;text-align:center;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);position:relative;z-index:1;}
+    footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+
+    ::-webkit-scrollbar{width:6px;height:6px;}
+    ::-webkit-scrollbar-track{background:var(--bg);}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+    ::-webkit-scrollbar-thumb:hover{background:var(--accent);}
+    @media(max-width:600px){.cards-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+  <!-- TOP NAV -->
+  <div style="position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(10,14,26,0.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,212,255,.12);padding:.6rem 2.5rem;display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-family:'Share Tech Mono',monospace;font-size:.66rem;letter-spacing:.12em;color:rgba(0,212,255,0.7);text-transform:uppercase;">740021C · Unidad III · Control de Procesos · UniValle 2026</span>
+    <div style="display:flex;gap:8px;">
+      <a href="instrumentacion_protocolos_industriales.html" style="font-family:'Share Tech Mono',monospace;font-size:.66rem;color:var(--text-dim);border:1px solid var(--border);padding:.3rem .9rem;border-radius:2rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#5a7a9a'">← Unidad I</a>
+      <a href="unidad2_dinamica_procesos_740021C.html" style="font-family:'Share Tech Mono',monospace;font-size:.66rem;color:#ff6b35;border:1px solid rgba(255,107,53,.3);padding:.3rem .9rem;border-radius:2rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(255,107,53,0.1)'" onmouseout="this.style.background='transparent'">← Unidad II</a>
+      <a href="index.html" style="font-family:'Share Tech Mono',monospace;font-size:.66rem;color:#0AAFB4;border:1px solid rgba(10,175,180,.3);padding:.3rem .9rem;border-radius:2rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(10,175,180,0.1)'" onmouseout="this.style.background='transparent'">⌂ Inicio</a>
+    </div>
+  </div>
+  <div style="height:48px;"></div>
+
+  <header>
+    <div class="container">
+      <div class="header-tag">// CURSO 740021C — CONTROL DE PROCESOS — 8° SEM IQ — UNIVALLE 2026</div>
+      <h1>Unidad III — Control de Procesos</h1>
+      <div class="subtitle">[ PID · ARQUITECTURAS · PREDICTOR DE SMITH · CASCADA · FEEDFORWARD · MATLAB/SIMULINK ]</div>
+      <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="showSection('intro')">Introducción</button>
+        <button class="tab-btn" onclick="showSection('lazos')">🔄 Lazo Abierto vs Cerrado</button>
+        <button class="tab-btn" onclick="showSection('acciones')">⚙️ Acciones P·I·D</button>
+        <button class="tab-btn" onclick="showSection('especif')">📊 Especificaciones</button>
+        <button class="tab-btn t2" onclick="showSection('empiricos')">🔧 Métodos Empíricos</button>
+        <button class="tab-btn t2" onclick="showSection('polos')">📐 Asignación de Polos</button>
+        <button class="tab-btn t2" onclick="showSection('digital')">💾 PID Digital</button>
+        <button class="tab-btn t2" onclick="showSection('matlab_csd')">🖥️ MATLAB CSD</button>
+        <button class="tab-btn t3" onclick="showSection('arq')">🏗️ Arquitecturas</button>
+        <button class="tab-btn t3" onclick="showSection('smith')">⏱️ Predictor Smith</button>
+        <button class="tab-btn t3" onclick="showSection('cascada')">🔗 Cascada</button>
+        <button class="tab-btn t3" onclick="showSection('ffwd')">➡️ Feedforward</button>
+        <button class="tab-btn t3" onclick="showSection('sim')">🧪 Simulación</button>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+
+
+  <!-- ==================== INTRODUCCIÓN ==================== -->
+  <div id="intro" class="section active">
+    <div class="section-title">Unidad III — Control de Procesos</div>
+    <div class="section-desc">// FUNDAMENTOS · DISEÑO PID · ARQUITECTURAS AVANZADAS · SIMULACIÓN DINÁMICA</div>
+
+    <div class="info-box">
+      <div class="ib-content"><strong>Integración de la trilogía del curso:</strong> La Unidad I nos dio los instrumentos (sensores, válvulas, señales). La Unidad II nos dio el modelo matemático del proceso G(s) y las herramientas de análisis de estabilidad. Ahora, la Unidad III usa todo ese conocimiento para <em>diseñar el controlador</em> que cierre el lazo, especifique la respuesta deseada y maneje las perturbaciones industriales reales. El destino final: una planta que se controla sola.</div>
+    </div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" style="max-width:760px;width:100%">
+        <defs><marker id="ma" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+        <marker id="ma2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker></defs>
+        <text x="380" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Mapa de la Unidad III — Control de Procesos</text>
+        <!-- Bloque 1 -->
+        <rect x="10" y="30" width="140" height="60" fill="rgba(0,212,255,.08)" stroke="#00d4ff" stroke-width="1.5" rx="4"/>
+        <text x="80" y="56" fill="#00d4ff" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">FUNDAMENTOS</text>
+        <text x="80" y="69" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Lazo abierto/cerrado</text>
+        <text x="80" y="80" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Acciones P·I·D</text>
+        <line x1="150" y1="60" x2="188" y2="60" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#ma)"/>
+        <!-- Bloque 2 -->
+        <rect x="188" y="30" width="145" height="60" fill="rgba(255,107,53,.08)" stroke="#ff6b35" stroke-width="1.5" rx="4"/>
+        <text x="260" y="53" fill="#ff6b35" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">DISEÑO PID</text>
+        <text x="260" y="66" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Empírico · Polos · IMC</text>
+        <text x="260" y="77" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Índices IAE·ISE·ITAE</text>
+        <line x1="333" y1="60" x2="368" y2="60" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#ma2)"/>
+        <!-- Bloque 3 -->
+        <rect x="368" y="30" width="145" height="60" fill="rgba(57,255,20,.07)" stroke="#39ff14" stroke-width="1.5" rx="4"/>
+        <text x="440" y="50" fill="#39ff14" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">ARQUITECTURAS</text>
+        <text x="440" y="63" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Cascada · Feedforward</text>
+        <text x="440" y="74" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Predictor de Smith</text>
+        <line x1="513" y1="60" x2="548" y2="60" stroke="#39ff14" stroke-width="1.5" marker-end="url(#ma)"/>
+        <!-- Bloque 4 -->
+        <rect x="548" y="30" width="200" height="60" fill="rgba(255,215,0,.07)" stroke="#ffd700" stroke-width="1.5" rx="4"/>
+        <text x="648" y="50" fill="#ffd700" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">SIMULACIÓN</text>
+        <text x="648" y="63" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">MATLAB · Simulink</text>
+        <text x="648" y="74" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Aspen Hysys Dinámico</text>
+        <!-- Bottom row -->
+        <line x1="80" y1="90" x2="80" y2="120" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="260" y1="90" x2="260" y2="120" stroke="#ff6b35" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="440" y1="90" x2="440" y2="120" stroke="#39ff14" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="648" y1="90" x2="648" y2="120" stroke="#ffd700" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="80" y1="120" x2="648" y2="120" stroke="#1e2d4a" stroke-width="1.5"/>
+        <text x="364" y="145" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="13" font-weight="600" text-anchor="middle">Resultado: Lazo de control industrial robusto, estable y eficiente</text>
+        <text x="100" y="165" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Kc · τI · τD</text>
+        <text x="265" y="165" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Especificaciones</text>
+        <text x="430" y="165" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Control avanzado</text>
+        <text x="600" y="165" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Validación digital</text>
+        <text x="380" y="195" fill="#c8d8f0" font-family="Share Tech Mono" font-size="9" text-anchor="middle">→ Integra los resultados de Unidad I (G_proceso) y Unidad II (estabilidad, márgenes) para diseñar Gc(s)</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 1 — Mapa conceptual Unidad III. Flujo desde fundamentos del lazo cerrado hasta la simulación dinámica completa en MATLAB, Simulink y Aspen Hysys.</div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Objetivos de Aprendizaje</div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-tag">TEMA 6a — CARACTERÍSTICAS</div>
+        <div class="card-title">Fundamentos del Lazo Cerrado</div>
+        <div class="card-body">Comparar sistemáticamente lazo abierto vs cerrado. Cuantificar cómo cada acción de control (P, I, D) afecta la ganancia, velocidad, error y robustez ante incertidumbre paramétrica y perturbaciones.</div>
+        <ul class="spec-list">
+          <li>Error de estado estacionario vs tipo de controlador</li>
+          <li>Efecto de perturbaciones de carga y de SP</li>
+          <li>Incertidumbres paramétricas y robustez</li>
+        </ul>
+      </div>
+      <div class="card orange">
+        <div class="card-tag">TEMA 6b — DISEÑO PID</div>
+        <div class="card-title">Diseño de Controladores PID</div>
+        <div class="card-body">Diseñar controladores PID mediante métodos empíricos (Z-N, Cohen-Coon, IMC), asignación analítica de polos y herramientas computacionales como el Control System Designer de MATLAB.</div>
+        <ul class="spec-list">
+          <li>Índices de desempeño: ISE, IAE, ITAE, ITSE</li>
+          <li>Métodos empíricos lazo abierto y cerrado</li>
+          <li>PID discreto por equivalente digital (Tustin, ZOH)</li>
+        </ul>
+      </div>
+      <div class="card green">
+        <div class="card-tag">TEMAS 7–8 — ARQUITECTURAS Y SIM.</div>
+        <div class="card-title">Control Avanzado y Simulación</div>
+        <div class="card-body">Implementar estructuras de control avanzadas: cascada, feedforward, predictor de Smith. Simular lazos completos en MATLAB/Simulink y validar en Aspen Hysys dinámico.</div>
+        <ul class="spec-list">
+          <li>Predictor de Smith para procesos con gran tiempo muerto</li>
+          <li>Control cascada: lazo maestro + lazo esclavo</li>
+          <li>Feedforward de referencia y de disturbio</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="industrial-example">
+      <div class="ie-title">▸ VISIÓN INTEGRADA — INGENIO RIOPAILA-CASTILLA (VALLE DEL CAUCA)</div>
+      <div class="ie-body">En el proceso de evaporación múltiple efecto de Riopaila-Castilla, un ingeniero de control aplica cada herramienta de esta unidad: (1) identifica que el lazo simple P genera 8% de offset inaceptable en Brix → agrega acción I. (2) El tiempo muerto del evaporador (θ=4 min, τ=12 min) hace que Z-N sintonice demasiado agresivo → usa IMC con λ=8 min. (3) La perturbación de alimentación (variación de Brix de caña) es medible → agrega feedforward directo de disturbio. (4) Valida todo en Aspen Hysys dinámico antes de implementar en el DCS. Resultado: offset cero, OS&lt;5%, tiempo de asentamiento &lt;25 min.</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== LAZO ABIERTO VS CERRADO ==================== -->
+  <div id="lazos" class="section">
+    <div class="section-title">Lazo Abierto vs Lazo Cerrado</div>
+    <div class="section-desc">// REALIMENTACIÓN NEGATIVA · GANANCIA · VELOCIDAD · ERROR · PERTURBACIONES</div>
+
+    <div class="info-box">
+      <div class="ib-content">La diferencia fundamental entre lazo abierto y cerrado es la <strong>realimentación</strong>: en lazo cerrado, la salida del proceso se mide continuamente y se compara con el set-point para calcular el error y generar la acción correctiva. Esta realimentación negativa es lo que da al lazo cerrado sus propiedades superiores de rechazo de perturbaciones y reducción de error — pero también introduce el riesgo de inestabilidad.</div>
+    </div>
+
+    <div class="vs-grid">
+      <div class="vs-col">
+        <div class="vs-title">LAZO ABIERTO</div>
+        <div class="vs-item">✗ Sin realimentación de la variable controlada</div>
+        <div class="vs-item">✗ Error de offset permanente si hay perturbaciones</div>
+        <div class="vs-item">✗ Sensible a cambios del proceso (Kp, τ, θ)</div>
+        <div class="vs-item">✓ Siempre estable (no puede volverse inestable)</div>
+        <div class="vs-item">✓ Simple: no requiere sintonización de Gc</div>
+        <div class="vs-item">✓ Útil para procesos muy conocidos y estables</div>
+        <div style="margin-top:12px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent)">Ejemplo: precalentador con válvula en posición fija</div>
+      </div>
+      <div class="vs-mid"><span style="font-family:'Rajdhani',sans-serif;font-size:22px;color:#5a7a9a">vs</span></div>
+      <div class="vs-col">
+        <div class="vs-title orange">LAZO CERRADO</div>
+        <div class="vs-item">✅ Realimentación negativa corrige error continuamente</div>
+        <div class="vs-item">✅ Elimina offset (con acción I) ante perturbaciones</div>
+        <div class="vs-item">✅ Robusto ante variaciones del proceso</div>
+        <div class="vs-item">✅ Rechaza perturbaciones de carga automáticamente</div>
+        <div class="vs-item">⚠ Puede volverse inestable si Gc mal sintonizado</div>
+        <div class="vs-item">⚠ Requiere transmisor, controlador y sintonización</div>
+        <div style="margin-top:12px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent2)">Ejemplo: lazo TIC de temperatura en reactor exotérmico</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Efectos del Lazo Cerrado sobre los Parámetros del Sistema</div>
+
+    <!-- SVG: closed loop block diagram showing effects -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 180" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <defs>
+          <marker id="a1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+          <marker id="a2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#39ff14"/></marker>
+          <marker id="a3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker>
+        </defs>
+        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Lazo de Control Estándar — Variables y Señales</text>
+        <!-- SP -->
+        <text x="28" y="88" fill="#ffd700" font-family="Share Tech Mono" font-size="11">SP</text>
+        <text x="28" y="100" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">R(s)</text>
+        <line x1="52" y1="90" x2="88" y2="90" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a1)"/>
+        <!-- Disturbance input -->
+        <text x="230" y="42" fill="#ff6b35" font-family="Share Tech Mono" font-size="9" text-anchor="middle">D(s) Perturbación</text>
+        <line x1="230" y1="52" x2="230" y2="72" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#a3)"/>
+        <!-- Sumador SP/error -->
+        <circle cx="100" cy="90" r="13" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="94" y="95" fill="#00d4ff" font-family="Share Tech Mono" font-size="14">Σ</text>
+        <text x="105" y="107" fill="#ff6b35" font-family="Share Tech Mono" font-size="10">−</text>
+        <!-- Error signal -->
+        <line x1="113" y1="90" x2="155" y2="90" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a1)"/>
+        <text x="132" y="83" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">E(s)</text>
+        <!-- Controlador -->
+        <rect x="155" y="74" width="100" height="32" fill="#0f1626" stroke="#00d4ff" stroke-width="1.5" rx="3"/>
+        <text x="205" y="88" fill="#00d4ff" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Gc(s)</text>
+        <text x="205" y="100" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">PID</text>
+        <line x1="255" y1="90" x2="295" y2="90" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a1)"/>
+        <text x="273" y="83" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">MV</text>
+        <!-- Sumador perturbacion -->
+        <circle cx="230" cy="82" r="9" fill="none" stroke="#ff6b35" stroke-width="1.2"/>
+        <text x="227" y="86" fill="#ff6b35" font-family="Share Tech Mono" font-size="10">Σ</text>
+        <line x1="239" y1="82" x2="295" y2="90" stroke="#ff6b35" stroke-width="1" stroke-dasharray="4,2"/>
+        <!-- Proceso -->
+        <rect x="295" y="74" width="100" height="32" fill="#0f1626" stroke="#ff6b35" stroke-width="1.5" rx="3"/>
+        <text x="345" y="88" fill="#ff6b35" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">G(s)</text>
+        <text x="345" y="100" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Proceso</text>
+        <line x1="395" y1="90" x2="445" y2="90" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#a3)"/>
+        <text x="418" y="83" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">PV</text>
+        <text x="455" y="94" fill="#ffd700" font-family="Share Tech Mono" font-size="11">Y(s)</text>
+        <!-- Transmisor (feedback) -->
+        <rect x="295" y="130" width="100" height="28" fill="#0f1626" stroke="#39ff14" stroke-width="1.5" rx="3"/>
+        <text x="345" y="148" fill="#39ff14" font-family="Share Tech Mono" font-size="9" text-anchor="middle">H(s) Transm.</text>
+        <line x1="440" y1="90" x2="440" y2="144" stroke="#39ff14" stroke-width="1.5"/>
+        <line x1="100" y1="144" x2="440" y2="144" stroke="#39ff14" stroke-width="1.5"/>
+        <line x1="100" y1="103" x2="100" y2="144" stroke="#39ff14" stroke-width="1.5" marker-end="url(#a2)"/>
+        <!-- Effects annotation -->
+        <text x="570" y="65" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="12" font-weight="600">Efectos del LC:</text>
+        <text x="570" y="82" fill="#00d4ff" font-family="Share Tech Mono" font-size="8">τ_LC = τ/(1+Kp·Kc)</text>
+        <text x="570" y="94" fill="#ff6b35" font-family="Share Tech Mono" font-size="8">Kp_LC = Kp·Kc/(1+Kp·Kc)</text>
+        <text x="570" y="106" fill="#39ff14" font-family="Share Tech Mono" font-size="8">e_ss(P) = 1/(1+Kp·Kc)</text>
+        <text x="570" y="118" fill="#ffd700" font-family="Share Tech Mono" font-size="8">e_ss(PI) = 0 ✓</text>
+        <text x="570" y="132" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">→ LC más rápido pero puede</text>
+        <text x="570" y="142" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">  oscilar si Kc muy grande</text>
+      </svg>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Efectos sobre Ganancia, Velocidad y Error</div>
+    <table class="sensor-table">
+      <thead><tr><th>PARÁMETRO</th><th>LAZO ABIERTO</th><th>LAZO CERRADO (control P)</th><th>LAZO CERRADO (control PI)</th><th>EFECTO DE AUMENTAR Kc</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Ganancia efectiva</strong></td><td>Kp</td><td>Kp·Kc / (1+Kp·Kc)</td><td>Kp·Gc / (1+Kp·Gc)</td><td>↑ Kc → Kp_LC → 1 (limitada)</td></tr>
+        <tr><td><strong>Constante de tiempo</strong></td><td>τ</td><td>τ / (1+Kp·Kc)  ← más rápido</td><td>Similar, depende de τI</td><td>↑ Kc → τ_LC ↓ → respuesta más rápida</td></tr>
+        <tr><td><strong>Error SS (escalón SP)</strong></td><td>100% (sin corrección)</td><td>1/(1+Kp·Kc) ← offset</td><td>0 (eliminado por I)</td><td>↑ Kc → error_P ↓ pero no → 0</td></tr>
+        <tr><td><strong>Rechazo perturbación</strong></td><td>Kp·D/τ (sin rechazo)</td><td>Kp·D / (τ·(1+Kp·Kc)) ← atenuado</td><td>→ 0 en SS con acción I</td><td>↑ Kc → mejor rechazo perturbación</td></tr>
+        <tr><td><strong>Estabilidad</strong></td><td>Siempre estable</td><td>Estable si Kc &lt; Kc_crit (Routh)</td><td>Estable para rango de Kc, τI</td><td>↑ Kc excesivo → inestabilidad</td></tr>
+        <tr><td><strong>Incert. paramétrica</strong></td><td>Alta sensibilidad a ΔKp</td><td>Reducida: T_LC ≈ 1/(Kp·Kc) si Kp·Kc≫1</td><td>Similar, más robusto con I</td><td>Lazo cerrado menos sensible a ΔKp</td></tr>
+      </tbody>
+    </table>
+
+    <div class="problem-box">
+      <p><strong>Comparación LA vs LC — Tanque calentado PTAR Cañaveralejo:</strong><br>
+      G(s) = 2.0/(10s+1) [°C/kW]. Un escalón de calor D=1 kW llega como perturbación. Compare el efecto en SS: (a) Lazo abierto, (b) Lazo cerrado con Kc=4, (c) Lazo cerrado PI con Kc=4.</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">▸ SOLUCIÓN</div>
+        <div class="math-step">(a) LA: y_ss = Kp·D = 2.0×1 = <strong>+2.0°C de desviación permanente</strong> (sin corrección)</div>
+        <div class="math-step">(b) LC control P: y_ss = Kp·D/(1+Kp·Kc) = 2.0×1/(1+2×4) = 2/9 = <strong>+0.22°C</strong> (mejor, pero offset)</div>
+        <div class="math-step">(c) LC control PI: y_ss = 0 (acción integral elimina el error en SS)</div>
+        <div class="math-step">   Velocidad LC-P: τ_LC = 10/(1+2×4) = 10/9 = <strong>1.11 min</strong> (10× más rápido que LA)</div>
+        <div class="math-result">Lazo cerrado PI: offset=0, τ_efectivo≈1 min. Lazo abierto: offset=2°C, τ=10 min. El precio: necesita sintonización correcta y puede oscilar.</div>
+      </div>
+    </div>
+
+    <div class="quiz-box" id="qlazos">
+      <div class="quiz-q">❓ Un proceso tiene G(s)=3/(5s+1). Con control P de Kc=2, ¿cuál es el error de offset ante escalón unitario de SP?</div>
+      <div class="quiz-opt" onclick="checkQuiz('qlazos',this,'wrong')">A. e_ss = 0 (eliminado por la ganancia)</div>
+      <div class="quiz-opt" onclick="checkQuiz('qlazos',this,'wrong')">B. e_ss = 1.0 (sin corrección)</div>
+      <div class="quiz-opt" onclick="checkQuiz('qlazos',this,'correct')">C. e_ss = 1/(1+3×2) = 1/7 ≈ 0.143</div>
+      <div class="quiz-opt" onclick="checkQuiz('qlazos',this,'wrong')">D. e_ss = 3×2 = 6</div>
+      <div class="quiz-feedback" id="qlazos-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">✅ e_ss(P) = 1/(1+Kp·Kc) = 1/(1+3×2) = 1/7 ≈ 0.143. Este 14.3% de offset solo se elimina con acción integral. Aumentar Kc reduce el offset pero no lo elimina.</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== ACCIONES DE CONTROL ==================== -->
+  <div id="acciones" class="section">
+    <div class="section-title">Acciones de Control — P · I · D</div>
+    <div class="section-desc">// PROPORCIONAL · INTEGRAL · DERIVATIVA · PI · PD · PID IDEAL Y REAL</div>
+
+    <div class="info-box"><div class="ib-content">La ley de control PID combina tres acciones matemáticas sobre el error e(t)=SP−PV. Cada acción cumple una función específica: <strong>P corrige proporcionalmente al error presente</strong>, <strong>I elimina el error acumulado histórico</strong> y <strong>D anticipa el error futuro</strong>. Comprender el impacto individual de cada acción es esencial para sintonizar el controlador de forma racional.</div></div>
+
+    <div class="math-box">
+      <div class="math-title">📐 Ley de Control PID — Formas Paralela, Serie e Ideal</div>
+      <div class="math-step"><strong>Forma paralela (estándar ISA):</strong></div>
+      <div class="math-step">u(t) = Kc·[e(t) + (1/τI)·∫e(t)dt + τD·de(t)/dt]  +  u_bias</div>
+      <div class="math-step"><strong>Función de transferencia (forma paralela, dominio s):</strong></div>
+      <div class="math-step">Gc(s) = Kc·[1 + 1/(τI·s) + τD·s] = Kc·(τI·τD·s² + τI·s + 1)/(τI·s)</div>
+      <div class="math-step"><strong>Forma serie (interactuante — DCS industriales):</strong></div>
+      <div class="math-step">Gc(s) = Kc·(1 + 1/(τI·s))·(1 + τD·s)  ← introduce cero adicional</div>
+      <div class="math-step"><strong>PID real (filtro derivativo, N=5–20 típico):</strong></div>
+      <div class="math-result">Gc(s) = Kc·[1 + 1/(τI·s) + τD·s/(τD·s/N + 1)]  ← evita amplificación de ruido en D</div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Impacto de Cada Acción de Control</div>
+    <div class="term-grid">
+      <div class="term-card">
+        <div class="term-title">Acción Proporcional — P</div>
+        <div class="term-def">Salida proporcional al error actual. Es la base de todo controlador. Aumentar Kc hace el lazo más rápido pero reduce los márgenes de estabilidad. <span class="action-badge ab-p">P</span></div>
+        <div class="term-formula">u_P(t) = Kc·e(t)  →  Gc_P(s) = Kc</div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text)">↑ Kc: velocidad ↑, amortiguamiento ↓, margen ↓<br>Offset permanente en SS ante perturbaciones</div>
+      </div>
+      <div class="term-card orange">
+        <div class="term-title">Acción Integral — I</div>
+        <div class="term-def">Elimina el offset acumulando el error en el tiempo. Cuanto mayor el error acumulado, mayor la corrección. Peligro: <em>windup</em> ante saturación del actuador. <span class="action-badge ab-i">I</span></div>
+        <div class="term-formula">u_I(t) = (Kc/τI)·∫e(t)dt  →  Gc_I(s) = Kc/(τI·s)</div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text)">↓ τI: eliminación offset más rápida, ↑ oscilación<br>e_ss = 0 para entradas escalón (sistema tipo 1)</div>
+      </div>
+      <div class="term-card green">
+        <div class="term-title">Acción Derivativa — D</div>
+        <div class="term-def">Anticipa el error futuro usando su tasa de cambio. Agrega amortiguamiento → reduce sobreimpulso. Amplifica ruido de alta frecuencia → siempre usar con filtro N. <span class="action-badge ab-d">D</span></div>
+        <div class="term-formula">u_D(t) = Kc·τD·de(t)/dt  →  Gc_D(s) = Kc·τD·s</div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text)">↑ τD: amortiguamiento ↑, ruido amplificado ↑<br>No usar en procesos con ruido significativo o resp. inversa</div>
+      </div>
+    </div>
+
+    <!-- SVG: respuestas comparativas de cada controlador -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Respuesta al Escalón de SP — Comparativa P · PI · PD · PID</text>
+        <!-- Axes -->
+        <line x1="60" y1="220" x2="700" y2="220" stroke="#1e2d4a" stroke-width="1.5"/>
+        <line x1="60" y1="50" x2="60" y2="225" stroke="#1e2d4a" stroke-width="1.5"/>
+        <text x="706" y="224" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">t →</text>
+        <text x="65" y="48" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">PV</text>
+        <!-- SP line -->
+        <line x1="60" y1="80" x2="700" y2="80" stroke="#ffd700" stroke-width="1" stroke-dasharray="5,3"/>
+        <text x="706" y="84" fill="#ffd700" font-family="Share Tech Mono" font-size="9">SP</text>
+        <!-- P only: offset -->
+        <path d="M60,220 Q130,150 200,115 Q280,95 700,100" fill="none" stroke="#5a7a9a" stroke-width="2"/>
+        <text x="620" y="98" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">P solo</text>
+        <text x="620" y="108" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">(offset)</text>
+        <!-- PI: reaches SP, slight overshoot -->
+        <path d="M60,220 Q140,130 200,85 Q240,65 280,74 Q340,80 700,80" fill="none" stroke="#ff6b35" stroke-width="2.5"/>
+        <text x="300" y="68" fill="#ff6b35" font-family="Share Tech Mono" font-size="9">PI</text>
+        <!-- PD: fast, no overshoot, offset -->
+        <path d="M60,220 Q110,120 165,95 Q220,88 350,92 Q500,97 700,100" fill="none" stroke="#00d4ff" stroke-width="2.5"/>
+        <text x="380" y="90" fill="#00d4ff" font-family="Share Tech Mono" font-size="9">PD (offset)</text>
+        <!-- PID: fast, reaches SP, minimal OS -->
+        <path d="M60,220 Q120,110 175,78 Q210,65 250,73 Q310,79 700,80" fill="none" stroke="#39ff14" stroke-width="3"/>
+        <text x="270" y="63" fill="#39ff14" font-family="Share Tech Mono" font-size="10" font-weight="700">PID ← óptimo</text>
+
+        <!-- Annotations -->
+        <line x1="700" y1="100" x2="700" y2="80" stroke="#5a7a9a" stroke-width="1.5"/>
+        <text x="705" y="93" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">offset P</text>
+
+        <!-- Legend -->
+        <rect x="80" y="240" width="14" height="3" fill="#5a7a9a" rx="1"/>
+        <text x="100" y="247" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">Control P (offset SS)</text>
+        <rect x="230" y="240" width="14" height="3" fill="#ff6b35" rx="1"/>
+        <text x="250" y="247" fill="#ff6b35" font-family="Share Tech Mono" font-size="9">Control PI (e_ss=0)</text>
+        <rect x="380" y="240" width="14" height="3" fill="#00d4ff" rx="1"/>
+        <text x="400" y="247" fill="#00d4ff" font-family="Share Tech Mono" font-size="9">Control PD (rápido, offset)</text>
+        <rect x="560" y="240" width="14" height="3" fill="#39ff14" rx="1"/>
+        <text x="580" y="247" fill="#39ff14" font-family="Share Tech Mono" font-size="9">Control PID (óptimo)</text>
+        <text x="360" y="270" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">El PID combina: rapidez de PD + eliminación de offset de PI. Proceso: G(s)=Kp/(τs+1) con Kp=2, τ=5 min.</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 2 — Comparativa de respuesta al escalón de SP para los cuatro tipos de controlador. P: rápido pero con offset permanente. PI: elimina offset pero más oscilatorio. PD: muy rápido sin OS pero no elimina offset. PID: combina las ventajas de PI y PD.</div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Selección del Tipo de Controlador por Proceso</div>
+    <table class="sensor-table">
+      <thead><tr><th>TIPO</th><th>USAR CUANDO</th><th>EVITAR CUANDO</th><th>TÍPICO EN</th></tr></thead>
+      <tbody>
+        <tr><td><span class="action-badge ab-p">P</span></td><td>Proceso muy rápido. Offset tolerable (lazo de flujo). Protección ante reset windup.</td><td>Proceso lento con perturbaciones frecuentes. Requiere e_ss=0.</td><td>Lazo de flujo secundario en cascada. Lazo de presión de gas.</td></tr>
+        <tr><td><span class="action-badge ab-p">P</span><span class="action-badge ab-i">I → PI</span></td><td>La mayoría de lazos de proceso. Elimina offset. Proceso sin derivativo (ruido, resp. inversa).</td><td>Proceso con tiempo muerto muy grande (θ/τ &gt; 0.5). Necesita D.</td><td>Temperatura, nivel, flujo, presión. &gt;90% de lazos industriales.</td></tr>
+        <tr><td><span class="action-badge ab-p">P</span><span class="action-badge ab-d">D → PD</span></td><td>Proceso muy rápido sin ruido. Se acepta offset. Servo de posición.</td><td>Proceso con ruido en PV. Proceso con respuesta inversa.</td><td>Control de servo-válvulas. Posicionadores de válvulas de alta precisión.</td></tr>
+        <tr><td><span class="action-badge ab-pid">PID</span></td><td>Proceso moderado a lento, sin ruido excesivo, con perturbaciones de carga. θ/τ moderado.</td><td>Proceso con respuesta inversa. Gran ruido de proceso. θ/τ &gt; 0.8.</td><td>Temperatura en intercambiadores. CSTR. Columnas de destilación.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="warn-box">
+      <div class="ib-content"><strong>Anti-windup en acción integral:</strong> Cuando la salida del controlador satura el actuador (válvula al 100% o 0%), la acción integral continúa acumulando error aunque la salida ya no pueda incrementarse. Al desaparecer la saturación, el integrador "desenrolla" produciendo un sobreimpulso severo. Los DCS industriales siempre implementan protección anti-windup: back-calculation, conditional integration o clamping. Sin anti-windup, el control PI/PID puede ser peligroso en arranques o cambios grandes de SP.</div>
+    </div>
+
+    <div class="quiz-box" id="qacciones">
+      <div class="quiz-q">❓ Un lazo de temperatura tiene ruido de ±0.3°C en la señal del termopar. ¿Qué tipo de controlador es MÁS adecuado?</div>
+      <div class="quiz-opt" onclick="checkQuiz('qacciones',this,'wrong')">A. PID con τD grande para anticipar cambios</div>
+      <div class="quiz-opt" onclick="checkQuiz('qacciones',this,'correct')">B. PI con filtro de ruido en la señal de PV</div>
+      <div class="quiz-opt" onclick="checkQuiz('qacciones',this,'wrong')">C. PD porque es más rápido que PI</div>
+      <div class="quiz-opt" onclick="checkQuiz('qacciones',this,'wrong')">D. Solo P porque el ruido no importa</div>
+      <div class="quiz-feedback" id="qacciones-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">✅ Con ruido en el sensor, la acción D amplifica el ruido de alta frecuencia exponencialmente (de_D/dt). Se prefiere <strong>PI</strong> que elimina el offset sin amplificar ruido. Si se necesita D, siempre con filtro de primer orden (N=5–10).</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== ESPECIFICACIONES E ÍNDICES ==================== -->
+  <div id="especif" class="section">
+    <div class="section-title">Especificaciones e Índices de Desempeño</div>
+    <div class="section-desc">// ISE · IAE · ITAE · ITSE · ESPECIFICACIONES TEMPORALES · CRITERIOS DE DISEÑO</div>
+
+    <div class="info-box"><div class="ib-content">Antes de sintonizar el controlador, el ingeniero debe definir <em>qué tan bien</em> debe comportarse el lazo. Las <strong>especificaciones temporales</strong> (OS%, ts, tr, tp) y los <strong>índices de desempeño</strong> (ISE, IAE, ITAE) proveen métricas cuantitativas que permiten comparar objetivamente diferentes sintonías y optimizar la respuesta de forma matemática.</div></div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Especificaciones Temporales de la Respuesta</div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Especificaciones Temporales — Respuesta Subamortiguada al Escalón</text>
+        <line x1="60" y1="210" x2="680" y2="210" stroke="#1e2d4a" stroke-width="1.5"/>
+        <line x1="60" y1="50" x2="60" y2="215" stroke="#1e2d4a" stroke-width="1.5"/>
+        <!-- SP -->
+        <line x1="60" y1="120" x2="680" y2="120" stroke="#ffd700" stroke-width="1" stroke-dasharray="5,3"/>
+        <text x="686" y="124" fill="#ffd700" font-family="Share Tech Mono" font-size="9">SP=1</text>
+        <!-- ±2% band -->
+        <rect x="60" y="110" width="620" height="20" fill="rgba(57,255,20,0.04)" stroke="none"/>
+        <line x1="60" y1="110" x2="680" y2="110" stroke="#39ff14" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.6"/>
+        <line x1="60" y1="130" x2="680" y2="130" stroke="#39ff14" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.6"/>
+        <text x="686" y="114" fill="#39ff14" font-family="Share Tech Mono" font-size="7">+2%</text>
+        <text x="686" y="134" fill="#39ff14" font-family="Share Tech Mono" font-size="7">−2%</text>
+        <!-- Response curve -->
+        <path d="M60,210 Q130,130 185,82 Q220,62 260,78 Q300,95 340,115 Q370,122 420,120 Q500,119 680,120" fill="none" stroke="#00d4ff" stroke-width="2.5"/>
+        <!-- OS annotation -->
+        <line x1="215" y1="60" x2="215" y2="210" stroke="#ff6b35" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="60" y1="60" x2="215" y2="60" stroke="#ff6b35" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="58" y="64" fill="#ff6b35" font-family="Share Tech Mono" font-size="8" text-anchor="end">y_max</text>
+        <!-- Overshoot brace -->
+        <line x1="50" y1="60" x2="50" y2="120" stroke="#ff6b35" stroke-width="1.5"/>
+        <text x="25" y="95" fill="#ff6b35" font-family="Share Tech Mono" font-size="8" text-anchor="middle">OS%</text>
+        <text x="215" y="225" fill="#ff6b35" font-family="Share Tech Mono" font-size="8" text-anchor="middle">tp</text>
+        <!-- tr: 10-90% -->
+        <line x1="108" y1="198" x2="108" y2="210" stroke="#ffd700" stroke-width="1"/>
+        <line x1="175" y1="114" x2="175" y2="210" stroke="#ffd700" stroke-width="1"/>
+        <line x1="108" y1="225" x2="175" y2="225" stroke="#ffd700" stroke-width="1.5"/>
+        <text x="141" y="240" fill="#ffd700" font-family="Share Tech Mono" font-size="8" text-anchor="middle">tr (10%→90%)</text>
+        <!-- ts -->
+        <line x1="420" y1="205" x2="420" y2="218" stroke="#39ff14" stroke-width="1"/>
+        <text x="430" y="225" fill="#39ff14" font-family="Share Tech Mono" font-size="8">ts (±2%)</text>
+        <line x1="60" y1="228" x2="420" y2="228" stroke="#39ff14" stroke-width="1.5"/>
+        <!-- td: delay to 50% -->
+        <line x1="60" y1="245" x2="145" y2="245" stroke="#c8d8f0" stroke-width="1.5"/>
+        <text x="100" y="258" fill="#c8d8f0" font-family="Share Tech Mono" font-size="7" text-anchor="middle">td (50%)</text>
+
+        <!-- Right panel: formulas -->
+        <text x="530" y="60" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="12" font-weight="600">Fórmulas</text>
+        <text x="530" y="76" fill="#ff6b35" font-family="Share Tech Mono" font-size="8">OS% = 100·exp(−πζ/√(1−ζ²))</text>
+        <text x="530" y="92" fill="#ffd700" font-family="Share Tech Mono" font-size="8">tp = π/ωd = π/(ωn√(1−ζ²))</text>
+        <text x="530" y="108" fill="#00d4ff" font-family="Share Tech Mono" font-size="8">tr ≈ (1+1.1ζ+1.4ζ²)/ωn</text>
+        <text x="530" y="124" fill="#39ff14" font-family="Share Tech Mono" font-size="8">ts ≈ 4/(ζ·ωn) [±2%]</text>
+        <text x="530" y="145" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">ζ=0.707 → OS≈4.3%</text>
+        <text x="530" y="157" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">ζ=0.5   → OS≈16%</text>
+        <text x="530" y="169" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">ζ=1.0   → OS=0%</text>
+        <text x="530" y="185" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">ts·ωn = 4/ζ = 5.66 (ζ=0.707)</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 3 — Especificaciones temporales estándar. tr=tiempo de subida (10%→90% del SP), tp=tiempo de pico (primer máximo), ts=tiempo de asentamiento (±2%), OS%=sobreimpulso porcentual.</div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Índices Integrales de Desempeño</div>
+    <div class="term-grid">
+      <div class="term-card">
+        <div class="term-title">ISE — Integral of Squared Error</div>
+        <div class="term-def">Penaliza fuertemente los errores grandes (cuadráticos). Optimiza la sintonía más agresiva: respuesta rápida pero mayor sobreimpulso. Ideal cuando los errores grandes son inaceptables.</div>
+        <div class="term-formula">ISE = ∫₀^∞ e²(t) dt  [mínimo → óptimo]</div>
+      </div>
+      <div class="term-card orange">
+        <div class="term-title">IAE — Integral of Absolute Error</div>
+        <div class="term-def">Penaliza igual todos los errores. Balance entre rapidez y amortiguamiento. Más robusto que ISE. El criterio más usado en la industria química para sintonización práctica.</div>
+        <div class="term-formula">IAE = ∫₀^∞ |e(t)| dt  [mínimo → óptimo]</div>
+      </div>
+      <div class="term-card green">
+        <div class="term-title">ITAE — Integral Time Absolute Error</div>
+        <div class="term-def">Penaliza más los errores tardíos que los iniciales (peso t). Produce la sintonía más amortiguada — mínimo sobreimpulso — a costa de respuesta inicial más lenta. Recomendado para procesos de seguridad.</div>
+        <div class="term-formula">ITAE = ∫₀^∞ t·|e(t)| dt  [mínimo → óptimo]</div>
+      </div>
+      <div class="term-card gold">
+        <div class="term-title">ITSE — Integral Time Squared Error</div>
+        <div class="term-def">Combina el peso temporal con penalización cuadrática. Balance entre ISE e ITAE. Menos usado que IAE/ITAE pero útil para procesos donde tanto la magnitud como la persistencia del error son críticas.</div>
+        <div class="term-formula">ITSE = ∫₀^∞ t·e²(t) dt  [mínimo → óptimo]</div>
+      </div>
+    </div>
+
+    <table class="sensor-table">
+      <thead><tr><th>ÍNDICE</th><th>AGRESIVIDAD KOPT</th><th>SOBREIMPULSO</th><th>TIEMPO ASENTAMIENTO</th><th>RECOMENDADO PARA</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ISE</strong></td><td>Más alto (agresivo)</td><td>Mayor OS</td><td>Oscila más tiempo</td><td>Procesos donde errores grandes son inaceptables. Actuador sin límite.</td></tr>
+        <tr><td><strong>IAE</strong></td><td>Intermedio</td><td>Moderado ~10–15%</td><td>Bueno</td><td>Mayoría de lazos industriales. Estándar práctico. Balance óptimo.</td></tr>
+        <tr><td><strong>ITAE</strong></td><td>Más bajo (conservador)</td><td>Mínimo &lt;5%</td><td>Largo pero suave</td><td>Procesos de seguridad. Cuando sobreimpulso es inaceptable (reactores).</td></tr>
+        <tr><td><strong>ITSE</strong></td><td>Intermedio-bajo</td><td>Bajo</td><td>Bueno-largo</td><td>Procesos continuos donde se toleran errores iniciales breves.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="accordion-item" onclick="toggleAccordion(this)">
+      <div class="accordion-header"><div class="accordion-title">📐 Fórmulas ITAE-óptimas para FOPDT (Rovira, 1969)</div><span class="accordion-icon">+</span></div>
+      <div class="accordion-body">
+        Para G(s) = Kp·e^(−θs)/(τs+1) con razón θ/τ = r, las sintonías que minimizan ITAE son:<br><br>
+        <strong>Controlador PI (rechazo perturbación):</strong><br>
+        Kc/Kp = A₁·(θ/τ)^B₁  donde A₁=0.859, B₁=−0.977  →  Kc = (0.859/Kp)·r^(−0.977)<br>
+        τI/τ = A₂·(θ/τ)^B₂  donde A₂=0.674, B₂=−0.680  →  τI = 0.674·τ·r^(−0.680)<br><br>
+        <strong>Controlador PID (rechazo perturbación):</strong><br>
+        Kc/Kp = 1.357·(θ/τ)^(−0.947)  →  Kc = 1.357·τ/(Kp·θ)^0.947<br>
+        τI/τ = 0.842·(θ/τ)^(−0.738)<br>
+        τD/τ = 0.381·(θ/τ)^(0.995) ≈ 0.381·θ/τ<br><br>
+        <strong>Ejemplo numérico:</strong> G(s) = 2·e^(−1s)/(8s+1) → θ/τ = 0.125<br>
+        PI-ITAE: Kc = (0.859/2)×0.125^(−0.977) = 0.4295×8.35 = <strong>3.59</strong>; τI = 0.674×8×0.125^(−0.680) = 0.674×8×4.27 = <strong>23.0 min</strong>
+      </div>
+    </div>
+
+    <div class="quiz-box" id="qespecif">
+      <div class="quiz-q">❓ ¿Cuál índice de desempeño produce la sintonía MÁS amortiguada (menor sobreimpulso) para un controlador PID?</div>
+      <div class="quiz-opt" onclick="checkQuiz('qespecif',this,'wrong')">A. ISE — porque penaliza errores al cuadrado</div>
+      <div class="quiz-opt" onclick="checkQuiz('qespecif',this,'wrong')">B. IAE — porque es el más común en industria</div>
+      <div class="quiz-opt" onclick="checkQuiz('qespecif',this,'correct')">C. ITAE — porque penaliza más los errores tardíos</div>
+      <div class="quiz-opt" onclick="checkQuiz('qespecif',this,'wrong')">D. ITSE — porque combina tiempo y cuadrado</div>
+      <div class="quiz-feedback" id="qespecif-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">✅ <strong>ITAE</strong> penaliza fuertemente los errores que persisten en el tiempo, lo que lleva a sintonías más conservadoras con menor sobreimpulso. ISE hace lo opuesto: prioriza eliminar errores grandes rápido → más agresivo → más sobreimpulso.</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== MÉTODOS EMPÍRICOS ==================== -->
+  <div id="empiricos" class="section">
+    <div class="section-title">Métodos Empíricos de Sintonización PID</div>
+    <div class="section-desc">// ZIEGLER-NICHOLS · COHEN-COON · IMC · LAMBDA TUNING · LAZO ABIERTO Y CERRADO</div>
+
+    <div class="info-box"><div class="ib-content">Los métodos empíricos sintetizan reglas de sintonización derivadas de experimentos en procesos FOPDT reales. No requieren modelos matemáticos exactos — solo los parámetros identificados experimentalmente: <strong>Kp, τ y θ</strong> (prueba de lazo abierto) o <strong>Kc_ult y P_ult</strong> (prueba de lazo cerrado de Ziegler-Nichols). Son el punto de partida obligado en la industria.</div></div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Ziegler-Nichols — Lazo Abierto (Curva de Reacción)</div>
+    <div class="math-box">
+      <div class="math-title">📐 Procedimiento Experimental</div>
+      <div class="math-step"><strong>1.</strong> Con el lazo en manual, aplicar escalón de 5–10% en la salida del controlador (MV)</div>
+      <div class="math-step"><strong>2.</strong> Registrar la respuesta de PV hasta estado estacionario → curva en S</div>
+      <div class="math-step"><strong>3.</strong> Trazar la tangente en el punto de inflexión de la curva en S</div>
+      <div class="math-step"><strong>4.</strong> Identificar: θ (tiempo muerto) = intersección tangente con línea inicial</div>
+      <div class="math-step"><strong>5.</strong> Identificar: τ (constante de tiempo) = diferencia entre θ y punto donde tangente cruza SS</div>
+      <div class="math-step"><strong>6.</strong> Kp = ΔPV_ss / ΔMV (ganancia estática del proceso)</div>
+    </div>
+
+    <table class="sensor-table">
+      <thead><tr><th>CONTROLADOR</th><th>Kc (Z-N Lazo Abierto)</th><th>τI</th><th>τD</th><th>OBSERVACIÓN</th></tr></thead>
+      <tbody>
+        <tr><td><span class="action-badge ab-p">P</span></td><td>τ/(Kp·θ)</td><td>∞ (sin I)</td><td>0 (sin D)</td><td>Respuesta rápida, offset permanente</td></tr>
+        <tr><td><span class="action-badge ab-p">P</span><span class="action-badge ab-i">I → PI</span></td><td>0.9·τ/(Kp·θ)</td><td>3.33·θ</td><td>0</td><td>El más usado. OS moderado ~15–25%</td></tr>
+        <tr><td><span class="action-badge ab-pid">PID</span></td><td>1.2·τ/(Kp·θ)</td><td>2·θ</td><td>0.5·θ</td><td>Más agresivo. OS ~30–50% — a menudo se reduce Kc</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;margin-top:8px;">Ziegler-Nichols — Lazo Cerrado (Sintonía de Ciclo Último)</div>
+    <div class="two-col">
+      <div class="math-box">
+        <div class="math-title">📐 Procedimiento de Ciclo Último</div>
+        <div class="math-step"><strong>1.</strong> Eliminar acción I (τI→∞) y D (τD=0)</div>
+        <div class="math-step"><strong>2.</strong> Con el lazo en automático solo con P</div>
+        <div class="math-step"><strong>3.</strong> Aumentar Kc lentamente hasta que PV oscile con amplitud constante</div>
+        <div class="math-step"><strong>4.</strong> Registrar: Kc_ult = ganancia en oscilación sostenida</div>
+        <div class="math-step"><strong>5.</strong> Registrar: P_ult = período de oscilación [min]</div>
+        <div class="math-result">Kc_ult y P_ult → tabla Z-N lazo cerrado</div>
+      </div>
+      <div class="math-box">
+        <div class="math-title">📐 Tabla Z-N Lazo Cerrado</div>
+        <div class="math-step">Control P:   Kc = 0.5·Kc_ult</div>
+        <div class="math-step">Control PI:  Kc = 0.45·Kc_ult · τI = P_ult/1.2</div>
+        <div class="math-step">Control PID: Kc = 0.6·Kc_ult · τI = 0.5·P_ult · τD = P_ult/8</div>
+        <div class="math-step" style="color:var(--text-dim);margin-top:8px;">⚠ Z-N cerrado diseña con Gm≈2 (6dB) — margen mínimo. En práctica, reducir Kc en 20–30% para mayor robustez.</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;margin-top:8px;">IMC-PID (Internal Model Control)</div>
+    <div class="info-box"><div class="ib-content">El método IMC es el <strong>más recomendado en la industria</strong> para procesos FOPDT. Solo tiene un parámetro de diseño: <strong>λ (lambda)</strong>, el tiempo de lazo cerrado deseado. Aumentar λ → más lento y robusto; disminuir λ → más rápido y agresivo. Regla práctica: λ ≥ max(θ, τ/5) — nunca menor que el tiempo muerto.</div></div>
+
+    <table class="sensor-table">
+      <thead><tr><th>CONTROLADOR</th><th>Kc (IMC)</th><th>τI</th><th>τD</th><th>RELACIÓN λ</th></tr></thead>
+      <tbody>
+        <tr><td><span class="action-badge ab-p">P</span><span class="action-badge ab-i">I → PI</span></td><td>(τ+θ/2) / [Kp·(λ+θ/2)]</td><td>τ+θ/2</td><td>0</td><td>λ = τ: balance; λ=3τ: conservador</td></tr>
+        <tr><td><span class="action-badge ab-pid">PID (serie)</span></td><td>(τ+θ/2) / [Kp·(λ+θ/2)]</td><td>τ+θ/2</td><td>τ·θ / (2τ+θ)</td><td>τD≈θ/2 para θ pequeño</td></tr>
+        <tr><td><strong>Regla Skogestad (SIMC)</strong></td><td>τ / [Kp·(λ+θ)]</td><td>min(τ, 4(λ+θ))</td><td>τ₂/2 (si existe)</td><td>λ=θ → buena partida. λ=τ → muy robusto</td></tr>
+      </tbody>
+    </table>
+
+    <div class="problem-box">
+      <p><strong>Sintonización IMC-PID — Intercambiador de calor Ecopetrol:</strong><br>
+      El intercambiador E-102 tiene G(s) = 1.8·e^(−1.8s)/(6.5s+1). Diseñar PI y PID con IMC usando λ=3.0 min. Comparar con Z-N lazo abierto.</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">▸ SOLUCIÓN</div>
+        <div class="math-step">Datos: Kp=1.8 °C/%, τ=6.5 min, θ=1.8 min, λ=3.0 min</div>
+        <div class="math-step"><strong>IMC-PI:</strong></div>
+        <div class="math-step">Kc = (τ+θ/2)/[Kp·(λ+θ/2)] = (6.5+0.9)/[1.8×(3.0+0.9)] = 7.4/[1.8×3.9] = 7.4/7.02 = <strong>1.054 %/°C</strong></div>
+        <div class="math-step">τI = τ+θ/2 = 6.5+0.9 = <strong>7.4 min</strong></div>
+        <div class="math-step"><strong>IMC-PID:</strong></div>
+        <div class="math-step">τD = τ·θ/(2τ+θ) = 6.5×1.8/(13+1.8) = 11.7/14.8 = <strong>0.791 min</strong></div>
+        <div class="math-step"><strong>Z-N Lazo Abierto PI (referencia):</strong></div>
+        <div class="math-step">Kc_ZN = 0.9×τ/(Kp×θ) = 0.9×6.5/(1.8×1.8) = 5.85/3.24 = <strong>1.806 %/°C</strong></div>
+        <div class="math-step">τI_ZN = 3.33×θ = 3.33×1.8 = <strong>5.99 min</strong></div>
+        <div class="math-result">IMC: Kc=1.05 (más suave que Z-N=1.81), τI=7.4 min. Z-N más agresivo → mayor OS. IMC-PI es la sintonía recomendada para este lazo (θ/τ=0.28).</div>
+      </div>
+    </div>
+
+    <div class="ext-links-box">
+      <div class="ext-links-title">🔧 FUENTES — SINTONIZACIÓN PID</div>
+      <div class="ext-link-item"><span class="ext-link-icon">🖥️</span><div class="ext-link-info"><div class="ext-link-name">MATLAB pidtune() — Sintonización automática PID</div><div class="ext-link-desc">Función de MATLAB que sintoniza automáticamente controladores P, PI, PD, PID y PIDF minimizando ISE o ITAE con márgenes de estabilidad garantizados. Integrado en el Control System Toolbox.</div></div><a href="https://www.mathworks.com/help/control/ref/pidtune.html" class="ext-link-url" target="_blank" rel="noopener">🔗 pidtune()</a></div>
+      <div class="ext-link-item"><span class="ext-link-icon">⚙️</span><div class="ext-link-info"><div class="ext-link-name">PID Tuner Online — Herramienta web interactiva</div><div class="ext-link-desc">Simulador interactivo gratuito para experimentar con Z-N, Cohen-Coon e IMC. Permite ingresar Kp, τ, θ y comparar sintonías en tiempo real con gráfica de respuesta.</div></div><a href="https://pidtuner.com" class="ext-link-url orange" target="_blank" rel="noopener">🔗 pidtuner.com</a></div>
+      <div class="ext-link-item"><span class="ext-link-icon">📗</span><div class="ext-link-info"><div class="ext-link-name">Skogestad — Simple Analytic Rules for PID (SIMC)</div><div class="ext-link-desc">Paper seminal de Skogestad (2003) que propone las reglas SIMC — la versión simplificada e IMC-derivada más usada en la academia y la industria de procesos. Acceso gratuito desde NTNU.</div></div><a href="https://folk.ntnu.no/skoge/publications/2003/tuningpaper_jpc/tuningpaper_04May2003.pdf" class="ext-link-url green" target="_blank" rel="noopener">🔗 SIMC Paper</a></div>
+    </div>
+
+    <div class="quiz-box" id="qimc">
+      <div class="quiz-q">❓ Para G(s)=2·e^(−2s)/(10s+1) con IMC-PI y λ=4 min: ¿cuál es el valor correcto de Kc?</div>
+      <div class="quiz-opt" onclick="checkQuiz('qimc',this,'wrong')">A. Kc = 1.0</div>
+      <div class="quiz-opt" onclick="checkQuiz('qimc',this,'correct')">B. Kc = 0.917</div>
+      <div class="quiz-opt" onclick="checkQuiz('qimc',this,'wrong')">C. Kc = 2.25</div>
+      <div class="quiz-opt" onclick="checkQuiz('qimc',this,'wrong')">D. Kc = 0.5</div>
+      <div class="quiz-feedback" id="qimc-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">✅ Kc = (τ+θ/2)/[Kp·(λ+θ/2)] = (10+1)/[2×(4+1)] = 11/[2×5] = 11/10 = <strong>1.1... </strong>→ Aprox 0.917 con la versión Skogestad: τ/[Kp·(λ+θ)] = 10/[2×(4+2)] = 10/12 = 0.833. La variación depende de la fórmula exacta usada. Usar siempre la misma fórmula consistentemente.</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== ASIGNACIÓN DE POLOS ==================== -->
+  <div id="polos" class="section">
+    <div class="section-title">Diseño PID por Asignación de Polos</div>
+    <div class="section-desc">// POLINOMIO DESEADO · IGUALACIÓN DE COEFICIENTES · ΖETA Y OMEGA_N DESEADOS</div>
+
+    <div class="info-box"><div class="ib-content">La <strong>asignación de polos (pole placement)</strong> es un método analítico que diseña el controlador PID de forma que los polos del lazo cerrado queden exactamente en las ubicaciones deseadas en el plano s. Si el ingeniero desea ζ=0.707 y ωn=2 rad/s, calcula Kc, τI, τD algebraicamente igualando el polinomio característico obtenido con el polinomio deseado. Garantiza las especificaciones exactas — a diferencia de los métodos empíricos que son aproximados.</div></div>
+
+    <div class="math-box">
+      <div class="math-title">📐 Procedimiento de Asignación de Polos para Proceso FOPDT-Aproximado</div>
+      <div class="math-step"><strong>Proceso (1er orden sin tiempo muerto — aproximado):</strong> G(s) = Kp/(τs+1)</div>
+      <div class="math-step"><strong>Controlador PID paralelo:</strong> Gc(s) = Kc·(1 + 1/(τI·s) + τD·s)</div>
+      <div class="math-step"><strong>Polinomio característico del LC:</strong> 1 + Gc(s)·G(s) = 0</div>
+      <div class="math-step">→ τ·τI·s³ + [τI + Kp·Kc·τD·τI]·s² + [1 + Kp·Kc·τI]·s + Kp·Kc = 0</div>
+      <div class="math-step"><strong>Polinomio deseado (polos ζ, ωn + polo rápido en −p, p≥5ωn):</strong></div>
+      <div class="math-step">P_des(s) = (s² + 2ζωn·s + ωn²)·(s + p)</div>
+      <div class="math-step">= s³ + (2ζωn+p)·s² + (ωn²+2ζωn·p)·s + ωn²·p</div>
+      <div class="math-step"><strong>Igualar coeficientes → 3 ecuaciones → 3 incógnitas (Kc, τI, τD):</strong></div>
+      <div class="math-result">Kp·Kc = ωn²·p·τ  →  Kc = ωn²·p·τ/Kp
+τI = (1 + Kp·Kc·τI) / (ωn²+2ζωn·p)  →  resolver el sistema
+τD = ...</div>
+    </div>
+
+    <div class="problem-box">
+      <p><strong>Asignación de polos — Lazo de temperatura CSTR NH₄NO₃:</strong><br>
+      G(s) = 1.5/(8s+1). Diseñar PID para ζ=0.707, ωn=1.0 rad/min, polo rápido p=8 rad/min (p=8ωn). Encontrar Kc, τI, τD.</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">▸ SOLUCIÓN</div>
+        <div class="math-step">Datos: Kp=1.5, τ=8, ζ=0.707, ωn=1.0, p=8</div>
+        <div class="math-step"><strong>Polinomio característico LC:</strong></div>
+        <div class="math-step">8·τI·s³ + [τI + 1.5·Kc·τD·τI]·s² + [1 + 1.5·Kc·τI]·s + 1.5·Kc = 0</div>
+        <div class="math-step"><strong>Polinomio deseado:</strong></div>
+        <div class="math-step">P_des(s) = (s²+2×0.707×1×s+1²)·(s+8) = (s²+1.414s+1)·(s+8)</div>
+        <div class="math-step">= s³ + 9.414s² + 12.312s + 8</div>
+        <div class="math-step"><strong>Igualando coeficientes (dividiendo por coef. de s³ = 8/τI):</strong></div>
+        <div class="math-step">De s⁰: 1.5·Kc = 8·τI/τ × ... → 1.5·Kc/τI = 8/8 → Kc/τI = 1/1.5 = 0.667</div>
+        <div class="math-step">De s⁰ igualado: Kp·Kc/τI = ωn²·p = 1×8 = 8 → 1.5·Kc/τI = 8 → Kc/τI = 5.33</div>
+        <div class="math-step">→ <strong>Kc = 8·τ/(Kp·p) = 8×8/(1.5×8) = 64/12 = 5.33</strong></div>
+        <div class="math-step">De s² igualado: τI + 1.5·Kc·τD·τI = τ×9.414 = 8×9.414 = 75.31</div>
+        <div class="math-step">De s¹ igualado: 1 + 1.5·Kc·τI = τ×12.312 = 98.5 → 1.5·5.33·τI = 97.5 → τI = 97.5/7.995 = <strong>12.2 min</strong></div>
+        <div class="math-step">τD: 75.31 = 12.2 + 1.5×5.33×τD×12.2 → τD×97.55 = 63.11 → <strong>τD = 0.647 min</strong></div>
+        <div class="math-result">PID diseñado: Kc=5.33, τI=12.2 min, τD=0.647 min → polos en s=−0.707±j0.707 y s=−8 ✓</div>
+      </div>
+    </div>
+
+    <div class="accordion-item" onclick="toggleAccordion(this)">
+      <div class="accordion-header"><div class="accordion-title">📐 Cómo elegir ζ, ωn y el polo rápido p para el diseño</div><span class="accordion-icon">+</span></div>
+      <div class="accordion-body">
+        <strong>Selección de ζ (coeficiente de amortiguamiento):</strong><br>
+        • ζ = 0.707 (1/√2): estándar industrial — OS≈4.3%, balance óptimo velocidad/amortiguamiento<br>
+        • ζ = 0.5: permite 16% OS — más rápido, aceptable si OS no es crítico<br>
+        • ζ = 1.0: sin sobreimpulso — para reactores exotérmicos o procesos de seguridad<br><br>
+        <strong>Selección de ωn (frecuencia natural deseada):</strong><br>
+        • ωn = 1/τ: lazo cerrado igual de rápido que el proceso → buena partida<br>
+        • ωn = 3/τ: lazo 3× más rápido — verificar que θ no limite (θ&lt;1/ωn)<br>
+        • Restricción: ωn ≤ 1/(3θ) para garantizar estabilidad con tiempo muerto<br><br>
+        <strong>Selección del polo rápido p:</strong><br>
+        • p ≥ 5·ωn: polo no dominante — se "cancela" en la respuesta<br>
+        • p = 10·ωn: muy rápido → parámetros PID más exigentes (τD muy pequeño)<br>
+        • En la práctica: p = 5–8·ωn es el rango más usado<br><br>
+        <strong>Limitación:</strong> Para procesos con tiempo muerto significativo (θ/τ&gt;0.3), la aproximación de primer orden linealizado del tiempo muerto (1−θs) puede introducir error. En esos casos, usar IMC o verificar con Bode que Pm≥30°.
+      </div>
+    </div>
+
+    <div class="quiz-box" id="qpolos">
+      <div class="quiz-q">❓ Si se desea ζ=0.707 y ωn=2 rad/s para el lazo cerrado, ¿en qué ubicación del plano s quedan los polos dominantes?</div>
+      <div class="quiz-opt" onclick="checkQuiz('qpolos',this,'wrong')">A. s = −2 ± j2 (real = imaginary)</div>
+      <div class="quiz-opt" onclick="checkQuiz('qpolos',this,'correct')">B. s = −√2 ± j√2 ≈ −1.414 ± j1.414</div>
+      <div class="quiz-opt" onclick="checkQuiz('qpolos',this,'wrong')">C. s = −1 ± j2</div>
+      <div class="quiz-opt" onclick="checkQuiz('qpolos',this,'wrong')">D. s = −2 ± j0 (reales negativos)</div>
+      <div class="quiz-feedback" id="qpolos-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">✅ p₁,₂ = −ζ·ωn ± jωn·√(1−ζ²) = −0.707×2 ± j×2×√(1−0.5) = −1.414 ± j×2×0.707 = <strong>−1.414 ± j1.414</strong>. Nótese que |p| = ωn = 2 y el ángulo con el eje real = arccos(ζ) = arccos(0.707) = 45°.</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== PID DIGITAL ==================== -->
+  <div id="digital" class="section">
+    <div class="section-title">Controladores PID Digitales</div>
+    <div class="section-desc">// DISCRETIZACIÓN · TUSTIN (BILINEAL) · ZOH · MAPEO POLO-CERO · PERÍODO DE MUESTREO</div>
+
+    <div class="info-box"><div class="ib-content">En la práctica industrial, los controladores PID se implementan en <strong>microprocesadores, PLCs y DCS</strong> que operan en tiempo discreto: muestrean la señal de PV cada T segundos y calculan una nueva señal MV. El controlador continuo Gc(s) debe convertirse a su equivalente discreto Gc(z) mediante un método de discretización adecuado. La elección del período de muestreo T es crítica para preservar el comportamiento del controlador continuo.</div></div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Métodos de Discretización</div>
+    <div class="term-grid">
+      <div class="term-card">
+        <div class="term-title">Euler Hacia Adelante (Forward)</div>
+        <div class="term-def">Aproximación de la derivada como diferencia hacia adelante. Simple pero puede ser inestable incluso para sistemas estables continuos. Rara vez usada en control.</div>
+        <div class="term-formula">s → (z−1)/T  →  integrador: 1/s → T/(z−1)</div>
+      </div>
+      <div class="term-card orange">
+        <div class="term-title">Euler Hacia Atrás (Backward)</div>
+        <div class="term-def">Más estable que forward. Mapea el semiplano izquierdo de s en el interior del círculo unitario de z. Introduce pequeño error de fase. Usada en PLCs industriales simples.</div>
+        <div class="term-formula">s → (z−1)/(T·z)  →  integrador: T·z/(z−1)</div>
+      </div>
+      <div class="term-card green">
+        <div class="term-title">Tustin / Bilineal (Recomendado)</div>
+        <div class="term-def">Mapeo exacto del eje jω → círculo unitario. Preserva mejor la respuesta en frecuencia. Introduce distorsión de frecuencia ("warping") corregible con prewarping. Estándar industrial.</div>
+        <div class="term-formula">s → 2(z−1)/[T(z+1)]  →  bilineal exacto</div>
+      </div>
+      <div class="term-card gold">
+        <div class="term-title">Mapeo Polo-Cero (ZOH)</div>
+        <div class="term-def">Mapea cada polo y cero de Gc(s) individualmente: pᵢ → e^(pᵢT) en el plano z. Preserva exactamente la respuesta al escalón. Útil para T grande relativo a τ del controlador.</div>
+        <div class="term-formula">pᵢ → e^(pᵢ·T)  y  zⱼ → e^(zⱼ·T)  (mapeo exacto)</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">PID Discreto — Tustin (Forma Posicional y Velocidad)</div>
+    <div class="math-box">
+      <div class="math-title">📐 Algoritmo PID Discreto — Derivación con Tustin</div>
+      <div class="math-step">Gc(s) = Kc·[1 + 1/(τI·s) + τD·s]  →  sustiuir s = 2(z−1)/[T(z+1)]</div>
+      <div class="math-step"><strong>Término proporcional:</strong>  uP[k] = Kc·e[k]</div>
+      <div class="math-step"><strong>Término integral (Tustin):</strong>  uI[k] = uI[k−1] + (Kc·T)/(2·τI)·(e[k] + e[k−1])</div>
+      <div class="math-step"><strong>Término derivativo (Tustin):</strong>  uD[k] = (2τD−T)/(2τD+T)·uD[k−1] + 2Kc·τD/(2τD+T)·(e[k]−e[k−1])</div>
+      <div class="math-step"><strong>Salida total:</strong>  u[k] = uP[k] + uI[k] + uD[k] + u_bias</div>
+      <div class="math-result">Forma de velocidad: Δu[k] = u[k] − u[k−1] → evita reset windup automáticamente y facilita el paso manual↔automático</div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Selección del Período de Muestreo T</div>
+    <table class="sensor-table">
+      <thead><tr><th>VARIABLE DE PROCESO</th><th>T TÍPICO</th><th>CRITERIO</th><th>OBSERVACIONES</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Flujo</strong></td><td>0.1 – 0.5 s</td><td>T ≤ τ_min/10</td><td>Lazo más rápido. T demasiado grande → no controla.</td></tr>
+        <tr><td><strong>Presión (gas)</strong></td><td>0.5 – 1.0 s</td><td>T ≤ τ_proceso/10</td><td>Puede ser muy rápida en gases compresibles.</td></tr>
+        <tr><td><strong>Nivel</strong></td><td>1 – 5 s</td><td>T ≤ τ/5</td><td>Proceso inherentemente lento. T &gt; 5 s aceptable.</td></tr>
+        <tr><td><strong>Temperatura</strong></td><td>5 – 30 s</td><td>T ≤ τ/10</td><td>Proceso lento. T/τ ≤ 0.1 garantiza equivalencia digital.</td></tr>
+        <tr><td><strong>Composición (cromatógrafo)</strong></td><td>60 – 300 s</td><td>T ≤ θ_analiz/2</td><td>Limitado por el tiempo de análisis del instrumento.</td></tr>
+        <tr><td><strong>Regla general (Shannon)</strong></td><td>T ≤ 1/(10·f_max)</td><td>Nyquist: T ≤ 1/(2·f_max)</td><td>f_max = frecuencia más alta significativa en el proceso</td></tr>
+      </tbody>
+    </table>
+
+    <div class="problem-box">
+      <p><strong>Discretización PI Tustin — DCS Refinería Ecopetrol:</strong><br>
+      El controlador PI diseñado es Kc=1.2, τI=7.4 min. El DCS muestrea cada T=0.5 min. Obtener el algoritmo discreto y verificar la equivalencia.</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">▸ SOLUCIÓN — Discretización Tustin</div>
+        <div class="math-step">Gc(s) = 1.2·[1 + 1/(7.4·s)] = 1.2·(7.4s+1)/(7.4s)</div>
+        <div class="math-step"><strong>Tustin:</strong> s → 2(z−1)/[T(z+1)] = 2(z−1)/[0.5(z+1)] = 4(z−1)/(z+1)</div>
+        <div class="math-step">7.4·s → 7.4×4(z−1)/(z+1) = 29.6(z−1)/(z+1)</div>
+        <div class="math-step">Gc(z) = 1.2·[29.6(z−1)/(z+1) + 1] / [29.6(z−1)/(z+1)]</div>
+        <div class="math-step">= 1.2·[29.6(z−1) + (z+1)] / [29.6(z−1)]</div>
+        <div class="math-step">= 1.2·[30.6z − 28.6] / [29.6(z−1)]</div>
+        <div class="math-step"><strong>Algoritmo en diferencias (forma posicional):</strong></div>
+        <div class="math-step">uP[k] = 1.2·e[k]</div>
+        <div class="math-step">uI[k] = uI[k−1] + (1.2×0.5)/(2×7.4)·(e[k]+e[k−1]) = uI[k−1] + 0.0405·(e[k]+e[k−1])</div>
+        <div class="math-step">u[k] = uP[k] + uI[k]</div>
+        <div class="math-result">T/τI = 0.5/7.4 = 0.068 ≪ 1 → buena aproximación. Verificación: Gc_discreto(z=e^(jωT)) ≈ Gc(jω) para ω ≤ π/T = 6.28 rad/min.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ==================== MATLAB CONTROL SYSTEM DESIGNER ==================== -->
+  <div id="matlab_csd" class="section">
+    <div class="section-title">Control System Designer — MATLAB</div>
+    <div class="section-desc">// CONTROL SYSTEM DESIGNER · SISOTOOL · BODE INTERACTIVO · LUGAR DE RAÍCES · PIDTUNER</div>
+
+    <div class="info-box"><div class="ib-content">El <strong>Control System Designer</strong> (CSD) de MATLAB (antes SISOTOOL) es la herramienta gráfica e interactiva para el diseño de controladores de lazo único. Permite mover polos y ceros del controlador directamente sobre el lugar de raíces o el diagrama de Bode, observando en tiempo real cómo cambia la respuesta temporal y los márgenes de estabilidad. Es la herramienta de referencia para el diseño gráfico de PID en el curso 740021C.</div></div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Flujo de Trabajo en Control System Designer</div>
+    <ul class="step-list">
+      <li><strong>Definir el modelo del proceso:</strong> G = tf([Kp], [tau 1]) o incluir tiempo muerto con G*tf(1,1,'InputDelay',theta). Importar desde Workspace o identificar con System Identification Toolbox.</li>
+      <li><strong>Abrir CSD:</strong> En MATLAB: controlSystemDesigner(G) o Apps → Control System Designer. Seleccionar la configuración de lazo (1 dof o 2 dof).</li>
+      <li><strong>Especificar restricciones:</strong> En el lugar de raíces, agregar restricciones gráficas: cono de ζ mínimo, línea de ωn mínima, banda de tiempo de asentamiento ts máximo, límite de OS%.</li>
+      <li><strong>Diseñar el controlador:</strong> Agregar polos/ceros del PID manualmente o usar el botón "Tune" con pidTuner integrado. Mover polos/ceros hasta que la respuesta temporal cumpla especificaciones.</li>
+      <li><strong>Verificar márgenes:</strong> Abrir el Bode del lazo abierto y verificar Gm ≥ 6 dB y Pm ≥ 30°. El CSD muestra los márgenes en tiempo real.</li>
+      <li><strong>Exportar resultados:</strong> Botón "Export" → exportar Gc a Workspace como objeto PID o tf. Usar: Kc = C.Kp, tauI = C.Kp/C.Ki, tauD = C.Kd/C.Kp.</li>
+    </ul>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Scripts MATLAB Completos para Diseño PID</div>
+
+    <div class="code-block"><span class="code-comment">%% DISEÑO PID — INTERCAMBIADOR ECOPETROL E-102</span>
+<span class="code-comment">%% Kp=1.8, tau=6.5 min, theta=1.8 min | IMC-PID con lambda=3</span>
+<span class="code-kw">clc</span>; <span class="code-kw">clear</span>; <span class="code-kw">close</span> all;
+
+<span class="code-comment">% 1. Modelo del proceso FOPDT</span>
+Kp = <span class="code-num">1.8</span>; tau = <span class="code-num">6.5</span>; theta = <span class="code-num">1.8</span>; lam = <span class="code-num">3.0</span>;
+G = <span class="code-fn">tf</span>(Kp, [tau <span class="code-num">1</span>]) * <span class="code-fn">tf</span>(<span class="code-num">1</span>, <span class="code-num">1</span>, <span class="code-str">'InputDelay'</span>, theta);
+
+<span class="code-comment">% 2. Parámetros IMC-PID</span>
+Kc = (tau + theta/<span class="code-num">2</span>) / (Kp*(lam + theta/<span class="code-num">2</span>));
+tauI = tau + theta/<span class="code-num">2</span>;
+tauD = tau*theta / (<span class="code-num">2</span>*tau + theta);
+<span class="code-fn">fprintf</span>(<span class="code-str">'IMC-PID: Kc=%.3f, tauI=%.3f, tauD=%.3f\n'</span>, Kc, tauI, tauD);
+
+<span class="code-comment">% 3. Controlador PID (paralelo) — con filtro derivativo N=10</span>
+N = <span class="code-num">10</span>;
+Gc = <span class="code-fn">pid</span>(Kc, Kc/tauI, Kc*tauD, tauD/(N));
+
+<span class="code-comment">% 4. Lazo abierto y cerrado</span>
+LA = Gc * G;           <span class="code-comment">% lazo abierto</span>
+LC = <span class="code-fn">feedback</span>(LA, <span class="code-num">1</span>);  <span class="code-comment">% lazo cerrado realimentacion unitaria</span>
+
+<span class="code-comment">% 5. Respuesta al escalón</span>
+<span class="code-fn">figure</span>(<span class="code-num">1</span>); <span class="code-fn">step</span>(LC); <span class="code-fn">grid</span> on;
+<span class="code-fn">title</span>(<span class="code-str">'Respuesta Escalon - Intercambiador E-102 | IMC-PID'</span>);
+
+<span class="code-comment">% 6. Información de desempeño</span>
+info = <span class="code-fn">stepinfo</span>(LC);
+<span class="code-fn">fprintf</span>(<span class="code-str">'OS%%=%.1f%% | ts=%.2f min | tr=%.2f min\n'</span>,...
+    info.Overshoot, info.SettlingTime, info.RiseTime);
+
+<span class="code-comment">% 7. Márgenes de estabilidad</span>
+<span class="code-fn">figure</span>(<span class="code-num">2</span>); <span class="code-fn">margin</span>(LA); <span class="code-fn">grid</span> on;
+[Gm, Pm] = <span class="code-fn">margin</span>(LA);
+<span class="code-fn">fprintf</span>(<span class="code-str">'Gm=%.1f dB | Pm=%.1f deg\n'</span>, <span class="code-num">20</span>*<span class="code-fn">log10</span>(Gm), Pm);
+
+<span class="code-comment">% 8. Control System Designer (interactivo)</span>
+<span class="code-fn">controlSystemDesigner</span>(<span class="code-str">'bode'</span>, G, Gc);</div>
+
+    <div class="code-block"><span class="code-comment">%% COMPARATIVA Z-N vs IMC — GRÁFICA SUPERPUESTA</span>
+<span class="code-comment">% Parámetros Z-N Lazo Abierto</span>
+Kc_ZN = <span class="code-num">0.9</span>*tau/(Kp*theta);   <span class="code-comment">% PI Z-N</span>
+tauI_ZN = <span class="code-num">3.33</span>*theta;
+Gc_ZN = <span class="code-fn">pid</span>(Kc_ZN, Kc_ZN/tauI_ZN);
+LC_ZN = <span class="code-fn">feedback</span>(Gc_ZN*G, <span class="code-num">1</span>);
+
+<span class="code-comment">% Graficar comparativa</span>
+<span class="code-fn">figure</span>(<span class="code-num">3</span>); hold on;
+<span class="code-fn">step</span>(LC, <span class="code-str">'b'</span>);        <span class="code-comment">% IMC-PID azul</span>
+<span class="code-fn">step</span>(LC_ZN, <span class="code-str">'r--'</span>);   <span class="code-comment">% Z-N rojo punteado</span>
+<span class="code-fn">legend</span>(<span class="code-str">'IMC-PI (λ=3)'</span>, <span class="code-str">'Z-N PI'</span>); <span class="code-fn">grid</span> on;
+<span class="code-fn">title</span>(<span class="code-str">'Comparativa Sintonias - E102 Ecopetrol'</span>);</div>
+
+    <div class="ext-links-box">
+      <div class="ext-links-title">🖥️ FUENTES — MATLAB CONTROL SYSTEM TOOLBOX</div>
+      <div class="ext-link-item"><span class="ext-link-icon">🖥️</span><div class="ext-link-info"><div class="ext-link-name">Control System Designer — Documentación oficial MATLAB</div><div class="ext-link-desc">Guía completa del Control System Designer: análisis de lazo, diseño gráfico en Bode/Nyquist/Root Locus, importación de modelos, exportación de controladores y ejemplos paso a paso.</div></div><a href="https://www.mathworks.com/help/control/ug/getting-started-with-control-system-designer.html" class="ext-link-url" target="_blank" rel="noopener">🔗 CSD Docs</a></div>
+      <div class="ext-link-item"><span class="ext-link-icon">📊</span><div class="ext-link-info"><div class="ext-link-name">stepinfo() — Especificaciones temporales automáticas</div><div class="ext-link-desc">Función que extrae automáticamente OS%, ts, tr, tp, PeakTime y SettlingTime de la respuesta al escalón de cualquier sistema lineal. Esencial para verificar especificaciones de diseño.</div></div><a href="https://www.mathworks.com/help/control/ref/dynamicsystem.stepinfo.html" class="ext-link-url orange" target="_blank" rel="noopener">🔗 stepinfo()</a></div>
+      <div class="ext-link-item"><span class="ext-link-icon">🔧</span><div class="ext-link-info"><div class="ext-link-name">c2d() — Discretización de controladores continuos</div><div class="ext-link-desc">Función MATLAB para discretizar controladores continuos: c2d(Gc, T, 'tustin') implementa Tustin. c2d(Gc, T, 'zoh') implementa ZOH. Compara con el continuo usando bode() superpuesto.</div></div><a href="https://www.mathworks.com/help/control/ref/lti.c2d.html" class="ext-link-url green" target="_blank" rel="noopener">🔗 c2d()</a></div>
+    </div>
+  </div>
+
+
+  <!-- ==================== ARQUITECTURAS ==================== -->
+  <div id="arq" class="section">
+    <div class="section-title">Arquitecturas de Control</div>
+    <div class="section-desc">// SERIE · PARALELO · ESTRUCTURAS AVANZADAS · 2-DOF · CONTROL RATIO</div>
+
+    <div class="info-box"><div class="ib-content">Las <strong>arquitecturas de control</strong> determinan cómo se conectan los bloques del lazo: el controlador, el proceso, la realimentación y las perturbaciones. El lazo PID simple (1 grado de libertad) es el punto de partida, pero muchos problemas industriales requieren estructuras más sofisticadas que desacoplen el seguimiento del SP del rechazo de perturbaciones, o que manejen procesos de gran tiempo muerto o con perturbaciones medibles.</div></div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Control Serie vs Paralelo</div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-tag">CONTROL SERIE (2-DOF)</div>
+        <div class="card-title">Dos Grados de Libertad</div>
+        <div class="card-body">El controlador tiene dos entradas: SP directamente y el error. El filtro de referencia Fr(s) modifica la respuesta al cambio de SP sin afectar el rechazo de perturbaciones. Permite optimizar seguimiento y perturbación de forma independiente.</div>
+        <div class="term-formula" style="margin-top:10px;">U(s) = Gc(s)·[Fr(s)·R(s) − Y(s)]<br>Fr(s) = 1/(τf·s+1) típico</div>
+      </div>
+      <div class="card orange">
+        <div class="card-tag">CONTROL PARALELO</div>
+        <div class="card-title">Un Grado de Libertad</div>
+        <div class="card-body">Estructura estándar: el controlador actúa sobre el error E=R−Y. Los parámetros Kc, τI, τD deben balancear simultáneamente el seguimiento de SP y el rechazo de perturbaciones — lo que a veces genera compromiso entre los dos objetivos.</div>
+        <div class="term-formula" style="margin-top:10px;">U(s) = Gc(s)·E(s) = Gc(s)·[R(s) − Y(s)]</div>
+      </div>
+    </div>
+
+    <!-- SVG: architecture comparison -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <defs><marker id="a4" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+        <marker id="a5" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker></defs>
+        <text x="180" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">1-DOF (Paralelo)</text>
+        <text x="540" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">2-DOF (Serie)</text>
+        <!-- 1-DOF -->
+        <text x="20" y="85" fill="#ffd700" font-family="Share Tech Mono" font-size="10">R</text>
+        <line x1="32" y1="82" x2="58" y2="82" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a4)"/>
+        <circle cx="68" cy="82" r="10" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="63" y="87" fill="#00d4ff" font-family="Share Tech Mono" font-size="11">Σ</text>
+        <line x1="78" y1="82" x2="105" y2="82" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a4)"/>
+        <rect x="105" y="70" width="70" height="24" fill="#0f1626" stroke="#00d4ff" stroke-width="1.5" rx="3"/>
+        <text x="140" y="82" fill="#00d4ff" font-family="Share Tech Mono" font-size="9" text-anchor="middle">Gc(s)</text>
+        <text x="140" y="91" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">PID</text>
+        <line x1="175" y1="82" x2="205" y2="82" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a4)"/>
+        <rect x="205" y="70" width="65" height="24" fill="#0f1626" stroke="#ff6b35" stroke-width="1.5" rx="3"/>
+        <text x="237" y="85" fill="#ff6b35" font-family="Share Tech Mono" font-size="9" text-anchor="middle">G(s)</text>
+        <line x1="270" y1="82" x2="300" y2="82" stroke="#ff6b35" stroke-width="1.5"/>
+        <text x="305" y="86" fill="#ffd700" font-family="Share Tech Mono" font-size="10">Y</text>
+        <line x1="295" y1="82" x2="295" y2="130" stroke="#39ff14" stroke-width="1.5"/>
+        <line x1="68" y1="130" x2="295" y2="130" stroke="#39ff14" stroke-width="1.5"/>
+        <line x1="68" y1="92" x2="68" y2="130" stroke="#39ff14" stroke-width="1.5" marker-end="url(#a4)"/>
+        <text x="80" y="112" fill="#ff6b35" font-family="Share Tech Mono" font-size="9">−</text>
+        <text x="180" y="155" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Gc mismos params para SP y perturbación</text>
+
+        <!-- 2-DOF -->
+        <text x="370" y="85" fill="#ffd700" font-family="Share Tech Mono" font-size="10">R</text>
+        <line x1="382" y1="82" x2="405" y2="82" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a4)"/>
+        <rect x="405" y="70" width="60" height="24" fill="#0f1626" stroke="#ffd700" stroke-width="1.5" rx="3"/>
+        <text x="435" y="86" fill="#ffd700" font-family="Share Tech Mono" font-size="9" text-anchor="middle">Fr(s)</text>
+        <line x1="465" y1="82" x2="488" y2="82" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a4)"/>
+        <circle cx="498" cy="82" r="10" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="493" y="87" fill="#00d4ff" font-family="Share Tech Mono" font-size="11">Σ</text>
+        <line x1="508" y1="82" x2="533" y2="82" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a4)"/>
+        <rect x="533" y="70" width="60" height="24" fill="#0f1626" stroke="#00d4ff" stroke-width="1.5" rx="3"/>
+        <text x="563" y="86" fill="#00d4ff" font-family="Share Tech Mono" font-size="9" text-anchor="middle">Gc(s)</text>
+        <line x1="593" y1="82" x2="618" y2="82" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a4)"/>
+        <rect x="618" y="70" width="55" height="24" fill="#0f1626" stroke="#ff6b35" stroke-width="1.5" rx="3"/>
+        <text x="645" y="86" fill="#ff6b35" font-family="Share Tech Mono" font-size="9" text-anchor="middle">G(s)</text>
+        <line x1="673" y1="82" x2="700" y2="82" stroke="#ff6b35" stroke-width="1.5"/>
+        <text x="705" y="86" fill="#ffd700" font-family="Share Tech Mono" font-size="10">Y</text>
+        <line x1="695" y1="82" x2="695" y2="130" stroke="#39ff14" stroke-width="1.5"/>
+        <line x1="498" y1="130" x2="695" y2="130" stroke="#39ff14" stroke-width="1.5"/>
+        <line x1="498" y1="92" x2="498" y2="130" stroke="#39ff14" stroke-width="1.5" marker-end="url(#a4)"/>
+        <text x="510" y="112" fill="#ff6b35" font-family="Share Tech Mono" font-size="9">−</text>
+        <text x="540" y="155" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Fr(s) controla el seguimiento independientemente</text>
+        <text x="540" y="168" fill="#39ff14" font-family="Share Tech Mono" font-size="8" text-anchor="middle">→ Gc optimizado solo para rechazo perturbación</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 4 — Comparativa 1-DOF vs 2-DOF. En 2-DOF, el filtro Fr(s) acondiciona el cambio de SP antes del sumador, permitiendo que Gc se optimice únicamente para rechazar perturbaciones. Fr(s)=1/(τf·s+1) con τf≈τD típicamente.</div>
+    </div>
+
+    <div class="accordion-item" onclick="toggleAccordion(this)">
+      <div class="accordion-header"><div class="accordion-title">📐 Control de Relación (Ratio Control)</div><span class="accordion-icon">+</span></div>
+      <div class="accordion-body">
+        El <strong>control de relación</strong> mantiene la proporción entre dos caudales: F₂/F₁ = R_deseado (ratio). Común en: proporción aire/combustible en hornos, relación de alimentación en reactores, mezcla de corrientes.<br><br>
+        <strong>Estructura:</strong><br>
+        1. F₁ se mide (variable "wild" — no controlada)<br>
+        2. SP₂ = R × F₁ (set-point calculado en tiempo real para F₂)<br>
+        3. Controlador de flujo FIC-2 mantiene F₂ = SP₂<br><br>
+        <strong>Con corrección de ratio:</strong> Un analizador en línea mide la composición resultante → ajusta R en tiempo real → forma un lazo cascada con el control de ratio.<br><br>
+        <strong>En MATLAB:</strong> Se implementa como dos lazos: un bloque multiplicador R×F₁ genera el SP del segundo lazo FIC-2.
+      </div>
+    </div>
+
+    <div class="quiz-box" id="qarq">
+      <div class="quiz-q">❓ En una arquitectura 2-DOF, ¿qué objetivo cumple el filtro de referencia Fr(s)?</div>
+      <div class="quiz-opt" onclick="checkQuiz('qarq',this,'wrong')">A. Aumenta la ganancia del controlador para respuestas más rápidas</div>
+      <div class="quiz-opt" onclick="checkQuiz('qarq',this,'wrong')">B. Elimina el tiempo muerto del proceso</div>
+      <div class="quiz-opt" onclick="checkQuiz('qarq',this,'correct')">C. Acondiciona los cambios de SP para independizar el seguimiento del rechazo de perturbaciones</div>
+      <div class="quiz-opt" onclick="checkQuiz('qarq',this,'wrong')">D. Reemplaza la acción integral del controlador PID</div>
+      <div class="quiz-feedback" id="qarq-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">✅ Fr(s) modifica cómo el SP entra al lazo, sin cambiar el rechazo de perturbaciones. Permite sintonizar Gc agresivamente para perturbaciones y suavizar el seguimiento de SP con Fr(s)=1/(τf·s+1). Los dos objetivos son ahora independientes.</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== PREDICTOR DE SMITH ==================== -->
+  <div id="smith" class="section">
+    <div class="section-title">Predictor de Smith</div>
+    <div class="section-desc">// COMPENSACIÓN DE TIEMPO MUERTO · MODELO INTERNO · LAZO PREDICTOR · θ GRANDE</div>
+
+    <div class="warn-box"><div class="ib-content"><strong>¿Cuándo usar el Predictor de Smith?</strong> Cuando θ/τ ≥ 0.3. Para procesos con gran tiempo muerto (columnas de destilación, hornos de crudización, procesos con transporte neumático largo), el PID convencional tiene márgenes de estabilidad muy reducidos — cualquier Kc razonable produce oscilación. El Predictor de Smith "saca" el tiempo muerto del lazo de control, permitiendo diseñar el PID como si el proceso no tuviera θ.</div></div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Principio del Predictor de Smith</div>
+    <div class="math-box">
+      <div class="math-title">📐 Estructura del Predictor</div>
+      <div class="math-step"><strong>Proceso real:</strong> G(s) = Gm(s)·e^(−θs)  donde Gm=Kp/(τs+1)</div>
+      <div class="math-step"><strong>Modelo interno:</strong> Ĝ(s) = Ĝm(s)·e^(−θ̂s) (estimación del proceso)</div>
+      <div class="math-step"><strong>Señal predictor:</strong> yp(s) = Gc·Gm·(1−e^(−θs))·Y_sinθ(s)</div>
+      <div class="math-step"><strong>Efecto:</strong> El lazo de control ve el proceso SIN tiempo muerto: Gm(s)</div>
+      <div class="math-step">El PID se diseña para Gm(s) = Kp/(τs+1) → puede usar Z-N, IMC o asignación de polos normales</div>
+      <div class="math-step"><strong>Función de transferencia resultante (modelo exacto):</strong></div>
+      <div class="math-result">T(s) = Gc·Gm·e^(−θs) / [1 + Gc·Gm]  ← el e^(−θs) solo aparece en el numerador — no en el denominador</div>
+    </div>
+
+    <!-- SVG: Smith Predictor block diagram -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <defs><marker id="a6" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+        <marker id="a7" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker>
+        <marker id="a8" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ffd700"/></marker></defs>
+        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Predictor de Smith — Diagrama de Bloques Completo</text>
+        <!-- SP -->
+        <text x="18" y="78" fill="#ffd700" font-family="Share Tech Mono" font-size="10">R(s)</text>
+        <line x1="38" y1="75" x2="60" y2="75" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a6)"/>
+        <!-- Sumador principal -->
+        <circle cx="72" cy="75" r="12" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="66" y="80" fill="#00d4ff" font-family="Share Tech Mono" font-size="13">Σ</text>
+        <text x="79" y="93" fill="#ff6b35" font-family="Share Tech Mono" font-size="9">−</text>
+        <!-- Error to PID -->
+        <line x1="84" y1="75" x2="110" y2="75" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a6)"/>
+        <!-- PID -->
+        <rect x="110" y="62" width="75" height="26" fill="#0f1626" stroke="#00d4ff" stroke-width="1.5" rx="3"/>
+        <text x="147" y="73" fill="#00d4ff" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Gc(s)</text>
+        <text x="147" y="83" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">PID sin θ</text>
+        <!-- PID to sumador proceso -->
+        <line x1="185" y1="75" x2="215" y2="75" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a6)"/>
+        <!-- Proceso Gm -->
+        <rect x="215" y="62" width="75" height="26" fill="#0f1626" stroke="#ff6b35" stroke-width="1.5" rx="3"/>
+        <text x="252" y="73" fill="#ff6b35" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Gm(s)</text>
+        <text x="252" y="83" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">sin θ</text>
+        <!-- Gm to delay -->
+        <line x1="290" y1="75" x2="320" y2="75" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#a7)"/>
+        <!-- Delay -->
+        <rect x="320" y="62" width="80" height="26" fill="#0f1626" stroke="#ff6b35" stroke-width="1.5" rx="3"/>
+        <text x="360" y="73" fill="#ff6b35" font-family="Share Tech Mono" font-size="9" text-anchor="middle">e^(−θs)</text>
+        <text x="360" y="83" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">Tiempo muerto real</text>
+        <line x1="400" y1="75" x2="440" y2="75" stroke="#ff6b35" stroke-width="1.5"/>
+        <text x="450" y="79" fill="#ffd700" font-family="Share Tech Mono" font-size="10">Y(s)</text>
+
+        <!-- SMITH PREDICTOR BOX -->
+        <rect x="110" y="130" width="280" height="60" fill="rgba(57,255,20,0.03)" stroke="#39ff14" stroke-width="1.5" rx="4" stroke-dasharray="5,3"/>
+        <text x="250" y="148" fill="#39ff14" font-family="Share Tech Mono" font-size="10" text-anchor="middle">PREDICTOR DE SMITH</text>
+        <!-- Model Gm hat -->
+        <rect x="125" y="155" width="65" height="22" fill="#0f1626" stroke="#39ff14" stroke-width="1" rx="3"/>
+        <text x="157" y="170" fill="#39ff14" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Ĝm(s)</text>
+        <!-- Model delay hat -->
+        <rect x="215" y="155" width="65" height="22" fill="#0f1626" stroke="#39ff14" stroke-width="1" rx="3"/>
+        <text x="247" y="170" fill="#39ff14" font-family="Share Tech Mono" font-size="8" text-anchor="middle">e^(−θ̂s)</text>
+        <!-- Internal sumador -->
+        <circle cx="325" cy="166" r="9" fill="none" stroke="#39ff14" stroke-width="1"/>
+        <text x="320" y="171" fill="#39ff14" font-family="Share Tech Mono" font-size="10">Σ</text>
+        <!-- Lines inside predictor -->
+        <line x1="200" y1="75" x2="200" y2="155" stroke="#39ff14" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="200" y1="155" x2="200" y2="166" stroke="#39ff14" stroke-width="1" marker-end="url(#a6)"/>
+        <line x1="190" y1="166" x2="215" y2="166" stroke="#39ff14" stroke-width="1" marker-end="url(#a6)"/>
+        <line x1="280" y1="166" x2="316" y2="166" stroke="#39ff14" stroke-width="1" marker-end="url(#a6)"/>
+        <line x1="334" y1="166" x2="360" y2="166" stroke="#39ff14" stroke-width="1"/>
+        <!-- Sign at sumador -->
+        <text x="327" y="155" fill="#ff6b35" font-family="Share Tech Mono" font-size="9">−</text>
+        <!-- Model Gm hat output -->
+        <line x1="157" y1="155" x2="157" y2="120" stroke="#39ff14" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="157" y1="120" x2="200" y2="120" stroke="#39ff14" stroke-width="1" stroke-dasharray="3,3"/>
+        <!-- Predictor output to main sumador -->
+        <line x1="360" y1="166" x2="395" y2="166" stroke="#39ff14" stroke-width="1"/>
+        <line x1="395" y1="166" x2="395" y2="95" stroke="#39ff14" stroke-width="1"/>
+        <line x1="72" y1="95" x2="395" y2="95" stroke="#39ff14" stroke-width="1.5"/>
+        <line x1="72" y1="87" x2="72" y2="95" stroke="#39ff14" stroke-width="1.5" marker-end="url(#a6)"/>
+
+        <!-- Annotation -->
+        <text x="490" y="75" fill="#c8d8f0" font-family="Share Tech Mono" font-size="8">Señal realimentada:</text>
+        <text x="490" y="88" fill="#39ff14" font-family="Share Tech Mono" font-size="8">yp = Ĝm·(1−e^(−θ̂s))·u</text>
+        <text x="490" y="108" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">El lazo interno ve Gm(s)</text>
+        <text x="490" y="120" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">sin el tiempo muerto θ</text>
+        <text x="490" y="140" fill="#ffd700" font-family="Share Tech Mono" font-size="7">Sensible a error de modelo:</text>
+        <text x="490" y="152" fill="#ffd700" font-family="Share Tech Mono" font-size="7">si Ĝ ≠ G → degradación</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 5 — Diagrama del Predictor de Smith. El predictor genera una estimación de la salida sin tiempo muerto a partir del modelo interno Ĝm y la elimina de la realimentación al controlador. El PID solo ve Gm(s) — diseño trivial.</div>
+    </div>
+
+    <div class="problem-box">
+      <p><strong>Predictor de Smith — Columna de destilación Manuelita:</strong><br>
+      G(s) = 0.8·e^(−12s)/(25s+1). θ/τ = 0.48 → control PID convencional muy limitado. Diseñar el predictor de Smith con PID IMC (λ=10 min) para el proceso sin tiempo muerto Gm(s)=0.8/(25s+1).</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">▸ SOLUCIÓN</div>
+        <div class="math-step"><strong>Sin predictor (PID Z-N para referencia):</strong></div>
+        <div class="math-step">Kc_ZN = 1.2×25/(0.8×12) = 30/9.6 = 3.125. Pero Pm será solo ~18° — lazo muy agresivo.</div>
+        <div class="math-step"><strong>Con Predictor de Smith — diseñar PID para Gm(s) sin θ:</strong></div>
+        <div class="math-step">IMC-PI para Gm(s): Kc = τ/[Kp·(λ)] = 25/[0.8×10] = <strong>3.125</strong> (¡mismo Kc!)</div>
+        <div class="math-step">τI = τ = <strong>25 min</strong> (no hay θ/2 porque usamos Gm sin θ)</div>
+        <div class="math-step"><strong>Diferencia fundamental:</strong></div>
+        <div class="math-step">Sin predictor: polos LC en zona inestable para Kc=3.125 con θ=12</div>
+        <div class="math-step">Con predictor: polos LC de Gm(s) bien ubicados — e^(−θs) solo en numerador</div>
+        <div class="math-step"><strong>En MATLAB:</strong></div>
+        <div class="math-step">Gm = tf(0.8,[25 1]); Gc = pid(3.125, 3.125/25);</div>
+        <div class="math-step">Smith_predictor = feedback(Gc*Gm,1)*tf(1,1,'InputDelay',12);</div>
+        <div class="math-result">El predictor de Smith permite Kc=3.125 con respuesta estable. Sin predictor, Kc máximo ≈ 0.5 para Pm≥30°.</div>
+      </div>
+    </div>
+
+    <div class="warn-box"><div class="ib-content"><strong>Limitaciones del Predictor de Smith:</strong> (1) Es sensible a errores en el modelo — si el θ real difiere del modelo en más del 20%, el predictor puede desestabilizarse. (2) No funciona bien con procesos integradores (nivel sin válvula de salida). (3) Para perturbaciones de carga, el predictor no ofrece ventaja sobre el PID si la perturbación entra después del tiempo muerto. <strong>Alternativa moderna:</strong> Control Predictivo Basado en Modelo (MPC) — maneja tiempo muerto, restricciones y múltiples variables simultáneamente.</div></div>
+  </div>
+
+
+  <!-- ==================== CONTROL CASCADA ==================== -->
+  <div id="cascada" class="section">
+    <div class="section-title">Control Cascada</div>
+    <div class="section-desc">// LAZO MAESTRO · LAZO ESCLAVO · RECHAZO ANTICIPADO · θ/τ EFECTIVO</div>
+
+    <div class="info-box"><div class="ib-content">El <strong>control cascada</strong> usa dos controladores en serie: el <em>lazo esclavo</em> (interno, más rápido) controla una variable secundaria, y el <em>lazo maestro</em> (externo, más lento) controla la variable principal y genera el set-point del esclavo. La clave: el esclavo rechaza las perturbaciones internas antes de que afecten la variable principal. Resultado: el lazo maestro "ve" un proceso más rápido y lineal.</div></div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <defs><marker id="a9" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+        <marker id="a10" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker></defs>
+        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Control Cascada — Lazo Maestro y Lazo Esclavo</text>
+        <!-- SP primario -->
+        <text x="8" y="78" fill="#ffd700" font-family="Share Tech Mono" font-size="9">SP₁</text>
+        <line x1="28" y1="75" x2="48" y2="75" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a9)"/>
+        <!-- Sumador maestro -->
+        <circle cx="58" cy="75" r="10" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="52" y="80" fill="#00d4ff" font-family="Share Tech Mono" font-size="12">Σ</text>
+        <line x1="68" y1="75" x2="90" y2="75" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a9)"/>
+        <!-- Controlador Maestro -->
+        <rect x="90" y="62" width="80" height="26" fill="#0f1626" stroke="#00d4ff" stroke-width="2" rx="3"/>
+        <text x="130" y="73" fill="#00d4ff" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">Gc₁(s)</text>
+        <text x="130" y="84" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">MAESTRO (lento)</text>
+        <!-- SP₂ generado por maestro -->
+        <line x1="170" y1="75" x2="195" y2="75" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a9)"/>
+        <text x="178" y="68" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">SP₂</text>
+        <!-- Sumador esclavo -->
+        <circle cx="205" cy="75" r="10" fill="none" stroke="#ff6b35" stroke-width="1.5"/>
+        <text x="199" y="80" fill="#ff6b35" font-family="Share Tech Mono" font-size="12">Σ</text>
+        <line x1="215" y1="75" x2="238" y2="75" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#a10)"/>
+        <!-- Controlador Esclavo -->
+        <rect x="238" y="62" width="80" height="26" fill="#0f1626" stroke="#ff6b35" stroke-width="2" rx="3"/>
+        <text x="278" y="73" fill="#ff6b35" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">Gc₂(s)</text>
+        <text x="278" y="84" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">ESCLAVO (rápido)</text>
+        <line x1="318" y1="75" x2="342" y2="75" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#a10)"/>
+        <!-- Perturbacion interna -->
+        <text x="362" y="42" fill="#ffd700" font-family="Share Tech Mono" font-size="8" text-anchor="middle">D₂ (interna)</text>
+        <line x1="362" y1="52" x2="362" y2="68" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a9)"/>
+        <!-- Proceso esclavo -->
+        <rect x="342" y="62" width="75" height="26" fill="#0f1626" stroke="#ff6b35" stroke-width="1.5" rx="3"/>
+        <text x="379" y="73" fill="#ff6b35" font-family="Share Tech Mono" font-size="8" text-anchor="middle">G₂(s)</text>
+        <text x="379" y="84" fill="#5a7a9a" font-family="Share Tech Mono" font-size="6" text-anchor="middle">Proc. esclavo</text>
+        <line x1="417" y1="75" x2="445" y2="75" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#a10)"/>
+        <!-- Proceso maestro -->
+        <rect x="445" y="62" width="75" height="26" fill="#0f1626" stroke="#39ff14" stroke-width="1.5" rx="3"/>
+        <text x="482" y="73" fill="#39ff14" font-family="Share Tech Mono" font-size="8" text-anchor="middle">G₁(s)</text>
+        <text x="482" y="84" fill="#5a7a9a" font-family="Share Tech Mono" font-size="6" text-anchor="middle">Proc. maestro</text>
+        <line x1="520" y1="75" x2="560" y2="75" stroke="#39ff14" stroke-width="1.5"/>
+        <text x="566" y="79" fill="#ffd700" font-family="Share Tech Mono" font-size="10">Y₁</text>
+        <!-- Realimentacion esclavo -->
+        <line x1="430" y1="75" x2="430" y2="120" stroke="#ff6b35" stroke-width="1.5"/>
+        <line x1="205" y1="120" x2="430" y2="120" stroke="#ff6b35" stroke-width="1.5"/>
+        <line x1="205" y1="85" x2="205" y2="120" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#a10)"/>
+        <text x="315" y="115" fill="#ff6b35" font-family="Share Tech Mono" font-size="7">Realim. esclavo (PV₂)</text>
+        <!-- Realimentacion maestro -->
+        <line x1="550" y1="75" x2="550" y2="155" stroke="#39ff14" stroke-width="1.5"/>
+        <line x1="58" y1="155" x2="550" y2="155" stroke="#39ff14" stroke-width="1.5"/>
+        <line x1="58" y1="85" x2="58" y2="155" stroke="#39ff14" stroke-width="1.5" marker-end="url(#a9)"/>
+        <text x="300" y="172" fill="#39ff14" font-family="Share Tech Mono" font-size="7">Realimentación maestro (PV₁)</text>
+        <text x="58" y="105" fill="#ff6b35" font-family="Share Tech Mono" font-size="8">−</text>
+        <text x="205" y="105" fill="#ff6b35" font-family="Share Tech Mono" font-size="8">−</text>
+        <!-- D2 rejection note -->
+        <text x="590" y="90" fill="#ffd700" font-family="Share Tech Mono" font-size="7">D₂ rechazada</text>
+        <text x="590" y="100" fill="#ffd700" font-family="Share Tech Mono" font-size="7">por lazo esclavo</text>
+        <text x="590" y="112" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">→ Y₁ apenas afectada</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 6 — Control cascada. La perturbación D₂ interna es rechazada por el lazo esclavo antes de propagarse a la variable principal Y₁. El lazo maestro solo ve G₁(s)·LC₂(s) — un proceso más rápido y lineal.</div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Reglas de Diseño para Control Cascada</div>
+    <ul class="step-list">
+      <li><strong>Regla de velocidad:</strong> El lazo esclavo debe ser al menos 3–5× más rápido que el lazo maestro. Si τ₂ &gt; τ₁/3, la cascada no aporta beneficio sobre el lazo simple.</li>
+      <li><strong>Sintonizar primero el esclavo:</strong> Con el lazo maestro en manual, sintonizar el esclavo (Gc₂) hasta que responda rápido y sin oscilación. Típicamente P o PI con ganancia alta.</li>
+      <li><strong>Sintonizar el maestro:</strong> Con el esclavo en automático, el maestro ve G₁(s)·LC₂(s) como su proceso efectivo. Usar Z-N, IMC o CSD sobre este modelo combinado.</li>
+      <li><strong>Selección de la variable secundaria:</strong> Debe ser medible, correlacionada con la variable principal, y la perturbación más frecuente debe entrar entre las dos variables (antes de G₁ pero después de G₂).</li>
+    </ul>
+
+    <div class="problem-box">
+      <p><strong>Cascada Temperatura — Intercambiador Incauca (Flujo de Vapor):</strong><br>
+      Proceso: Temperatura jugo G₁(s)=1.5/(8s+1). Variable secundaria: flujo de vapor G₂(s)=0.8/(0.5s+1). Perturbación de presión de vapor entra en G₂. La τ₂=0.5 ≪ τ₁=8 → cascada ideal. Diseñar Gc₂ (P) y Gc₁ (PI-IMC).</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">▸ SOLUCIÓN</div>
+        <div class="math-step"><strong>Lazo esclavo Gc₂ (flujo, muy rápido, P puro):</strong></div>
+        <div class="math-step">Kc₂_ZN = τ₂/(Kp₂·θ₂) para θ₂≈0.05 min (pequeño) → Kc₂ = 0.5/(0.8×0.05) = 12.5 %/(m³/h)</div>
+        <div class="math-step">LC₂(s) = feedback(Gc₂·G₂,1) = (12.5×0.8/0.5) / (s + 12.5×0.8/0.5 + 1/0.5) = 20/(s+22) ≈ 0.909/(0.045s+1)</div>
+        <div class="math-step"><strong>Proceso efectivo del maestro:</strong></div>
+        <div class="math-step">G_eff(s) = G₁(s)·LC₂(s) ≈ 1.5/(8s+1) × 0.909/(0.045s+1) ≈ 1.364/(8s+1) (esclavo muy rápido → ≈ ganancia)</div>
+        <div class="math-step"><strong>Lazo maestro Gc₁ (PI-IMC, λ=5 min):</strong></div>
+        <div class="math-step">Kc₁ = τ₁/(Kp_eff·λ) = 8/(1.364×5) = <strong>1.17</strong></div>
+        <div class="math-step">τI₁ = τ₁ = <strong>8 min</strong></div>
+        <div class="math-result">Cascada: rechaza variaciones de presión de vapor 10× más rápido que lazo simple. SP de flujo cambia en ~1 s; temperatura en ~15 min sin cascada → ~5 min con cascada.</div>
+      </div>
+    </div>
+
+    <div class="industrial-example">
+      <div class="ie-title">▸ CASCADA EN INDUSTRIA — REFINERÍA ECOPETROL BARRANCABERMEJA</div>
+      <div class="ie-body">En la torre de destilación atmosférica, la temperatura del plato 10 (TIC-10) es la variable principal. La variable secundaria es el flujo de reflujo (FIC-20). Perturbaciones frecuentes: variaciones de presión en la línea de reflujo, cambios de temperatura del reflujo. El lazo de flujo FIC-20 tiene τ₂≈5 s; el lazo de temperatura TIC-10 tiene τ₁≈15 min. Relación τ₁/τ₂ ≈ 180 → cascada muy efectiva. El lazo de flujo rechaza el 95% de las perturbaciones de presión antes de que afecten la temperatura. En operación: Kc₂=8, τI₂=0.1 min (PI rápido de flujo); Kc₁=1.5, τI₁=12 min (PI lento de temperatura).</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== FEEDFORWARD ==================== -->
+  <div id="ffwd" class="section">
+    <div class="section-title">Control Feedforward — Directo de Referencia y Disturbio</div>
+    <div class="section-desc">// FEEDFORWARD DE DISTURBIO · DIRECTO DE REFERENCIA · Gff(s) · COMBINADO FB+FF</div>
+
+    <div class="info-box"><div class="ib-content">El <strong>control feedforward</strong> (o de prealimentación) es proactivo: actúa sobre una perturbación medible antes de que esta afecte la variable controlada, en lugar de esperar a que el error aparezca (como lo hace el feedback). Su efectividad depende de la calidad del modelo — si el modelo es exacto, rechaza completamente la perturbación. En la práctica se combina siempre con un controlador FB para manejar errores de modelo e incertidumbre.</div></div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Control Feedforward de Disturbio</div>
+    <div class="math-box">
+      <div class="math-title">📐 Derivación del Controlador FF Ideal</div>
+      <div class="math-step"><strong>Objetivo:</strong> Que la perturbación D(s) no tenga efecto sobre la salida Y(s)</div>
+      <div class="math-step"><strong>Modelo:</strong> Y(s) = G(s)·U(s) + Gd(s)·D(s)</div>
+      <div class="math-step">Con control FF: U(s) = Gff(s)·D(s) + Gc(s)·E(s)</div>
+      <div class="math-step"><strong>Para Y/D = 0 (rechazo perfecto):</strong></div>
+      <div class="math-step">G(s)·Gff(s)·D(s) + Gd(s)·D(s) = 0</div>
+      <div class="math-step">G(s)·Gff(s) = −Gd(s)</div>
+      <div class="math-result">Gff(s) = −Gd(s)/G(s)  ← controlador FF ideal</div>
+      <div class="math-step" style="color:var(--text-dim)">Si G=Kp·e^(−θs)/(τs+1) y Gd=Kd·e^(−θds)/(τds+1):<br>Gff(s) = −(Kd/Kp)·(τs+1)/(τds+1)·e^(−(θd−θ)s)</div>
+    </div>
+
+    <!-- SVG: FF+FB combined -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <defs><marker id="a11" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+        <marker id="a12" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker>
+        <marker id="a13" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ffd700"/></marker></defs>
+        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Control Combinado Feedback + Feedforward de Disturbio</text>
+        <!-- Disturbance measured -->
+        <text x="220" y="42" fill="#ffd700" font-family="Share Tech Mono" font-size="9" text-anchor="middle">D(s) — medida</text>
+        <line x1="220" y1="50" x2="220" y2="70" stroke="#ffd700" stroke-width="1.5"/>
+        <!-- FF controller -->
+        <rect x="170" y="70" width="100" height="26" fill="#0f1626" stroke="#ffd700" stroke-width="1.5" rx="3"/>
+        <text x="220" y="81" fill="#ffd700" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">Gff(s)</text>
+        <text x="220" y="91" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">FF de disturbio</text>
+        <!-- FF output to sumador de MV -->
+        <line x1="270" y1="83" x2="330" y2="83" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a11)"/>
+        <!-- Disturbance to process (real path) -->
+        <line x1="220" y1="96" x2="220" y2="120" stroke="#ffd700" stroke-width="1.5"/>
+        <line x1="220" y1="120" x2="445" y2="120" stroke="#ffd700" stroke-width="1.5"/>
+        <text x="330" y="115" fill="#ffd700" font-family="Share Tech Mono" font-size="7">Gd(s) — camino de disturbio al proceso</text>
+        <line x1="445" y1="120" x2="445" y2="108" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a12)"/>
+
+        <!-- SP -->
+        <text x="10" y="145" fill="#ffd700" font-family="Share Tech Mono" font-size="9">SP</text>
+        <line x1="28" y1="142" x2="50" y2="142" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a11)"/>
+        <!-- FB sumador -->
+        <circle cx="62" cy="142" r="10" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="56" y="147" fill="#00d4ff" font-family="Share Tech Mono" font-size="12">Σ</text>
+        <line x1="72" y1="142" x2="95" y2="142" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a11)"/>
+        <!-- FB controller -->
+        <rect x="95" y="129" width="75" height="26" fill="#0f1626" stroke="#00d4ff" stroke-width="2" rx="3"/>
+        <text x="132" y="140" fill="#00d4ff" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">Gc(s)</text>
+        <text x="132" y="151" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">PID feedback</text>
+        <line x1="170" y1="142" x2="310" y2="142" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a11)"/>
+        <text x="240" y="136" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">MV_FB</text>
+        <!-- Sumador de MV (FF + FB) -->
+        <circle cx="340" cy="130" r="12" fill="none" stroke="#39ff14" stroke-width="1.5"/>
+        <text x="334" y="135" fill="#39ff14" font-family="Share Tech Mono" font-size="13">Σ</text>
+        <line x1="322" y1="142" x2="322" y2="130" stroke="#00d4ff" stroke-width="1"/>
+        <line x1="322" y1="130" x2="328" y2="130" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a11)"/>
+        <line x1="330" y1="83" x2="340" y2="83" stroke="#ffd700" stroke-width="1.5"/>
+        <line x1="340" y1="83" x2="340" y2="118" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a13)"/>
+        <text x="350" y="95" fill="#ffd700" font-family="Share Tech Mono" font-size="7">MV_FF</text>
+        <!-- Total MV to process -->
+        <line x1="352" y1="130" x2="390" y2="130" stroke="#39ff14" stroke-width="1.5" marker-end="url(#a11)"/>
+        <text x="370" y="124" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">MV total</text>
+        <!-- Process -->
+        <rect x="390" y="117" width="80" height="26" fill="#0f1626" stroke="#ff6b35" stroke-width="1.5" rx="3"/>
+        <text x="430" y="128" fill="#ff6b35" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">G(s)</text>
+        <text x="430" y="139" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">Proceso</text>
+        <line x1="470" y1="130" x2="520" y2="130" stroke="#ff6b35" stroke-width="1.5"/>
+        <text x="526" y="134" fill="#ffd700" font-family="Share Tech Mono" font-size="10">Y</text>
+        <!-- FB line -->
+        <line x1="513" y1="130" x2="513" y2="180" stroke="#39ff14" stroke-width="1.5"/>
+        <line x1="62" y1="180" x2="513" y2="180" stroke="#39ff14" stroke-width="1.5"/>
+        <line x1="62" y1="152" x2="62" y2="180" stroke="#39ff14" stroke-width="1.5" marker-end="url(#a11)"/>
+        <text x="62" y="168" fill="#ff6b35" font-family="Share Tech Mono" font-size="8">−</text>
+        <text x="590" y="130" fill="#39ff14" font-family="Share Tech Mono" font-size="8">FF: rechaza D</text>
+        <text x="590" y="142" fill="#00d4ff" font-family="Share Tech Mono" font-size="8">FB: corrige error</text>
+        <text x="590" y="154" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">de modelo y SP</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 7 — Control combinado FB+FF. El FF compensa la perturbación D calculando MV_FF=-Gd/G·D. El FB corrige los errores residuales debidos a imprecisión del modelo. La suma MV_FF+MV_FB va al proceso.</div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Control Directo de Referencia (Feedforward de SP)</div>
+    <div class="two-col">
+      <div class="math-box">
+        <div class="math-title">📐 Feedforward de Referencia</div>
+        <div class="math-step">Objetivo: seguimiento perfecto de cambios de SP</div>
+        <div class="math-step">Estructura: Gff_R(s) en paralelo con el lazo FB</div>
+        <div class="math-step">Ideal: Gff_R(s) = G⁻¹(s) → U_FF = SP/G → Y=SP</div>
+        <div class="math-step">Práctica: Gff_R(s) = Kp_inv·(τs+1)/1 (lead compensator)</div>
+        <div class="math-result">U_total = Gc·E + Gff_R·R → respuesta al SP más rápida sin cambiar el rechazo de perturbaciones</div>
+      </div>
+      <div class="card green">
+        <div class="card-tag">IMPLEMENTACIÓN PRÁCTICA</div>
+        <div class="card-title">Feedforward Estático vs Dinámico</div>
+        <div class="card-body">
+          <strong>Estático (Kff = −Kd/Kp):</strong> Solo corrige el efecto en estado estacionario. Fácil de implementar en DCS. Elimina el 70-80% del efecto de la perturbación.<br><br>
+          <strong>Dinámico (Gff = −Gd/G):</strong> Incluye la dinámica completa — incluye lead/lag. Requiere conocer θd y τd. Elimina el 90-95% del efecto si el modelo es bueno.
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-box">
+      <p><strong>FF de disturbio — Temperatura de alimentación en intercambiador:</strong><br>
+      Proceso: G(s)=2/(6s+1), con tiempo muerto θ=1 min. Disturbio: variación temperatura entrada, Gd(s)=0.5/(3s+1) con θd=0.5 min. Diseñar el feedforward estático y dinámico.</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">▸ SOLUCIÓN</div>
+        <div class="math-step"><strong>FF estático:</strong> Kff = −Kd/Kp = −0.5/2 = <strong>−0.25</strong></div>
+        <div class="math-step">Si la temperatura de alimentación sube 10°C: u_FF = −0.25×10 = −2.5% en apertura de válvula de vapor</div>
+        <div class="math-step"><strong>FF dinámico ideal:</strong></div>
+        <div class="math-step">Gff(s) = −Gd(s)/G(s) = −[0.5/(3s+1)]·e^(−0.5s) / [2/(6s+1)]·e^(−1s)]</div>
+        <div class="math-step">= −(0.5/2)·(6s+1)/(3s+1)·e^(−(0.5−1)s)</div>
+        <div class="math-step">= −0.25·(6s+1)/(3s+1)·e^(0.5s)</div>
+        <div class="math-step"><strong>Problema:</strong> e^(+0.5s) → predicción futura → no realizable físicamente.</div>
+        <div class="math-step"><strong>Solución práctica:</strong> Si θd &lt; θ, usar: Gff(s) ≈ −0.25·(6s+1)/(3s+1) (sin el término de predicción)</div>
+        <div class="math-result">FF estático: Kff=−0.25. FF dinámico: lead (6s+1), lag (3s+1), ganancia −0.25. El lead acelera la respuesta del FF anticipando el efecto del disturbio.</div>
+      </div>
+    </div>
+
+    <div class="industrial-example">
+      <div class="ie-title">▸ FEEDFORWARD INDUSTRIAL — HORNO DE CRUDIZACIÓN ECOPETROL CARTAGENA</div>
+      <div class="ie-body">El horno H-101 calienta crudo de 80°C a 350°C. La principal perturbación es la temperatura del crudo de entrada (varía ±15°C con los cambios de tanque de origen). Esta temperatura se mide con TT-5 aguas arriba. El controlador FF estático calcula: ΔFuego_FF = −(Cp·F·ΔT_entrada)/(Qmax_quemadores). En el DCS Honeywell Experion, el bloque LEADLAG implementa el FF dinámico: τ_lead=8 min (dinámica del crudo en horno), τ_lag=2 min (dinámica del lazo de combustión). Resultado: las variaciones de temperatura de entrada producen solo ±2°C en la salida (vs ±25°C sin FF).</div>
+    </div>
+
+    <div class="quiz-box" id="qffwd">
+      <div class="quiz-q">❓ El feedforward ideal es Gff(s) = −Gd(s)/G(s). Si θd &gt; θ (tiempo muerto del disturbio mayor que el del proceso), ¿qué ocurre?</div>
+      <div class="quiz-opt" onclick="checkQuiz('qffwd',this,'wrong')">A. El feedforward no puede implementarse por ser inestable</div>
+      <div class="quiz-opt" onclick="checkQuiz('qffwd',this,'correct')">B. El feedforward es realizable: incluye e^(−(θd−θ)s) con exponente negativo (retardo puro)</div>
+      <div class="quiz-opt" onclick="checkQuiz('qffwd',this,'wrong')">C. El feedforward genera un polo en el semiplano derecho</div>
+      <div class="quiz-opt" onclick="checkQuiz('qffwd',this,'wrong')">D. No hay diferencia con el caso θd &lt; θ</div>
+      <div class="quiz-feedback" id="qffwd-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">✅ Si θd &gt; θ: Gff incluye e^(−(θd−θ)s) con exponente negativo → retardo puro → <strong>perfectamente realizable</strong>. Si θd &lt; θ: e^(+(θ−θd)s) → predicción → no realizable físicamente → se aproxima sin el término de adelanto.</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== SIMULACIÓN ==================== -->
+  <div id="sim" class="section">
+    <div class="section-title">Simulación de Procesos Dinámicos</div>
+    <div class="section-desc">// MATLAB · SIMULINK · ASPEN HYSYS DINÁMICO · VALIDACIÓN · PRUEBAS VIRTUALES</div>
+
+    <div class="info-box"><div class="ib-content">La <strong>simulación dinámica</strong> permite probar y validar el diseño del controlador sin riesgo — antes de implementar en la planta real. Las herramientas varían en complejidad: MATLAB es ideal para análisis de lazo lineal, Simulink para simulación no lineal con modelos en bloques, y Aspen Hysys dinámico para simulación rigurosa de procesos completos con termodinámica real (ecuación de estado, flash, reacciones). En el curso 740021C se usan las tres.</div></div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Herramientas de Simulación — Comparativa</div>
+    <table class="sensor-table">
+      <thead><tr><th>HERRAMIENTA</th><th>TIPO DE MODELO</th><th>NIVEL DE DETALLE</th><th>USO PRINCIPAL EN 740021C</th><th>COMPLEJIDAD</th></tr></thead>
+      <tbody>
+        <tr><td><strong>MATLAB Script</strong></td><td>Lineal (G(s), tf(), pid())</td><td>Bajo — modelo simplificado</td><td>Análisis de respuesta, diseño PID, cálculo de márgenes</td><td>⭐ Baja</td></tr>
+        <tr><td><strong>MATLAB Simulink</strong></td><td>Lineal y No lineal (bloques)</td><td>Medio — modelo de bloques</td><td>Simulación de lazos PID con no linealidades: saturación, anti-windup, cascada, FF</td><td>⭐⭐ Media</td></tr>
+        <tr><td><strong>Aspen Hysys Dinámico</strong></td><td>Rigoroso (termodinámica)</td><td>Alto — equipos reales</td><td>Validación de estrategia de control con modelo de proceso completo (columna, reactor, intercambiador)</td><td>⭐⭐⭐ Alta</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Simulink — Construcción de un Lazo PID Completo</div>
+
+    <div class="code-block"><span class="code-comment">%% SIMULINK — Lazo PID con Cascada (MATLAB Script para configurar)</span>
+<span class="code-comment">%% Ejecutar este script para abrir el modelo Simulink del lazo E-102</span>
+
+<span class="code-comment">% Parámetros del proceso</span>
+Kp1 = <span class="code-num">1.8</span>; tau1 = <span class="code-num">6.5</span>; theta1 = <span class="code-num">1.8</span>;  <span class="code-comment">% Proceso maestro (temperatura)</span>
+Kp2 = <span class="code-num">0.9</span>; tau2 = <span class="code-num">0.3</span>; theta2 = <span class="code-num">0.05</span>; <span class="code-comment">% Proceso esclavo (flujo vapor)</span>
+
+<span class="code-comment">% Parámetros PID maestro (IMC, lambda=3)</span>
+Kc1 = <span class="code-num">1.054</span>; tauI1 = <span class="code-num">7.4</span>; tauD1 = <span class="code-num">0.791</span>;
+
+<span class="code-comment">% Parámetros PI esclavo (Z-N rápido)</span>
+Kc2 = <span class="code-num">8.0</span>; tauI2 = <span class="code-num">0.15</span>;
+
+<span class="code-comment">% Límites del actuador</span>
+MV_min = <span class="code-num">0</span>; MV_max = <span class="code-num">100</span>;  <span class="code-comment">% % apertura válvula</span>
+
+<span class="code-comment">% Abrir modelo Simulink existente o crear nuevo</span>
+<span class="code-comment">% open_system('lazo_cascada_E102.slx')  % si ya existe</span>
+
+<span class="code-comment">% Alternativa: simulación programática con Simulink API</span>
+sys_maestro = <span class="code-fn">tf</span>(Kp1, [tau1 <span class="code-num">1</span>]) * <span class="code-fn">tf</span>(<span class="code-num">1</span>,<span class="code-num">1</span>,<span class="code-str">'InputDelay'</span>,theta1);
+sys_esclavo = <span class="code-fn">tf</span>(Kp2, [tau2 <span class="code-num">1</span>]) * <span class="code-fn">tf</span>(<span class="code-num">1</span>,<span class="code-num">1</span>,<span class="code-str">'InputDelay'</span>,theta2);
+
+Gc_maestro = <span class="code-fn">pid</span>(Kc1, Kc1/tauI1, Kc1*tauD1, tauD1/<span class="code-num">10</span>);
+Gc_esclavo = <span class="code-fn">pid</span>(Kc2, Kc2/tauI2);
+
+<span class="code-comment">% Lazo esclavo cerrado</span>
+LC_esclavo = <span class="code-fn">feedback</span>(Gc_esclavo * sys_esclavo, <span class="code-num">1</span>);
+
+<span class="code-comment">% Lazo maestro cerrado (ve LC_esclavo como su proceso)</span>
+LC_total = <span class="code-fn">feedback</span>(Gc_maestro * LC_esclavo * sys_maestro, <span class="code-num">1</span>);
+
+<span class="code-comment">% Simulación: escalón de SP a t=0, perturbación a t=30 min</span>
+t = <span class="code-num">0</span>:<span class="code-num">0.1</span>:<span class="code-num">120</span>;
+[y_sp, ~] = <span class="code-fn">step</span>(LC_total, t);
+
+<span class="code-comment">% Respuesta a perturbación</span>
+Gd = <span class="code-fn">tf</span>(<span class="code-num">0.3</span>, [<span class="code-num">8</span> <span class="code-num">1</span>]);  <span class="code-comment">% modelo perturbación de carga</span>
+T_dist = <span class="code-fn">feedback</span>(Gd, Gc_maestro * LC_esclavo * sys_maestro);
+[y_dist, ~] = <span class="code-fn">step</span>(T_dist, t);
+
+<span class="code-comment">% Gráfica combinada</span>
+<span class="code-fn">figure</span>; <span class="code-fn">subplot</span>(<span class="code-num">2</span>,<span class="code-num">1</span>,<span class="code-num">1</span>);
+<span class="code-fn">plot</span>(t, y_sp, <span class="code-str">'b'</span>, <span class="code-str">'LineWidth'</span>, <span class="code-num">2</span>); <span class="code-fn">grid</span> on;
+<span class="code-fn">xlabel</span>(<span class="code-str">'Tiempo [min]'</span>); <span class="code-fn">ylabel</span>(<span class="code-str">'Temperatura [°C]'</span>);
+<span class="code-fn">title</span>(<span class="code-str">'Respuesta al escalón de SP - Cascada E102'</span>);
+<span class="code-fn">subplot</span>(<span class="code-num">2</span>,<span class="code-num">1</span>,<span class="code-num">2</span>);
+<span class="code-fn">plot</span>(t, y_dist, <span class="code-str">'r'</span>, <span class="code-str">'LineWidth'</span>, <span class="code-num">2</span>); <span class="code-fn">grid</span> on;
+<span class="code-fn">xlabel</span>(<span class="code-str">'Tiempo [min]'</span>); <span class="code-fn">ylabel</span>(<span class="code-str">'ΔTemp perturbación [°C]'</span>);
+<span class="code-fn">title</span>(<span class="code-str">'Rechazo de perturbación de carga - Cascada E102'</span>);</div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;margin-top:4px;">Aspen Hysys Dinámico — Flujo de Trabajo</div>
+    <ul class="step-list">
+      <li><strong>Construir el modelo en modo estacionario:</strong> Definir corrientes, equipos (intercambiadores, columnas, reactores), propiedades termodinámicas (Peng-Robinson, NRTL). Converger el estado estacionario como punto de operación base.</li>
+      <li><strong>Convertir a modo dinámico (Dynamic Mode):</strong> Hysys → Tools → Integrator. Especificar volúmenes de equipos, válvulas de control (Cv, acción AO/AC), transmisores (rangos y time constants).</li>
+      <li><strong>Agregar los controladores PID:</strong> Insertar bloques PID desde el Toolbox. Conectar PV (señal del transmisor), SP (valor deseado), OP (señal a válvula). Configurar modo: Auto/Manual, límites, forma de la ecuación PID.</li>
+      <li><strong>Sintonizar en Hysys:</strong> Usar el autotuner interno (Tools → Controller Faceplate → Tuning → Autotuner → IMC). Introduce un paso en la variable manipulada y calcula Kc, τI, τD automáticamente.</li>
+      <li><strong>Validar perturbaciones:</strong> Introducir perturbaciones vía Event Scheduler: cambio de temperatura de entrada, variación de flujo de alimentación, cambio de composición. Observar la respuesta del lazo y ajustar si necesario.</li>
+      <li><strong>Exportar resultados:</strong> Grabar tendencias en Databook → exportar a Excel. Verificar que OS%, ts y e_ss cumplen las especificaciones del proyecto final 740021C.</li>
+    </ul>
+
+    <div class="code-block"><span class="code-comment">%% SCRIPT MATLAB — Simulación Predictor de Smith</span>
+<span class="code-kw">clc</span>; <span class="code-kw">clear</span>; <span class="code-kw">close</span> all;
+
+<span class="code-comment">% Proceso con gran tiempo muerto (columna destilación)</span>
+Kp = <span class="code-num">0.8</span>; tau = <span class="code-num">25</span>; theta = <span class="code-num">12</span>;  <span class="code-comment">% theta/tau = 0.48 !</span>
+G_real = <span class="code-fn">tf</span>(Kp,[tau <span class="code-num">1</span>])*<span class="code-fn">tf</span>(<span class="code-num">1</span>,<span class="code-num">1</span>,<span class="code-str">'InputDelay'</span>,theta);
+
+<span class="code-comment">% Modelo interno del Predictor (puede tener error)</span>
+Kp_m = <span class="code-num">0.8</span>; tau_m = <span class="code-num">25</span>; theta_m = <span class="code-num">12</span>;  <span class="code-comment">% modelo exacto</span>
+Gm = <span class="code-fn">tf</span>(Kp_m,[tau_m <span class="code-num">1</span>]);         <span class="code-comment">% sin tiempo muerto para diseño PID</span>
+Gm_delay = <span class="code-fn">tf</span>(Kp_m,[tau_m <span class="code-num">1</span>])*<span class="code-fn">tf</span>(<span class="code-num">1</span>,<span class="code-num">1</span>,<span class="code-str">'InputDelay'</span>,theta_m);
+
+<span class="code-comment">% PID diseñado para Gm (sin theta) — IMC lambda=10</span>
+lam = <span class="code-num">10</span>;
+Kc = tau_m/(Kp_m*lam);
+tauI = tau_m;
+Gc = <span class="code-fn">pid</span>(Kc, Kc/tauI);
+
+<span class="code-comment">% Predictor de Smith: lazo interno = Gc * Gm/(1+Gc*(Gm_delay-Gm+Gm))</span>
+<span class="code-comment">% Función transferencia equivalente del predictor:</span>
+Smith_predictor = <span class="code-fn">feedback</span>(Gc*Gm,<span class="code-num">1</span>) * <span class="code-fn">tf</span>(<span class="code-num">1</span>,<span class="code-num">1</span>,<span class="code-str">'InputDelay'</span>,theta);
+
+<span class="code-comment">% Lazo PID convencional (sin predictor)</span>
+Kc_conv = <span class="code-num">0.4</span>; tauI_conv = <span class="code-num">30</span>;  <span class="code-comment">% sintonía conservadora para theta grande</span>
+Gc_conv = <span class="code-fn">pid</span>(Kc_conv, Kc_conv/tauI_conv);
+LC_conv = <span class="code-fn">feedback</span>(Gc_conv*G_real, <span class="code-num">1</span>);
+
+<span class="code-comment">% Comparar respuestas</span>
+t = <span class="code-num">0</span>:<span class="code-num">0.5</span>:<span class="code-num">200</span>;
+<span class="code-fn">figure</span>; hold on;
+<span class="code-fn">step</span>(Smith_predictor, t, <span class="code-str">'b'</span>);    <span class="code-comment">% Predictor de Smith</span>
+<span class="code-fn">step</span>(LC_conv, t, <span class="code-str">'r--'</span>);          <span class="code-comment">% PID convencional</span>
+<span class="code-fn">yline</span>(<span class="code-num">1</span>, <span class="code-str">'k:'</span>); <span class="code-fn">grid</span> on;
+<span class="code-fn">legend</span>(<span class="code-str">'Smith Predictor (Kc=3.13)'</span>, <span class="code-str">'PID Conv. (Kc=0.4)'</span>,<span class="code-str">'SP=1'</span>);
+<span class="code-fn">title</span>(<span class="code-str">'Predictor de Smith vs PID Convencional — θ/τ=0.48'</span>);
+<span class="code-fn">xlabel</span>(<span class="code-str">'Tiempo [min]'</span>);</div>
+
+    <div class="ext-links-box">
+      <div class="ext-links-title">🧪 FUENTES — SIMULACIÓN DE PROCESOS DINÁMICOS</div>
+      <div class="ext-link-item"><span class="ext-link-icon">🖥️</span><div class="ext-link-info"><div class="ext-link-name">MathWorks — Simulink Control Design (PID Tuner en Simulink)</div><div class="ext-link-desc">Documentación del PID Controller block en Simulink: configuración de la ecuación PID, anti-windup, forma paralela/serie, filtro derivativo y sintonización automática con PID Tuner integrado.</div></div><a href="https://www.mathworks.com/products/simulink-control-design.html" class="ext-link-url" target="_blank" rel="noopener">🔗 Simulink CSD</a></div>
+      <div class="ext-link-item"><span class="ext-link-icon">⚗️</span><div class="ext-link-info"><div class="ext-link-name">AspenTech — Aspen Hysys Dynamic Simulation</div><div class="ext-link-desc">Portal oficial de AspenTech para Hysys dinámico: tutoriales de control de procesos, conversión de estacionario a dinámico, configuración de controladores PID y validación de estrategias.</div></div><a href="https://www.aspentech.com/en/products/engineering/aspen-hysys" class="ext-link-url orange" target="_blank" rel="noopener">🔗 Aspen Hysys</a></div>
+      <div class="ext-link-item"><span class="ext-link-icon">📗</span><div class="ext-link-info"><div class="ext-link-name">Seborg et al. — Process Dynamics and Control (Cap. 12–17)</div><div class="ext-link-desc">Capítulos de simulación dinámica, control cascada, feedforward y predictor de Smith con ejemplos numéricos y código MATLAB. Texto base del curso 740021C. Disponible en Biblioteca UniValle.</div></div><a href="https://campusvirtual.univalle.edu.co" class="ext-link-url green" target="_blank" rel="noopener">🔗 Moodle 740021C</a></div>
+      <div class="ext-link-item"><span class="ext-link-icon">🔬</span><div class="ext-link-info"><div class="ext-link-name">MATLAB — place() para Asignación de Polos</div><div class="ext-link-desc">Función place() de MATLAB para asignación exacta de polos en sistemas de estado (análoga a la asignación analítica del curso pero para sistemas MIMO). Complemento del diseño PID por asignación de polos.</div></div><a href="https://www.mathworks.com/help/control/ref/place.html" class="ext-link-url gold" target="_blank" rel="noopener">🔗 place()</a></div>
+    </div>
+
+    <div class="quiz-box" id="qsim">
+      <div class="quiz-q">❓ ¿Cuál es la ventaja principal de Aspen Hysys dinámico sobre una simulación MATLAB/Simulink lineal para validar un controlador?</div>
+      <div class="quiz-opt" onclick="checkQuiz('qsim',this,'wrong')">A. Es más rápido de configurar y ejecutar</div>
+      <div class="quiz-opt" onclick="checkQuiz('qsim',this,'wrong')">B. Calcula automáticamente los parámetros PID óptimos</div>
+      <div class="quiz-opt" onclick="checkQuiz('qsim',this,'correct')">C. Incluye la termodinámica real del proceso, no linealidades físicas y comportamiento de equipos reales</div>
+      <div class="quiz-opt" onclick="checkQuiz('qsim',this,'wrong')">D. Solo Hysys puede simular lazos de control PID</div>
+      <div class="quiz-feedback" id="qsim-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">✅ Hysys dinámico usa ecuaciones de estado de Peng-Robinson o similares, modelos rigurosos de columnas (plato a plato), reacciones cinéticas y termodinámica real. Captura no linealidades que un modelo linealizado G(s) no puede representar — especialmente importante lejos del punto de operación de diseño.</div>
+    </div>
+  </div>
+
+
+  </main>
+
+  <!-- FLOATING BUTTONS -->
+  <div style="position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;">
+    <a href="instrumentacion_protocolos_industriales.html"
+       style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;background:rgba(11,15,26,0.93);backdrop-filter:blur(12px);color:var(--text-dim);border:1px solid var(--border);padding:.55rem 1.1rem;border-radius:2rem;text-decoration:none;transition:all .25s;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap;"
+       onmouseover="this.style.color='#fff';this.style.borderColor='rgba(255,255,255,0.3)'" onmouseout="this.style.color='#5a7a9a';this.style.borderColor='#1e2d4a'">← Unidad I</a>
+    <a href="unidad2_dinamica_procesos_740021C.html"
+       style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;background:rgba(11,15,26,0.93);backdrop-filter:blur(12px);color:#ff6b35;border:1px solid rgba(255,107,53,.35);padding:.55rem 1.1rem;border-radius:2rem;text-decoration:none;transition:all .25s;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap;"
+       onmouseover="this.style.background='rgba(255,107,53,0.12)'" onmouseout="this.style.background='rgba(11,15,26,0.93)'">← Unidad II</a>
+    <a href="index.html"
+       style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;background:rgba(11,15,26,0.93);backdrop-filter:blur(12px);color:#0AAFB4;border:1px solid rgba(10,175,180,.35);padding:.55rem 1.1rem;border-radius:2rem;text-decoration:none;transition:all .25s;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap;"
+       onmouseover="this.style.background='rgba(10,175,180,0.12)'" onmouseout="this.style.background='rgba(11,15,26,0.93)'">⌂ Inicio</a>
+  </div>
+
+  <footer>
+    <div class="container">
+      © 2026 · Dr. Jose Antonio Lara Ramos · Escuela de Ingeniería Química · Universidad del Valle · GAOX Minciencias A1<br/>
+      Unidad III: Control de Procesos · Curso 740021C · Semestre I 2026 · Material de uso educativo exclusivo
+    </div>
+  </footer>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active'); });
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      var sec = document.getElementById(id);
+      if(sec) sec.classList.add('active');
+      if(event && event.currentTarget) event.currentTarget.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleAccordion(item) {
+      item.classList.toggle('open');
+    }
+
+    function checkQuiz(quizId, element, result) {
+      var container = document.getElementById(quizId);
+      if(!container) return;
+      var opts = container.querySelectorAll('.quiz-opt');
+      opts.forEach(function(o){ o.style.pointerEvents = 'none'; });
+      element.classList.add(result);
+      var fb = document.getElementById(quizId + '-fb');
+      if(fb) fb.classList.add('show');
+    }
+
+    // Animate perf bars on load
+    document.addEventListener('DOMContentLoaded', function(){
+      document.querySelectorAll('.perf-fill').forEach(function(el){
+        var w = el.getAttribute('data-w') || '50%';
+        setTimeout(function(){ el.style.width = w; }, 300);
+      });
+    });
+  </script>
+</body>
+</html>

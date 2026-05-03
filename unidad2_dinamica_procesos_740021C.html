@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unidad II — Dinámica de Procesos · 740021C · UniValle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --panel: #0f1626;
+      --panel2: #151d30;
+      --border: #1e2d4a;
+      --accent: #00d4ff;
+      --accent2: #ff6b35;
+      --accent3: #39ff14;
+      --accent4: #ffd700;
+      --text: #c8d8f0;
+      --text-dim: #5a7a9a;
+      --glow: 0 0 20px rgba(0,212,255,0.3);
+      --glow2: 0 0 20px rgba(255,107,53,0.3);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Exo 2', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none; z-index: 0;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 28px 0 18px;
+      position: relative; overflow: hidden;
+    }
+    header::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+    .header-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; color: var(--accent);
+      letter-spacing: 3px; margin-bottom: 8px; opacity: .7;
+    }
+    h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(26px, 5vw, 48px);
+      font-weight: 700; line-height: 1.1;
+      background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent2) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .subtitle {
+      font-size: 13px; color: var(--text-dim); margin-top: 8px;
+      font-family: 'Share Tech Mono', monospace; letter-spacing: 1px;
+    }
+
+    /* ── NAV ── */
+    .nav-tabs {
+      display: flex; gap: 4px; padding: 18px 0 0;
+      overflow-x: auto; scrollbar-width: none; flex-wrap: wrap;
+    }
+    .nav-tabs::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      padding: 8px 16px;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: 'Exo 2', sans-serif; font-size: 12px;
+      font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s; white-space: nowrap;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+    .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .tab-btn.active {
+      background: rgba(0,212,255,0.1); border-color: var(--accent);
+      color: var(--accent); box-shadow: var(--glow);
+    }
+
+    /* ── SECTIONS ── */
+    .section { display: none; padding: 28px 0 60px; }
+    .section.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+    .section-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 6px;
+    }
+    .section-desc {
+      color: var(--text-dim); font-size: 13px; margin-bottom: 28px;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    /* ── CARDS ── */
+    .cards-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px; margin-bottom: 28px;
+    }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      padding: 22px; position: relative; transition: all 0.3s;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%; background: var(--accent);
+      transform: scaleY(0); transition: transform 0.3s; transform-origin: bottom;
+    }
+    .card:hover { border-color: var(--accent); box-shadow: var(--glow); transform: translateY(-2px); }
+    .card:hover::before { transform: scaleY(1); }
+    .card.orange::before { background: var(--accent2); }
+    .card.orange:hover { border-color: var(--accent2); box-shadow: var(--glow2); }
+    .card.green::before { background: var(--accent3); }
+    .card.green:hover { border-color: var(--accent3); box-shadow: 0 0 20px rgba(57,255,20,0.2); }
+    .card.gold::before { background: var(--accent4); }
+    .card.gold:hover { border-color: var(--accent4); box-shadow: 0 0 20px rgba(255,215,0,0.2); }
+
+    .card-icon { font-size: 26px; margin-bottom: 10px; display: block; }
+    .card-title {
+      font-family: 'Rajdhani', sans-serif; font-size: 19px; font-weight: 700;
+      color: #fff; margin-bottom: 8px;
+    }
+    .card-tag {
+      font-family: 'Share Tech Mono', monospace; font-size: 10px;
+      color: var(--accent); letter-spacing: 2px; margin-bottom: 10px;
+    }
+    .card-body { font-size: 13px; color: var(--text); line-height: 1.7; }
+    .spec-list { list-style: none; margin-top: 10px; }
+    .spec-list li {
+      display: flex; align-items: flex-start; gap: 8px;
+      padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 13px;
+    }
+    .spec-list li:last-child { border-bottom: none; }
+    .spec-list li::before { content: '▸'; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+
+    /* ── BOXES ── */
+    .info-box {
+      background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.2);
+      padding: 16px 20px; margin-bottom: 16px; position: relative;
+    }
+    .info-box::before { content: 'ℹ'; position: absolute; top: 14px; left: 16px; color: var(--accent); font-size: 16px; }
+    .info-box .ib-content { padding-left: 28px; font-size: 13px; line-height: 1.7; }
+
+    .warn-box {
+      background: rgba(255,107,53,0.05); border: 1px solid rgba(255,107,53,0.2);
+      padding: 16px 20px; margin-bottom: 16px; position: relative;
+    }
+    .warn-box::before { content: '⚡'; position: absolute; top: 14px; left: 16px; font-size: 16px; }
+    .warn-box .ib-content { padding-left: 28px; font-size: 13px; line-height: 1.7; color: #e0c0a0; }
+
+    .industrial-example {
+      background: var(--panel2); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent3); padding: 18px 20px; margin: 18px 0;
+    }
+    .ie-title {
+      font-family: 'Share Tech Mono', monospace; font-size: 11px;
+      color: var(--accent3); letter-spacing: 2px; margin-bottom: 8px;
+    }
+    .ie-body { font-size: 13px; line-height: 1.7; }
+
+    /* ── ACCORDION ── */
+    .accordion-item { border: 1px solid var(--border); margin-bottom: 4px; }
+    .accordion-header {
+      padding: 13px 18px; background: var(--panel); cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center; transition: all 0.2s;
+    }
+    .accordion-header:hover { background: var(--panel2); border-color: var(--accent); }
+    .accordion-title { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 600; color: #fff; }
+    .accordion-icon { color: var(--accent); font-size: 18px; transition: transform 0.3s; }
+    .accordion-item.open .accordion-icon { transform: rotate(45deg); }
+    .accordion-body { display: none; padding: 16px 20px 18px; background: var(--panel2); font-size: 13px; line-height: 1.7; }
+    .accordion-item.open .accordion-body { display: block; }
+
+    /* ── MATH / TERM / PROBLEM ── */
+    .term-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(270px,1fr)); gap: 12px; margin-bottom: 22px; }
+    .term-card { background: var(--panel); border: 1px solid var(--border); border-top: 3px solid var(--accent); padding: 15px 17px; transition: all .25s; }
+    .term-card:hover { box-shadow: var(--glow); }
+    .term-card.orange { border-top-color: var(--accent2); }
+    .term-card.orange:hover { box-shadow: var(--glow2); border-color: var(--accent2); }
+    .term-card.green { border-top-color: var(--accent3); }
+    .term-card.gold { border-top-color: var(--accent4); }
+    .term-title { font-family: 'Rajdhani',sans-serif; font-size: 16px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+    .term-card.orange .term-title { color: var(--accent2); }
+    .term-card.green .term-title { color: var(--accent3); }
+    .term-card.gold .term-title { color: var(--accent4); }
+    .term-def { font-size: 12.5px; line-height: 1.65; }
+    .term-formula { font-family: 'Share Tech Mono',monospace; font-size: 11.5px; background: rgba(0,212,255,.06); border: 1px solid rgba(0,212,255,.15); padding: 6px 10px; margin-top: 8px; color: var(--accent); }
+
+    .math-box { background: var(--panel2); border: 1px solid var(--border); border-left: 3px solid var(--accent4); padding: 17px 19px; margin: 15px 0; font-family: 'Share Tech Mono',monospace; font-size: 13px; }
+    .math-title { font-family: 'Rajdhani',sans-serif; font-size: 15px; font-weight: 700; color: var(--accent4); margin-bottom: 10px; letter-spacing: 1px; }
+    .math-step { padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.04); color: var(--text); line-height: 1.65; }
+    .math-result { margin-top: 8px; padding: 8px 12px; background: rgba(57,255,20,.07); border: 1px solid rgba(57,255,20,.2); color: var(--accent3); font-weight: bold; }
+
+    .problem-box { background: rgba(255,215,0,.04); border: 1px solid rgba(255,215,0,.25); padding: 19px 21px; margin: 17px 0; }
+    .problem-box::before { content: '✏️ PROBLEMA'; font-family: 'Share Tech Mono',monospace; font-size: 10px; color: var(--accent4); letter-spacing: 2px; display: block; margin-bottom: 10px; }
+    .problem-box p, .problem-box li { font-size: 13px; line-height: 1.7; }
+
+    .diagram-box { background: var(--panel); border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; text-align: center; }
+    .diagram-box svg { max-width: 100%; }
+
+    .sensor-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 22px; }
+    .sensor-table th { background: var(--panel2); padding: 10px 13px; text-align: left; font-family: 'Share Tech Mono',monospace; font-size: 10px; letter-spacing: 2px; color: var(--accent); border: 1px solid var(--border); }
+    .sensor-table td { padding: 9px 13px; border: 1px solid var(--border); vertical-align: top; line-height: 1.55; }
+    .sensor-table tr:hover td { background: rgba(0,212,255,.03); }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    @media(max-width:700px){ .two-col { grid-template-columns: 1fr; } }
+
+    /* ── QUIZ ── */
+    .quiz-box { background: rgba(0,212,255,.04); border: 1px solid rgba(0,212,255,.2); padding: 17px 21px; margin: 17px 0; }
+    .quiz-q { font-family: 'Rajdhani',sans-serif; font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 10px; }
+    .quiz-opt { padding: 7px 14px; margin: 4px 0; background: var(--panel2); border: 1px solid var(--border); font-size: 13px; cursor: pointer; transition: all .2s; }
+    .quiz-opt:hover { border-color: var(--accent); color: var(--accent); }
+    .quiz-opt.correct { background: rgba(57,255,20,.1); border-color: var(--accent3); color: var(--accent3); }
+    .quiz-opt.wrong { background: rgba(255,107,53,.1); border-color: var(--accent2); color: var(--accent2); }
+    .quiz-feedback { margin-top: 10px; font-size: 13px; display: none; padding: 8px 12px; }
+    .quiz-feedback.show { display: block; }
+
+    /* ── EXT LINKS ── */
+    .ext-links-box { background: var(--panel2); border: 1px solid var(--border); border-left: 3px solid var(--accent4); padding: 13px 17px; margin: 17px 0; }
+    .ext-links-title { font-family: 'Share Tech Mono',monospace; font-size: 10px; letter-spacing: 2px; color: var(--accent4); margin-bottom: 10px; }
+    .ext-link-item { display: flex; align-items: flex-start; gap: 12px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+    .ext-link-item:last-child { border-bottom: none; }
+    .ext-link-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .ext-link-info { flex: 1; }
+    .ext-link-name { font-family: 'Rajdhani',sans-serif; font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .ext-link-desc { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+    .ext-link-url { font-family: 'Share Tech Mono',monospace; font-size: 10px; color: var(--accent); text-decoration: none; padding: 3px 8px; border: 1px solid rgba(0,212,255,.2); background: rgba(0,212,255,.05); white-space: nowrap; flex-shrink: 0; align-self: center; transition: all .2s; }
+    .ext-link-url:hover { background: rgba(0,212,255,.15); border-color: var(--accent); }
+    .ext-link-url.orange { color: var(--accent2); border-color: rgba(255,107,53,.2); background: rgba(255,107,53,.05); }
+    .ext-link-url.green  { color: var(--accent3); border-color: rgba(57,255,20,.2);  background: rgba(57,255,20,.05); }
+    .ext-link-url.gold   { color: var(--accent4); border-color: rgba(255,215,0,.2);   background: rgba(255,215,0,.05); }
+
+    /* ── STABILITY BADGE ── */
+    .stability-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 14px; border-radius: 2rem; font-family: 'Share Tech Mono',monospace;
+      font-size: 11px; letter-spacing: 1px; font-weight: 700;
+    }
+    .stab-stable   { background: rgba(57,255,20,.12);  border: 1px solid rgba(57,255,20,.35);  color: var(--accent3); }
+    .stab-marginal { background: rgba(255,215,0,.10);  border: 1px solid rgba(255,215,0,.35);  color: var(--accent4); }
+    .stab-unstable { background: rgba(255,107,53,.12); border: 1px solid rgba(255,107,53,.35); color: var(--accent2); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border); padding: 18px 0;
+      text-align: center; font-family: 'Share Tech Mono',monospace;
+      font-size: 11px; color: var(--text-dim); position: relative; z-index: 1;
+    }
+    footer::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    @media(max-width:600px){ .cards-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- ══ TOP NAV ══ -->
+  <div style="position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(10,14,26,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,212,255,.12);padding:.65rem 2.5rem;display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-family:'Share Tech Mono',monospace;font-size:.68rem;letter-spacing:.12em;color:rgba(0,212,255,0.7);text-transform:uppercase;">740021C · Unidad II · Dinámica de Procesos · UniValle 2026</span>
+    <div style="display:flex;gap:10px;">
+      <a href="instrumentacion_protocolos_industriales.html" style="font-family:'Share Tech Mono',monospace;font-size:.68rem;color:#39ff14;border:1px solid rgba(57,255,20,.3);padding:.35rem 1rem;border-radius:2rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(57,255,20,0.1)'" onmouseout="this.style.background='transparent'">← Unidad I</a>
+      <a href="index.html" style="font-family:'Share Tech Mono',monospace;font-size:.68rem;color:#0AAFB4;border:1px solid rgba(10,175,180,.3);padding:.35rem 1rem;border-radius:2rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(10,175,180,0.1)'" onmouseout="this.style.background='transparent'">⌂ Inicio</a>
+      <a href="unidad3_control_procesos_740021C.html" style="font-family:'Share Tech Mono',monospace;font-size:.68rem;color:#39ff14;border:1px solid rgba(57,255,20,.3);padding:.35rem 1rem;border-radius:2rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(57,255,20,0.1)'" onmouseout="this.style.background='transparent'">Unidad III →</a>
+    </div>
+  </div>
+
+  <div style="height:48px;"></div>
+
+  <header>
+    <div class="container">
+      <p class="header-tag">// CURSO 740021C · 8° SEMESTRE · ING. QUÍMICA · UNIVALLE · 2026</p>
+      <h1>Unidad II — Dinámica de Procesos</h1>
+      <p class="subtitle">Prof. Dr. Jose Antonio Lara Ramos · GAOX Minciencias A1 · lara.jose@correounivalle.edu.co</p>
+
+      <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="showSection('intro')">Introducción</button>
+        <button class="tab-btn" onclick="showSection('modelado')">📐 Modelado Matemático</button>
+        <button class="tab-btn" onclick="showSection('ftransferencia')">⚙️ Función de Transferencia</button>
+        <button class="tab-btn" onclick="showSection('primer_orden')">〜 1er Orden</button>
+        <button class="tab-btn" onclick="showSection('segundo_orden')">〰️ 2do Orden</button>
+        <button class="tab-btn" onclick="showSection('alto_orden')">📊 Alto Orden</button>
+        <button class="tab-btn" onclick="showSection('estabilidad')">🛡️ Estabilidad</button>
+        <button class="tab-btn" onclick="showSection('frecuencia')">📡 Análisis Frecuencial</button>
+        <button class="tab-btn" onclick="showSection('bode')">📈 Bode & Nyquist</button>
+        <button class="tab-btn" onclick="showSection('margenes')">⚖️ Márgenes</button>
+        <button class="tab-btn" onclick="showSection('routh')">🔢 Routh-Hurwitz</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+  <!-- ==================== INTRODUCCIÓN ==================== -->
+  <div id="intro" class="section active">
+    <div class="section-title">Unidad II — Dinámica de Procesos</div>
+    <div class="section-desc">// MODELADO · RESPUESTA DINÁMICA · ESTABILIDAD · ANÁLISIS EN FRECUENCIA</div>
+
+    <div class="info-box">
+      <div class="ib-content">
+        <strong>¿Por qué estudiar dinámica de procesos?</strong> Un controlador PID perfectamente sintonizado sobre un modelo equivocado del proceso generará inestabilidad o pobre desempeño. La dinámica de procesos proporciona las herramientas matemáticas para <em>describir cómo responde un proceso al paso del tiempo</em> ante cambios en sus entradas, y determinar con rigor si un sistema de control será estable o no. Es el puente entre la instrumentación (Unidad I) y el diseño avanzado de control.
+      </div>
+    </div>
+
+    <!-- Mapa visual de la Unidad II -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" style="max-width:760px;width:100%">
+        <defs>
+          <marker id="ua" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+        </defs>
+        <text x="380" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="15" font-weight="700" text-anchor="middle">Mapa de la Unidad II — Dinámica de Procesos</text>
+
+        <!-- Block 1: Modelado -->
+        <rect x="20" y="35" width="140" height="55" fill="rgba(0,212,255,0.08)" stroke="#00d4ff" stroke-width="1.5" rx="4"/>
+        <text x="90" y="58" fill="#00d4ff" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">MODELADO</text>
+        <text x="90" y="72" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">EDO · Lineal/No lineal</text>
+        <text x="90" y="83" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Función de Transferencia</text>
+        <line x1="160" y1="62" x2="200" y2="62" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#ua)"/>
+
+        <!-- Block 2: Respuesta Dinámica -->
+        <rect x="200" y="35" width="150" height="55" fill="rgba(255,107,53,0.08)" stroke="#ff6b35" stroke-width="1.5" rx="4"/>
+        <text x="275" y="58" fill="#ff6b35" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">RESP. DINÁMICA</text>
+        <text x="275" y="72" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">1er · 2do · Alto Orden</text>
+        <text x="275" y="83" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Escalón · Rampa · Impulso</text>
+        <line x1="350" y1="62" x2="390" y2="62" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#ua)"/>
+
+        <!-- Block 3: Estabilidad -->
+        <rect x="390" y="35" width="145" height="55" fill="rgba(57,255,20,0.07)" stroke="#39ff14" stroke-width="1.5" rx="4"/>
+        <text x="462" y="58" fill="#39ff14" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">ESTABILIDAD</text>
+        <text x="462" y="72" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Routh-Hurwitz</text>
+        <text x="462" y="83" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Polos en el plano s</text>
+        <line x1="535" y1="62" x2="575" y2="62" stroke="#39ff14" stroke-width="1.5" marker-end="url(#ua)"/>
+
+        <!-- Block 4: Frecuencia -->
+        <rect x="575" y="35" width="160" height="55" fill="rgba(255,215,0,0.07)" stroke="#ffd700" stroke-width="1.5" rx="4"/>
+        <text x="655" y="55" fill="#ffd700" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">ANÁLISIS FREQ.</text>
+        <text x="655" y="69" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Bode · Nyquist</text>
+        <text x="655" y="80" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Márgenes Gm · Pm · Mm</text>
+
+        <!-- Bottom row: connections to design -->
+        <text x="380" y="120" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="13" font-weight="600" text-anchor="middle">Herramientas para el Diseño de Controladores</text>
+        <line x1="90" y1="90" x2="90" y2="130" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="275" y1="90" x2="275" y2="130" stroke="#ff6b35" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="462" y1="90" x2="462" y2="130" stroke="#39ff14" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="655" y1="90" x2="655" y2="130" stroke="#ffd700" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="90" y1="130" x2="655" y2="130" stroke="#1e2d4a" stroke-width="1.5"/>
+        <text x="90" y="155" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Modelo G(s)</text>
+        <text x="275" y="155" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Kp, τ, ζ, ωn</text>
+        <text x="462" y="155" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">¿Estable?</text>
+        <text x="655" y="155" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Gm, Pm, Mm</text>
+        <text x="380" y="185" fill="#c8d8f0" font-family="Share Tech Mono" font-size="9" text-anchor="middle">→ Sintonización PID · Control Avanzado · Diseño Robusto</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 1 — Mapa conceptual Unidad II. La dinámica de procesos provee el modelo G(s) y los criterios de estabilidad necesarios para diseñar controladores PID y sistemas de control avanzado.</div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Objetivos de Aprendizaje</div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-tag">MODELADO — 5a</div>
+        <div class="card-title">Modelado Matemático</div>
+        <div class="card-body">Derivar modelos de procesos químicos usando balances de masa y energía. Obtener la función de transferencia G(s) mediante la transformada de Laplace.</div>
+        <ul class="spec-list">
+          <li>Plantar y resolver ecuaciones diferenciales ordinarias (EDO)</li>
+          <li>Linealizar modelos no lineales alrededor del punto de operación</li>
+          <li>Obtener G(s) = Y(s)/U(s) para procesos típicos de Ing. Química</li>
+        </ul>
+      </div>
+      <div class="card orange">
+        <div class="card-tag">RESPUESTA — 5b</div>
+        <div class="card-title">Análisis de Respuesta Dinámica</div>
+        <div class="card-body">Predecir y calcular la respuesta temporal de sistemas de primer, segundo y alto orden ante entradas típicas: escalón, rampa, impulso y sinusoidal.</div>
+        <ul class="spec-list">
+          <li>Sistemas de 1er orden: τ, Kp, tiempo de subida, estado estacionario</li>
+          <li>Sistemas de 2do orden: ζ, ωn, sobreimpulso, tiempo de asentamiento</li>
+          <li>Sistemas de alto orden: aproximaciones FOPDT, efectos de ceros y polos adicionales</li>
+        </ul>
+      </div>
+      <div class="card green">
+        <div class="card-tag">ESTABILIDAD — 5c</div>
+        <div class="card-title">Análisis de Estabilidad</div>
+        <div class="card-body">Determinar si un sistema de control en lazo cerrado es estable sin necesidad de calcular las raíces del polinomio característico usando el criterio de Routh-Hurwitz.</div>
+        <ul class="spec-list">
+          <li>Criterio de Routh-Hurwitz: condición necesaria y suficiente</li>
+          <li>Localización de polos en el plano s (semiplano izquierdo vs derecho)</li>
+          <li>Margen de ganancia Gm, margen de fase Pm y margen de módulo Mm</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="industrial-example">
+      <div class="ie-title">▸ CONEXIÓN CON LA UNIDAD I — INSTRUMENTACIÓN Y CONTROL</div>
+      <div class="ie-body">
+        En la Unidad I identificamos experimentalmente el modelo FOPDT de un proceso: <strong>Kp, τ, θ</strong>. La Unidad II nos enseña cómo ese modelo <strong>G(s) = Kp·e<sup>−θs</sup>/(τs+1)</strong> determina el comportamiento dinámico del lazo cerrado. Saber que θ/τ = 0.25 no es suficiente — necesitamos calcular cuánto margen de ganancia tiene el lazo, si el criterio de Routh garantiza estabilidad y cómo el diagrama de Bode revela la frecuencia crítica de oscilación. <strong>Instrumentación sin dinámica es medición sin comprensión.</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODELADO MATEMÁTICO ==================== -->
+  <div id="modelado" class="section">
+    <div class="section-title">Modelado Matemático de Procesos</div>
+    <div class="section-desc">// EDO · LINEALIZACIÓN · BALANCES DE MASA Y ENERGÍA · TRANSFORMADA DE LAPLACE</div>
+
+    <div class="info-box">
+      <div class="ib-content">
+        El modelado matemático es el proceso de traducir el comportamiento físico/químico de un proceso en ecuaciones que puedan analizarse y usarse para diseñar controladores. Un modelo útil no necesita ser perfecto: debe capturar la dinámica relevante en el rango de operación de interés.
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Principios de Modelado</div>
+
+    <div class="term-grid">
+      <div class="term-card">
+        <div class="term-title">Balance de Masa (No Reactivo)</div>
+        <div class="term-def">Acumulación = Entrada − Salida. Para un sistema con una sola corriente de entrada y una de salida en volumen de control V.</div>
+        <div class="term-formula">V·(dC/dt) = F_in·C_in − F_out·C_out</div>
+      </div>
+      <div class="term-card orange">
+        <div class="term-title">Balance de Energía (Tanque Agitado)</div>
+        <div class="term-def">Acumulación de energía = Energía que entra − Energía que sale ± Calor intercambiado.</div>
+        <div class="term-formula">ρ·Cp·V·(dT/dt) = F·ρ·Cp·(T_in − T) + Q</div>
+      </div>
+      <div class="term-card green">
+        <div class="term-title">Balance de Momento (Nivel)</div>
+        <div class="term-def">Para nivel en tanque: la tasa de cambio de volumen = caudal entrada − caudal salida.</div>
+        <div class="term-formula">A·(dh/dt) = F_in − F_out  →  F_out = C_v·√h</div>
+      </div>
+      <div class="term-card gold">
+        <div class="term-title">Modelo de CSTR (Reactor)</div>
+        <div class="term-def">Combinación de balance de masa reactivo + balance de energía. El término cinético r(C,T) introduce la no linealidad.</div>
+        <div class="term-formula">V·(dC_A/dt) = F·(C_A0−C_A) − V·r(C_A,T)</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;margin-top:20px;">Modelos Lineales vs No Lineales</div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-tag">MODELO LINEAL</div>
+        <div class="card-title">Principio de Superposición</div>
+        <div class="card-body">
+          Un sistema es lineal si satisface superposición: f(ax+by) = a·f(x) + b·f(y). Permite usar la Transformada de Laplace y todas las herramientas del control clásico. La gran mayoría de métodos de análisis y diseño suponen linealidad.
+          <div class="term-formula" style="margin-top:10px;">a_n·y^(n) + ... + a_1·ẏ + a_0·y = b_m·u^(m) + ... + b_0·u</div>
+        </div>
+        <ul class="spec-list">
+          <li>Coeficientes constantes (parámetros no cambian con el estado)</li>
+          <li>Función de transferencia G(s) bien definida</li>
+          <li>Respuesta proporcional a la magnitud de la entrada</li>
+          <li>Herramientas: Laplace, Bode, Nyquist, Routh-Hurwitz</li>
+        </ul>
+      </div>
+      <div class="card orange">
+        <div class="card-tag">MODELO NO LINEAL</div>
+        <div class="card-title">Linealización Alrededor del SS</div>
+        <div class="card-body">
+          Los procesos reales son no lineales (cinética de Arrhenius, raíz cuadrada en nivel, etc.). Para control clásico, se linealizan alrededor del punto de operación (estado estacionario) usando la expansión en serie de Taylor de primer orden.
+          <div class="term-formula" style="margin-top:10px;">f(x) ≈ f(x₀) + (∂f/∂x)|₀·(x−x₀) = f(x₀) + a·x'</div>
+        </div>
+        <ul class="spec-list">
+          <li>Variables desviación: x' = x − x₀, y' = y − y₀</li>
+          <li>El modelo linealizado es válido solo cerca de x₀</li>
+          <li>Fuera del rango lineal: control no lineal (MPC, feedback linearization)</li>
+          <li>Ejemplo: √h ≈ √h₀ + (1/2√h₀)·h' = √h₀ + Kh·h'</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PROBLEMA RESUELTO: Tanque de nivel -->
+    <div class="problem-box">
+      <p><strong>Problema 1 — Modelado de nivel en tanque:</strong><br>
+      Un tanque cilíndrico de área transversal A = 2 m² tiene una válvula de salida con característica F_out = β·√h, donde β = 0.5 m^2.5/min. El caudal de entrada F_in es la variable manipulada. Punto de operación: h₀ = 4 m. Obtenga el modelo lineal en variables desviación y la función de transferencia.</p>
+      <div class="math-box" style="margin-top:12px;">
+        <div class="math-title">▸ SOLUCIÓN — Linealización y Función de Transferencia</div>
+        <div class="math-step"><strong>Modelo no lineal:</strong> A·(dh/dt) = F_in − β·√h</div>
+        <div class="math-step"><strong>Estado estacionario (SS):</strong> 0 = F_in0 − β·√h₀ → F_in0 = 0.5×√4 = <strong>1.0 m³/min</strong></div>
+        <div class="math-step"><strong>Linealizar F_out = β·√h:</strong></div>
+        <div class="math-step">F_out ≈ β·√h₀ + (β/2√h₀)·h' = 1.0 + (0.5/2×2)·h' = 1.0 + 0.125·h'</div>
+        <div class="math-step"><strong>Modelo en variables desviación (h'=h−h₀, f'=F_in−F_in0):</strong></div>
+        <div class="math-step">A·(dh'/dt) = f' − (β/2√h₀)·h' = f' − 0.125·h'</div>
+        <div class="math-step">2·(dh'/dt) + 0.125·h' = f'</div>
+        <div class="math-step"><strong>Dividir entre 0.125:</strong> 16·(dh'/dt) + h' = 8·f'</div>
+        <div class="math-step"><strong>Transformada de Laplace:</strong></div>
+        <div class="math-step">16s·H'(s) + H'(s) = 8·F'(s) → H'(s)·(16s+1) = 8·F'(s)</div>
+        <div class="math-result">G(s) = H'(s)/F'(s) = 8 / (16s + 1) → Kp = 8 m/(m³/min), τ = 16 min</div>
+        <div class="math-step" style="color:var(--text-dim)">El proceso es de primer orden con ganancia 8 y constante de tiempo 16 min. Un escalón de 0.1 m³/min en F_in produce un cambio de 0.8 m en nivel en estado estacionario.</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;margin-top:20px;">Transformada de Laplace — Propiedades Clave</div>
+
+    <table class="sensor-table">
+      <thead><tr><th>FUNCIÓN f(t)</th><th>TRANSFORMADA F(s)</th><th>USO EN PROCESOS</th><th>CONDICIÓN</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Escalón unitario u(t)</strong></td><td>1/s</td><td>Cambio de set-point o perturbación tipo escalón</td><td>f(0⁻)=0</td></tr>
+        <tr><td><strong>Impulso δ(t)</strong></td><td>1</td><td>Prueba de respuesta impulsional (identificación)</td><td>—</td></tr>
+        <tr><td><strong>Rampa t·u(t)</strong></td><td>1/s²</td><td>Perturbación tipo rampa (carga variable)</td><td>—</td></tr>
+        <tr><td><strong>Exponencial e^(at)</strong></td><td>1/(s−a)</td><td>Respuesta de sistemas de primer orden</td><td>Re(s)&gt;a</td></tr>
+        <tr><td><strong>Derivada df/dt</strong></td><td>s·F(s) − f(0⁻)</td><td>Convierte EDO en ecuación algebraica</td><td>—</td></tr>
+        <tr><td><strong>Integral ∫f dt</strong></td><td>F(s)/s</td><td>Acción integral del controlador</td><td>—</td></tr>
+        <tr><td><strong>Retardo f(t−θ)</strong></td><td>e^(−θs)·F(s)</td><td>Tiempo muerto en procesos (transporte, reacción)</td><td>θ≥0</td></tr>
+        <tr><td><strong>Teorema valor final</strong></td><td>lim[s→0] s·F(s)</td><td>Valor en estado estacionario (offset PID)</td><td>Polos en S.I.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="ext-links-box">
+      <div class="ext-links-title">📖 FUENTES EXTERNAS — MODELADO DE PROCESOS</div>
+      <div class="ext-link-item">
+        <span class="ext-link-icon">📗</span>
+        <div class="ext-link-info">
+          <div class="ext-link-name">Seborg et al. — Process Dynamics and Control (Cap. 2–4)</div>
+          <div class="ext-link-desc">Capítulos de modelado matemático de procesos: balances de masa y energía, linealización, función de transferencia. Texto de referencia del curso.</div>
+        </div>
+        <a href="https://www.wiley.com/en-us/Process+Dynamics+and+Control%2C+4th+Edition-p-9781119285915" class="ext-link-url" target="_blank" rel="noopener">🔗 Wiley</a>
+      </div>
+      <div class="ext-link-item">
+        <span class="ext-link-icon">🖥️</span>
+        <div class="ext-link-info">
+          <div class="ext-link-name">MATLAB Symbolic Math Toolbox — Laplace Transform</div>
+          <div class="ext-link-desc">Documentación oficial para calcular transformadas de Laplace simbólicamente en MATLAB: laplace(), ilaplace(), y simplify(). Licencia campus UniValle.</div>
+        </div>
+        <a href="https://www.mathworks.com/help/symbolic/laplace.html" class="ext-link-url orange" target="_blank" rel="noopener">🔗 MathWorks</a>
+      </div>
+      <div class="ext-link-item">
+        <span class="ext-link-icon">📘</span>
+        <div class="ext-link-info">
+          <div class="ext-link-name">LibreTexts — Process Dynamics: Modeling Fundamentals</div>
+          <div class="ext-link-desc">Recurso gratuito en línea con ejemplos detallados de modelado de tanques, intercambiadores y reactores. Incluye derivaciones paso a paso en español.</div>
+        </div>
+        <a href="https://eng.libretexts.org/Bookshelves/Industrial_and_Systems_Engineering/Chemical_Process_Dynamics_and_Controls_(Woolf)" class="ext-link-url green" target="_blank" rel="noopener">🔗 LibreTexts</a>
+      </div>
+    </div>
+
+    <div class="quiz-box" id="qmodelo">
+      <div class="quiz-q">❓ Un tanque de nivel tiene A=3 m², β=0.6 m^2.5/min, h₀=9 m. ¿Cuál es la constante de tiempo τ del modelo linealizado?</div>
+      <div class="quiz-opt" onclick="checkQuiz('qmodelo',this,'wrong')">A. τ = 10 min</div>
+      <div class="quiz-opt" onclick="checkQuiz('qmodelo',this,'correct')">B. τ = 30 min</div>
+      <div class="quiz-opt" onclick="checkQuiz('qmodelo',this,'wrong')">C. τ = 15 min</div>
+      <div class="quiz-opt" onclick="checkQuiz('qmodelo',this,'wrong')">D. τ = 9 min</div>
+      <div class="quiz-feedback" id="qmodelo-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">
+        ✅ τ = A / (β/2√h₀) = 3 / (0.6/(2×3)) = 3 / 0.1 = <strong>30 min</strong>. Pendiente de linealización: β/2√h₀ = 0.6/6 = 0.1 m^1.5/min.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FUNCIÓN DE TRANSFERENCIA ==================== -->
+  <div id="ftransferencia" class="section">
+    <div class="section-title">Función de Transferencia</div>
+    <div class="section-desc">// G(s) = Y(s)/U(s) · POLOS · CEROS · FORMA ESTÁNDAR</div>
+
+    <div class="info-box">
+      <div class="ib-content">
+        La <strong>función de transferencia G(s)</strong> es la relación entre la salida Y(s) y la entrada U(s) en el dominio de Laplace, bajo condiciones iniciales nulas. Codifica toda la dinámica del proceso en un cociente de polinomios en s. Sus raíces (polos y ceros) determinan completamente el comportamiento dinámico.
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="math-box">
+        <div class="math-title">📐 Definición General</div>
+        <div class="math-step">G(s) = Y(s)/U(s) = [b_m·s^m + ... + b_1·s + b_0] / [a_n·s^n + ... + a_1·s + a_0]</div>
+        <div class="math-step"><strong>Forma factorizada:</strong></div>
+        <div class="math-step">G(s) = K · [(s−z₁)(s−z₂)...(s−z_m)] / [(s−p₁)(s−p₂)...(s−p_n)]</div>
+        <div class="math-step"><strong>Condición de causalidad:</strong> n ≥ m (grado denominador ≥ numerador)</div>
+        <div class="math-step"><strong>Ganancia estática Kp:</strong> Kp = G(0) = lim[s→0] G(s)</div>
+      </div>
+      <div class="math-box">
+        <div class="math-title">📐 Forma Estándar — Primer Orden</div>
+        <div class="math-step">G(s) = Kp / (τs + 1)</div>
+        <div class="math-step">Kp = ganancia estática [unidades de salida / unidades de entrada]</div>
+        <div class="math-step">τ = constante de tiempo [min o s]</div>
+        <div class="math-step"><strong>Con tiempo muerto (FOPDT):</strong></div>
+        <div class="math-step">G(s) = Kp · e^(−θs) / (τs + 1)</div>
+        <div class="math-step">θ = tiempo muerto [min] — retardo puro de transporte</div>
+        <div class="math-result">G(0) = Kp → ganancia en estado estacionario</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;margin-top:10px;">Polos, Ceros y Estabilidad</div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Plano Complejo s — Localización de Polos y Estabilidad</text>
+
+        <!-- Axes -->
+        <line x1="80" y1="140" x2="380" y2="140" stroke="#1e2d4a" stroke-width="1.5"/>
+        <line x1="230" y1="40" x2="230" y2="240" stroke="#1e2d4a" stroke-width="1.5"/>
+        <text x="385" y="145" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">Re(s)→</text>
+        <text x="235" y="38" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">jω↑</text>
+        <text x="230" y="140" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">0</text>
+
+        <!-- Stable region -->
+        <rect x="80" y="40" width="150" height="200" fill="rgba(57,255,20,0.05)" stroke="none"/>
+        <text x="155" y="248" fill="#39ff14" font-family="Share Tech Mono" font-size="9" text-anchor="middle">Re(s) &lt; 0 → ESTABLE</text>
+
+        <!-- Unstable region -->
+        <rect x="230" y="40" width="150" height="200" fill="rgba(255,107,53,0.05)" stroke="none"/>
+        <text x="305" y="248" fill="#ff6b35" font-family="Share Tech Mono" font-size="9" text-anchor="middle">Re(s) &gt; 0 → INESTABLE</text>
+
+        <!-- Imaginary axis label -->
+        <text x="235" y="145" fill="#ffd700" font-family="Share Tech Mono" font-size="8">Re(s)=0</text>
+        <text x="235" y="157" fill="#ffd700" font-family="Share Tech Mono" font-size="8">Oscilación</text>
+        <text x="235" y="169" fill="#ffd700" font-family="Share Tech Mono" font-size="8">sostenida</text>
+
+        <!-- Stable poles examples -->
+        <!-- Real pole -->
+        <text x="150" y="143" fill="#39ff14" font-family="Share Tech Mono" font-size="14">×</text>
+        <text x="115" y="130" fill="#39ff14" font-family="Share Tech Mono" font-size="8">polo real</text>
+        <text x="115" y="160" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">respuesta exponencial</text>
+        <text x="115" y="170" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">decreciente</text>
+
+        <!-- Complex conjugate stable -->
+        <text x="170" y="88" fill="#39ff14" font-family="Share Tech Mono" font-size="14">×</text>
+        <text x="170" y="196" fill="#39ff14" font-family="Share Tech Mono" font-size="14">×</text>
+        <text x="178" y="78" fill="#39ff14" font-family="Share Tech Mono" font-size="7">polos complejos</text>
+        <text x="178" y="88" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">conjugados estables</text>
+        <text x="178" y="100" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">→ oscilación amortiguada</text>
+
+        <!-- Unstable poles -->
+        <text x="280" y="105" fill="#ff6b35" font-family="Share Tech Mono" font-size="14">×</text>
+        <text x="295" y="100" fill="#ff6b35" font-family="Share Tech Mono" font-size="8">polo inestable</text>
+        <text x="295" y="113" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">→ diverge</text>
+
+        <!-- Imaginary poles -->
+        <text x="227" y="90" fill="#ffd700" font-family="Share Tech Mono" font-size="14">×</text>
+        <text x="227" y="200" fill="#ffd700" font-family="Share Tech Mono" font-size="14">×</text>
+
+        <!-- Right panel: pole types and responses -->
+        <text x="430" y="35" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700">Tipos de Respuesta según Polos</text>
+
+        <!-- Type 1: stable real -->
+        <line x1="430" y1="60" x2="540" y2="60" stroke="#39ff14" stroke-width="1.5"/>
+        <path d="M430,80 Q460,60 480,62 Q510,64 540,63" fill="none" stroke="#39ff14" stroke-width="2"/>
+        <text x="550" y="67" fill="#39ff14" font-family="Share Tech Mono" font-size="8">Polo real negativo</text>
+        <text x="550" y="77" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">→ exp. decreciente</text>
+
+        <!-- Type 2: underdamped -->
+        <line x1="430" y1="110" x2="540" y2="110" stroke="#00d4ff" stroke-width="1.5"/>
+        <path d="M430,135 Q445,108 455,115 Q465,122 475,111 Q490,100 510,108 Q530,112 540,110" fill="none" stroke="#00d4ff" stroke-width="2"/>
+        <text x="550" y="117" fill="#00d4ff" font-family="Share Tech Mono" font-size="8">Complejos conjugados</text>
+        <text x="550" y="127" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">→ osc. amortiguada</text>
+
+        <!-- Type 3: marginally stable -->
+        <line x1="430" y1="160" x2="540" y2="160" stroke="#ffd700" stroke-width="1.5"/>
+        <path d="M430,180 Q445,155 455,165 Q465,175 475,155 Q490,135 510,155 Q530,175 540,155" fill="none" stroke="#ffd700" stroke-width="2"/>
+        <text x="550" y="165" fill="#ffd700" font-family="Share Tech Mono" font-size="8">Imaginarios puros</text>
+        <text x="550" y="175" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">→ osc. sostenida</text>
+
+        <!-- Type 4: unstable -->
+        <line x1="430" y1="210" x2="540" y2="210" stroke="#ff6b35" stroke-width="1.5"/>
+        <path d="M430,230 Q445,225 460,218 Q480,205 500,190 Q520,172 540,155" fill="none" stroke="#ff6b35" stroke-width="2"/>
+        <text x="550" y="215" fill="#ff6b35" font-family="Share Tech Mono" font-size="8">Polo real positivo</text>
+        <text x="550" y="225" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">→ diverge</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 2 — Plano complejo s. Localización de polos y tipo de respuesta temporal asociada. La condición necesaria y suficiente de estabilidad es que todos los polos tengan parte real negativa (semiplano izquierdo).</div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Funciones de Transferencia Típicas en Ing. Química</div>
+    <table class="sensor-table">
+      <thead><tr><th>EQUIPO</th><th>G(s)</th><th>PARÁMETROS</th><th>OBSERVACIONES</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Tanque de nivel</strong></td><td>Kp/(τs+1)</td><td>Kp=R, τ=A·R  (R=resistencia)</td><td>1er orden. Puede ser integrador si salida libre.</td></tr>
+        <tr><td><strong>Intercambiador de calor</strong></td><td>Kp·e^(−θs)/(τs+1)</td><td>Kp [°C/kW], τ [min], θ=tiempo de transporte</td><td>FOPDT. θ del tiempo de tránsito del fluido.</td></tr>
+        <tr><td><strong>Tanque agitado calentado</strong></td><td>Kp/(τs+1)</td><td>τ=V·ρ·Cp/F·ρ·Cp</td><td>1er orden puro sin tiempo muerto.</td></tr>
+        <tr><td><strong>CSTR (linealizado)</strong></td><td>Kp/[(τ₁s+1)(τ₂s+1)]</td><td>τ₁, τ₂ de masa y energía</td><td>2do orden. Puede tener cero en el semiplano derecho.</td></tr>
+        <tr><td><strong>Columna destilación</strong></td><td>Kp·e^(−θs)/[(τ₁s+1)(τ₂s+1)]</td><td>θ grande (minutos-horas)</td><td>SOPDT con tiempo muerto grande → difícil de controlar.</td></tr>
+        <tr><td><strong>Válvula de control</strong></td><td>Kv/(τvs+1)</td><td>τv = 0.1–1 s (muy rápida)</td><td>A menudo se aproxima como Kv (ganancia pura).</td></tr>
+      </tbody>
+    </table>
+
+    <div class="industrial-example">
+      <div class="ie-title">▸ CASO REAL — INTERCAMBIADOR DE CALOR ECOPETROL BARRANCABERMEJA</div>
+      <div class="ie-body">
+        Un intercambiador de carcasa y tubos en la refinería calienta nafta pesada con vapor a 4 bar. Prueba de lazo abierto: escalón del 10% en apertura de válvula de vapor → respuesta de temperatura de nafta. Datos identificados: <strong>Kp = 1.8°C/%apertura</strong>, <strong>τ = 6.5 min</strong>, <strong>θ = 1.8 min</strong>.<br><br>
+        <strong>G(s) = 1.8·e^(−1.8s) / (6.5s + 1)</strong><br><br>
+        Ratio θ/τ = 1.8/6.5 = 0.28 → control moderadamente difícil. La Unidad II nos permite calcular ahora exactamente cuánto Kc máximo puede tener el controlador PID sin que el lazo oscile — esto es el margen de ganancia Gm, que veremos en la sección de Bode.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PRIMER ORDEN ==================== -->
+  <div id="primer_orden" class="section">
+    <div class="section-title">Sistemas de Primer Orden</div>
+    <div class="section-desc">// G(s) = Kp/(τs+1) · RESPUESTA TEMPORAL · ESCALÓN · RAMPA · IMPULSO</div>
+
+    <div class="info-box">
+      <div class="ib-content">
+        El sistema de primer orden es el bloque fundamental del modelado en procesos químicos. Un tanque de nivel, un intercambiador simple, un transmisor de temperatura — todos se comportan como sistemas de primer orden. Comprender su respuesta es esencial para interpretar pruebas de identificación y sintonizar controladores PID.
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="math-box">
+        <div class="math-title">📐 Respuesta al Escalón Unitario (entrada: A·u(t))</div>
+        <div class="math-step">G(s) = Kp / (τs + 1)  →  Y(s) = G(s)·(A/s) = Kp·A / [s·(τs+1)]</div>
+        <div class="math-step"><strong>Respuesta temporal (antitransformada):</strong></div>
+        <div class="math-step">y(t) = Kp·A·(1 − e^(−t/τ))   para t ≥ 0</div>
+        <div class="math-step"><strong>Valores clave:</strong></div>
+        <div class="math-step">t = τ  → y = 0.632·Kp·A  (63.2% del valor final)</div>
+        <div class="math-step">t = 2τ → y = 0.865·Kp·A  (86.5%)</div>
+        <div class="math-step">t = 3τ → y = 0.950·Kp·A  (95.0%)</div>
+        <div class="math-step">t = 4τ → y = 0.982·Kp·A  (98.2%) → prácticamente en SS</div>
+        <div class="math-result">y(∞) = Kp·A  ← valor final = ganancia × magnitud del escalón</div>
+      </div>
+      <div class="math-box">
+        <div class="math-title">📐 Respuesta al Impulso y a la Rampa</div>
+        <div class="math-step"><strong>Al impulso δ(t) (U(s)=1):</strong></div>
+        <div class="math-step">Y(s) = Kp/(τs+1) → y(t) = (Kp/τ)·e^(−t/τ)</div>
+        <div class="math-step">Pico en t=0: y(0) = Kp/τ. Decae exponencialmente.</div>
+        <div class="math-step" style="margin-top:8px;"><strong>A la rampa t·u(t) (U(s)=1/s²):</strong></div>
+        <div class="math-step">Y(s) = Kp/[s²·(τs+1)]</div>
+        <div class="math-step">y(t) = Kp·[t − τ·(1 − e^(−t/τ))]</div>
+        <div class="math-step">Para t≫τ: y(t) ≈ Kp·(t − τ) → sigue la rampa con retraso τ</div>
+        <div class="math-result">Error de seguimiento de rampa = Kp·τ (offset permanente en vel.)</div>
+      </div>
+    </div>
+
+    <!-- SVG: respuesta escalón 1er orden -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Respuesta al Escalón — Sistema de Primer Orden G(s)=Kp/(τs+1)</text>
+
+        <!-- Left panel: step input -->
+        <text x="140" y="38" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9" text-anchor="middle">Entrada u(t)</text>
+        <line x1="60" y1="180" x2="220" y2="180" stroke="#1e2d4a" stroke-width="1.5"/>
+        <line x1="60" y1="60" x2="60" y2="185" stroke="#1e2d4a" stroke-width="1.5"/>
+        <line x1="60" y1="180" x2="85" y2="180" stroke="#ffd700" stroke-width="2.5"/>
+        <line x1="85" y1="180" x2="85" y2="105" stroke="#ffd700" stroke-width="2.5"/>
+        <line x1="85" y1="105" x2="220" y2="105" stroke="#ffd700" stroke-width="2.5"/>
+        <text x="85" y="198" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">t=0</text>
+        <text x="70" y="103" fill="#ffd700" font-family="Share Tech Mono" font-size="9">A</text>
+
+        <!-- Right panel: output response -->
+        <text x="490" y="38" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9" text-anchor="middle">Salida y(t) = Kp·A·(1−e^(−t/τ))</text>
+        <line x1="280" y1="195" x2="700" y2="195" stroke="#1e2d4a" stroke-width="1.5"/>
+        <line x1="280" y1="55" x2="280" y2="200" stroke="#1e2d4a" stroke-width="1.5"/>
+
+        <!-- Asymptote Kp*A -->
+        <line x1="280" y1="75" x2="700" y2="75" stroke="#1e2d4a" stroke-width="1" stroke-dasharray="5,3"/>
+        <text x="705" y="79" fill="#ffd700" font-family="Share Tech Mono" font-size="8">Kp·A</text>
+
+        <!-- Response curve: y = Kp*A*(1-exp(-t/tau)) -->
+        <!-- tau corresponds to ~120px, plotting from x=280 -->
+        <path d="M280,195 Q320,155 360,115 Q400,90 440,80 Q480,76 520,75 Q560,75 700,75"
+              fill="none" stroke="#00d4ff" stroke-width="2.5"/>
+
+        <!-- τ marker -->
+        <line x1="400" y1="80" x2="400" y2="200" stroke="#ff6b35" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="400" y="210" fill="#ff6b35" font-family="Share Tech Mono" font-size="8" text-anchor="middle">t = τ</text>
+        <!-- 63.2% marker -->
+        <line x1="280" y1="123" x2="400" y2="123" stroke="#ff6b35" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="270" y="127" fill="#ff6b35" font-family="Share Tech Mono" font-size="7" text-anchor="end">63.2%</text>
+
+        <!-- 2τ marker -->
+        <line x1="520" y1="101" x2="520" y2="200" stroke="#39ff14" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="520" y="210" fill="#39ff14" font-family="Share Tech Mono" font-size="8" text-anchor="middle">2τ</text>
+        <line x1="280" y1="101" x2="520" y2="101" stroke="#39ff14" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="270" y="105" fill="#39ff14" font-family="Share Tech Mono" font-size="7" text-anchor="end">86.5%</text>
+
+        <!-- 3τ and 5τ approximate -->
+        <text x="615" y="210" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">3τ → 95%</text>
+        <text x="685" y="210" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">5τ ≈ SS</text>
+
+        <!-- Tangent line at t=0 -->
+        <line x1="280" y1="195" x2="400" y2="75" stroke="#ffd700" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+        <text x="330" y="120" fill="#ffd700" font-family="Share Tech Mono" font-size="7">pendiente=Kp·A/τ</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 3 — Respuesta escalón de sistema de primer orden. Características clave: en t=τ alcanza el 63.2% del valor final; la tangente en t=0 corta la asíntota exactamente en t=τ. El sistema alcanza el 98% en 4τ.</div>
+    </div>
+
+    <div class="problem-box">
+      <p><strong>Problema 2 — Sistema de primer orden (Intercambiador Incauca):</strong><br>
+      Un intercambiador de calor en el Ingenio Incauca tiene G(s) = 1.5/(8s+1) donde la salida es temperatura de jugo (°C) y la entrada es apertura de válvula de vapor (%). Un operador aplica un escalón de 5% en la apertura. Calcule: (a) temperatura final en estado estacionario, (b) temperatura a t=8 min, (c) t para alcanzar 95% del valor final.</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">▸ SOLUCIÓN</div>
+        <div class="math-step">(a) Valor final: y(∞) = Kp·A = 1.5 × 5 = <strong>7.5°C</strong> (sobre el punto de operación)</div>
+        <div class="math-step">(b) En t = τ = 8 min: y(8) = 7.5×(1−e^(−8/8)) = 7.5×(1−e^(−1)) = 7.5×0.632 = <strong>4.74°C</strong></div>
+        <div class="math-step">(c) Para 95%: 0.95 = 1 − e^(−t/8) → e^(−t/8) = 0.05 → t = −8·ln(0.05)</div>
+        <div class="math-step">    t = −8×(−2.996) = <strong>23.97 min ≈ 3τ</strong></div>
+        <div class="math-result">SS = +7.5°C · t(63%) = 8 min = τ · t(95%) ≈ 24 min = 3τ ✓</div>
+      </div>
+    </div>
+
+    <div class="quiz-box" id="q1ord">
+      <div class="quiz-q">❓ Un sistema de primer orden G(s)=2/(5s+1) recibe un escalón de 3 unidades. ¿Cuál es el valor de la salida en t=5 min?</div>
+      <div class="quiz-opt" onclick="checkQuiz('q1ord',this,'wrong')">A. 6.00 unidades</div>
+      <div class="quiz-opt" onclick="checkQuiz('q1ord',this,'correct')">B. 3.79 unidades</div>
+      <div class="quiz-opt" onclick="checkQuiz('q1ord',this,'wrong')">C. 5.00 unidades</div>
+      <div class="quiz-opt" onclick="checkQuiz('q1ord',this,'wrong')">D. 2.00 unidades</div>
+      <div class="quiz-feedback" id="q1ord-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">
+        ✅ y(t=5) = Kp·A·(1−e^(−t/τ)) = 2×3×(1−e^(−5/5)) = 6×(1−e^(−1)) = 6×0.632 = <strong>3.79 unidades</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SEGUNDO ORDEN ==================== -->
+  <div id="segundo_orden" class="section">
+    <div class="section-title">Sistemas de Segundo Orden</div>
+    <div class="section-desc">// G(s) = Kp·ωn² / (s²+2ζωns+ωn²) · AMORTIGUAMIENTO · SOBREIMPULSO</div>
+
+    <div class="info-box">
+      <div class="ib-content">
+        Los sistemas de segundo orden aparecen cuando se conectan en serie dos bloques de primer orden (CSTR con dos estados), o cuando el lazo cerrado de un controlador P con un proceso de primer orden produce una función de transferencia de segundo orden. El coeficiente de amortiguamiento <strong>ζ</strong> (zeta) es el parámetro más importante: determina si la respuesta oscila o no.
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="math-box">
+        <div class="math-title">📐 Forma Estándar de Segundo Orden</div>
+        <div class="math-step">G(s) = Kp·ωn² / (s² + 2ζ·ωn·s + ωn²)</div>
+        <div class="math-step"><strong>Parámetros:</strong></div>
+        <div class="math-step">Kp = ganancia estática</div>
+        <div class="math-step">ωn = frecuencia natural no amortiguada [rad/s]</div>
+        <div class="math-step">ζ = coeficiente de amortiguamiento [adimensional]</div>
+        <div class="math-step"><strong>Polos del sistema:</strong></div>
+        <div class="math-step">s₁,₂ = −ζ·ωn ± ωn·√(ζ²−1)</div>
+        <div class="math-result">ωd = ωn·√(1−ζ²)  ← frecuencia natural amortiguada</div>
+      </div>
+      <div class="math-box">
+        <div class="math-title">📐 Respuesta al Escalón (ζ &lt; 1, subamortiguado)</div>
+        <div class="math-step">y(t) = Kp·A·[1 − e^(−ζωnt)·(cos(ωd·t) + (ζ/√(1−ζ²))·sin(ωd·t))]</div>
+        <div class="math-step"><strong>Sobreimpulso máximo OS:</strong></div>
+        <div class="math-step">OS% = 100·exp(−π·ζ/√(1−ζ²))</div>
+        <div class="math-step"><strong>Tiempo de pico tp:</strong></div>
+        <div class="math-step">tp = π / ωd = π / (ωn·√(1−ζ²))</div>
+        <div class="math-step"><strong>Tiempo de asentamiento ts (criterio ±2%):</strong></div>
+        <div class="math-result">ts ≈ 4 / (ζ·ωn)  [criterio ±2%]</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Clasificación por Coeficiente de Amortiguamiento</div>
+
+    <div class="term-grid">
+      <div class="term-card orange">
+        <div class="term-title">Subamortiguado (ζ &lt; 1)</div>
+        <div class="term-def">Polos complejos conjugados. Respuesta oscilatoria que decae. Más común en lazos de control diseñados con alta ganancia. El sobreimpulso aumenta al disminuir ζ.</div>
+        <div class="term-formula">p₁,₂ = −ζωn ± jωd  (parte imaginaria ≠ 0)</div>
+      </div>
+      <div class="term-card green">
+        <div class="term-title">Críticamente amortiguado (ζ = 1)</div>
+        <div class="term-def">Polos reales iguales. Respuesta más rápida sin oscilación. Caso límite entre oscilatorio y no oscilatorio. Tiempo de asentamiento mínimo sin sobreimpulso.</div>
+        <div class="term-formula">p₁ = p₂ = −ωn  (polo doble real)</div>
+      </div>
+      <div class="term-card">
+        <div class="term-title">Sobreamortiguado (ζ &gt; 1)</div>
+        <div class="term-def">Polos reales distintos. Respuesta monotónica sin oscilación pero más lenta que ζ=1. En la práctica: dos sistemas de primer orden en serie.</div>
+        <div class="term-formula">p₁,₂ = −ζωn ± ωn√(ζ²−1)  (ambos reales negativos)</div>
+      </div>
+      <div class="term-card gold">
+        <div class="term-title">Marginalmente estable (ζ = 0)</div>
+        <div class="term-def">Polos imaginarios puros. Oscilación sinusoidal sostenida — ni crece ni decae. El proceso oscila indefinidamente. En control: situación de máxima ganancia antes de inestabilidad.</div>
+        <div class="term-formula">p₁,₂ = ±jωn  (Re(s) = 0)</div>
+      </div>
+    </div>
+
+    <!-- SVG respuesta segundo orden -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Respuesta al Escalón — Sistemas de 2do Orden (diferentes ζ)</text>
+
+        <!-- Axes -->
+        <line x1="60" y1="210" x2="700" y2="210" stroke="#1e2d4a" stroke-width="1.5"/>
+        <line x1="60" y1="30" x2="60" y2="215" stroke="#1e2d4a" stroke-width="1.5"/>
+        <text x="706" y="214" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">t/ωn →</text>
+        <text x="65" y="28" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">y(t)/KpA</text>
+
+        <!-- Asymptote y=1 -->
+        <line x1="60" y1="120" x2="700" y2="120" stroke="#1e2d4a" stroke-width="1" stroke-dasharray="5,3"/>
+        <text x="705" y="124" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">1.0</text>
+
+        <!-- ζ=0.1: highly oscillatory -->
+        <path d="M60,210 Q120,50 180,100 Q220,130 260,115 Q300,102 340,112 Q380,120 700,120"
+              fill="none" stroke="#ff6b35" stroke-width="2"/>
+        <text x="155" y="45" fill="#ff6b35" font-family="Share Tech Mono" font-size="9">ζ=0.1 → OS≈73%</text>
+
+        <!-- ζ=0.5: moderate overshoot -->
+        <path d="M60,210 Q120,70 180,110 Q220,125 280,118 Q350,118 700,120"
+              fill="none" stroke="#00d4ff" stroke-width="2"/>
+        <text x="380" y="108" fill="#00d4ff" font-family="Share Tech Mono" font-size="9">ζ=0.5 → OS≈16%</text>
+
+        <!-- ζ=0.707: ~5% overshoot (ITAE optimal) -->
+        <path d="M60,210 Q130,90 200,115 Q280,122 700,120"
+              fill="none" stroke="#39ff14" stroke-width="2.5"/>
+        <text x="380" y="140" fill="#39ff14" font-family="Share Tech Mono" font-size="9">ζ=0.707 → OS≈5% (óptimo)</text>
+
+        <!-- ζ=1: critically damped -->
+        <path d="M60,210 Q160,140 250,122 Q380,120 700,120"
+              fill="none" stroke="#ffd700" stroke-width="2"/>
+        <text x="380" y="158" fill="#ffd700" font-family="Share Tech Mono" font-size="9">ζ=1.0 → sin sobreimpulso</text>
+
+        <!-- ζ=2: overdamped -->
+        <path d="M60,210 Q200,165 320,130 Q450,123 700,120"
+              fill="none" stroke="#5a7a9a" stroke-width="2"/>
+        <text x="450" y="178" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">ζ=2.0 → sobreamortiguado</text>
+
+        <!-- OS annotation -->
+        <line x1="60" y1="50" x2="185" y2="50" stroke="#ff6b35" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="58" y="54" fill="#ff6b35" font-family="Share Tech Mono" font-size="8" text-anchor="end">OS</text>
+
+        <!-- Scale marks -->
+        <text x="52" y="124" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="end">1.0</text>
+        <text x="52" y="214" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="end">0</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 4 — Respuesta escalón para diferentes valores de ζ. ζ=0.707 (1/√2) minimiza el criterio ITAE y es el valor de diseño estándar en control de procesos. Mayor ζ → respuesta más lenta pero sin oscilación.</div>
+    </div>
+
+    <div class="problem-box">
+      <p><strong>Problema 3 — Sistema de segundo orden CSTR linealizado:</strong><br>
+      El lazo de temperatura de un CSTR en la planta de NH₄NO₃ tiene la función de transferencia de lazo cerrado: G_LC(s) = 4 / (s² + 2s + 4). Calcule: (a) ωn, (b) ζ, (c) sobreimpulso OS%, (d) tiempo de pico tp y (e) clasifique la respuesta.</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">▸ SOLUCIÓN</div>
+        <div class="math-step">Forma estándar: s² + 2ζωn·s + ωn² → comparar con s² + 2s + 4</div>
+        <div class="math-step">(a) ωn² = 4 → <strong>ωn = 2 rad/s</strong></div>
+        <div class="math-step">(b) 2ζωn = 2 → ζ = 2/(2×2) = <strong>ζ = 0.5</strong></div>
+        <div class="math-step">(c) OS% = 100·exp(−π×0.5/√(1−0.25)) = 100·exp(−π×0.5/0.866)</div>
+        <div class="math-step">    OS% = 100·exp(−1.814) = 100×0.163 = <strong>16.3%</strong></div>
+        <div class="math-step">(d) ωd = ωn·√(1−ζ²) = 2×√(0.75) = 2×0.866 = 1.732 rad/s</div>
+        <div class="math-step">    tp = π/ωd = π/1.732 = <strong>1.81 s</strong></div>
+        <div class="math-result">ζ=0.5 → <span class="stability-badge stab-stable">SUBAMORTIGUADO</span> · OS=16.3% · tp=1.81 s. Aceptable para control, podría reducirse aumentando la ganancia derivativa.</div>
+      </div>
+    </div>
+
+    <div class="quiz-box" id="q2ord">
+      <div class="quiz-q">❓ Un sistema de 2do orden tiene ωn=5 rad/s y ζ=0.707. ¿Cuál es el sobreimpulso aproximado?</div>
+      <div class="quiz-opt" onclick="checkQuiz('q2ord',this,'wrong')">A. 16.3%</div>
+      <div class="quiz-opt" onclick="checkQuiz('q2ord',this,'correct')">B. 4.3%</div>
+      <div class="quiz-opt" onclick="checkQuiz('q2ord',this,'wrong')">C. 0% (sin sobreimpulso)</div>
+      <div class="quiz-opt" onclick="checkQuiz('q2ord',this,'wrong')">D. 73%</div>
+      <div class="quiz-feedback" id="q2ord-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">
+        ✅ OS% = 100·exp(−π×0.707/√(1−0.5)) = 100·exp(−π×0.707/0.707) = 100·exp(−π) = 100×0.0432 ≈ <strong>4.3%</strong>. ζ=1/√2 es el valor óptimo ITAE para segundo orden.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ALTO ORDEN ==================== -->
+  <div id="alto_orden" class="section">
+    <div class="section-title">Sistemas de Alto Orden y Aproximaciones</div>
+    <div class="section-desc">// POLOS DOMINANTES · REDUCCIÓN DE ORDEN · SISTEMAS CON CEROS · RESPUESTA INVERSA</div>
+
+    <div class="info-box">
+      <div class="ib-content">
+        Los procesos industriales reales tienen muchos estados (temperatura en cada plato de una columna, concentraciones en cada etapa de un tren de reactores) — son sistemas de orden muy alto. Para el diseño de controladores PID clásico usamos <strong>aproximaciones de orden reducido</strong> que capturan el comportamiento dominante del sistema sin perder información crítica.
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Concepto de Polos Dominantes</div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-tag">POLO DOMINANTE</div>
+        <div class="card-title">¿Qué polo "manda"?</div>
+        <div class="card-body">
+          En un sistema de alto orden, los polos más cercanos al eje imaginario son los <strong>dominantes</strong>: sus modos decaen más lentamente y determinan el comportamiento a largo plazo. Los polos más lejanos decaen tan rápido que su efecto es instantáneo — se aproximan como ganancias o como tiempo muerto adicional.
+        </div>
+        <ul class="spec-list">
+          <li>Polo dominante: |Re(p_dom)| ≪ |Re(p_rápido)|</li>
+          <li>Regla práctica: si |Re(p_rapido)| ≥ 5×|Re(p_dom)| → polo rápido no dominante</li>
+          <li>Los polos rápidos se "absorben" en un tiempo muerto equivalente</li>
+        </ul>
+      </div>
+      <div class="card orange">
+        <div class="card-tag">REDUCCIÓN DE ORDEN</div>
+        <div class="card-title">Aproximación FOPDT</div>
+        <div class="card-body">
+          El método más usado en la industria: aproximar cualquier sistema de alto orden como un proceso de primer orden más tiempo muerto. Los polos no dominantes y los ceros de no mínima fase se incluyen en un θ equivalente.
+          <div class="term-formula" style="margin-top:10px;">G(s) ≈ Kp·e^(−θeq·s) / (τeq·s + 1)</div>
+        </div>
+        <ul class="spec-list">
+          <li>Método de Skogestad: θ = θ_real + τ_2/2 + Σ(τ_i para i≥3)</li>
+          <li>Método de respuesta al escalón: identificar τ y θ gráficamente</li>
+          <li>Base de la sintonización IMC de la Unidad I</li>
+        </ul>
+      </div>
+      <div class="card green">
+        <div class="card-tag">CEROS EN EL NUMERADOR</div>
+        <div class="card-title">Sistemas de Fase No Mínima</div>
+        <div class="card-body">
+          Un cero en el semiplano derecho (Re(z)&gt;0) causa que la respuesta temporal vaya inicialmente en la dirección <em>opuesta</em> antes de dirigirse al valor final. Este comportamiento se llama <strong>respuesta inversa</strong> y es especialmente problemático para el control.
+        </div>
+        <ul class="spec-list">
+          <li>Causa: dos caminos de causalidad con efectos opuestos</li>
+          <li>Ejemplo: columna de destilación — cambio de vapor causa primero bajada de concentración</li>
+          <li>Dificulta el control: el controlador "ve" la señal equivocada inicialmente</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SVG: Alto orden vs aproximación FOPDT -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Reducción de Orden: Sistema Real (Alto Orden) vs Aproximación FOPDT</text>
+
+        <!-- Axes -->
+        <line x1="60" y1="190" x2="680" y2="190" stroke="#1e2d4a" stroke-width="1.5"/>
+        <line x1="60" y1="40" x2="60" y2="195" stroke="#1e2d4a" stroke-width="1.5"/>
+        <text x="685" y="194" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">t →</text>
+        <text x="65" y="38" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">y(t)</text>
+        <line x1="60" y1="65" x2="680" y2="65" stroke="#1e2d4a" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="685" y="69" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Kp·A</text>
+
+        <!-- High order response: S-shaped (sigmoid) -->
+        <path d="M60,190 Q100,190 130,188 Q160,185 185,170 Q210,150 230,110 Q255,75 285,68 Q340,65 680,65"
+              fill="none" stroke="#ff6b35" stroke-width="2.5"/>
+        <text x="320" y="55" fill="#ff6b35" font-family="Share Tech Mono" font-size="9">Sistema real (alto orden)</text>
+        <text x="320" y="45" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">G(s)=Kp/[(τ₁s+1)(τ₂s+1)(τ₃s+1)]</text>
+
+        <!-- FOPDT approximation -->
+        <path d="M60,190 Q120,190 145,190 Q160,190 160,190 L165,190 Q166,185 180,150 Q210,100 250,72 Q300,65 680,65"
+              fill="none" stroke="#00d4ff" stroke-width="2.5" stroke-dasharray="8,4"/>
+        <text x="220" y="175" fill="#00d4ff" font-family="Share Tech Mono" font-size="9">Aprox. FOPDT</text>
+        <text x="220" y="185" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">Kp·e^(−θs)/(τs+1)</text>
+
+        <!-- θ annotation -->
+        <line x1="155" y1="190" x2="155" y2="205" stroke="#ffd700" stroke-width="1.5"/>
+        <line x1="60" y1="200" x2="155" y2="200" stroke="#ffd700" stroke-width="1.5"/>
+        <text x="107" y="215" fill="#ffd700" font-family="Share Tech Mono" font-size="8" text-anchor="middle">θ (tiempo muerto equiv.)</text>
+
+        <!-- τ annotation -->
+        <line x1="155" y1="195" x2="155" y2="220" stroke="#39ff14" stroke-width="1"/>
+        <line x1="310" y1="195" x2="310" y2="220" stroke="#39ff14" stroke-width="1"/>
+        <line x1="155" y1="220" x2="310" y2="220" stroke="#39ff14" stroke-width="1.5"/>
+        <text x="232" y="232" fill="#39ff14" font-family="Share Tech Mono" font-size="8" text-anchor="middle">τ (constante de tiempo equiv.)</text>
+
+        <!-- Zona inflexión -->
+        <circle cx="207" cy="128" r="5" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+        <text x="215" y="120" fill="#ffd700" font-family="Share Tech Mono" font-size="7">punto de</text>
+        <text x="215" y="130" fill="#ffd700" font-family="Share Tech Mono" font-size="7">inflexión</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 5 — Respuesta en S de sistema de alto orden y su aproximación FOPDT. El punto de inflexión de la curva en S permite identificar gráficamente θ y τ para la sintonización PID (método Z-N lazo abierto).</div>
+    </div>
+
+    <div class="accordion-item" onclick="toggleAccordion(this)">
+      <div class="accordion-header">
+        <div class="accordion-title">📐 Método de Skogestad para Reducción de Orden</div>
+        <span class="accordion-icon">+</span>
+      </div>
+      <div class="accordion-body">
+        <strong>Para G(s) = Kp·e^(−θ₀s) / [(τ₁s+1)(τ₂s+1)(τ₃s+1)...], con τ₁ ≥ τ₂ ≥ τ₃...:</strong><br><br>
+        <strong>Paso 1:</strong> El polo dominante es τ₁ (el mayor). Este se convierte en τ_eq.<br>
+        <strong>Paso 2:</strong> El segundo polo τ₂ se divide en dos partes: la mitad se suma al tiempo muerto, la otra mitad se descarta (para el cálculo IMC).<br>
+        <strong>Paso 3:</strong> Todos los polos adicionales τ₃, τ₄... se suman íntegramente al tiempo muerto.<br><br>
+        <strong>Resultado:</strong><br>
+        τ_eq = τ₁<br>
+        θ_eq = θ₀ + τ₂/2 + τ₃ + τ₄ + ...<br><br>
+        <strong>Ejemplo:</strong> G(s) = 2·e^(−0.5s)/[(10s+1)(3s+1)(1s+1)(0.5s+1)]<br>
+        → τ_eq = 10 min<br>
+        → θ_eq = 0.5 + 3/2 + 1 + 0.5 = 0.5 + 1.5 + 1 + 0.5 = <strong>3.5 min</strong><br>
+        → G_FOPDT(s) ≈ 2·e^(−3.5s)/(10s+1)  → θ/τ = 3.5/10 = 0.35 → control moderado
+      </div>
+    </div>
+
+    <div class="industrial-example">
+      <div class="ie-title">▸ RESPUESTA INVERSA — COLUMNA DE DESTILACIÓN MANUELITA</div>
+      <div class="ie-body">
+        En la columna de destilación del Ingenio Manuelita, al aumentar el vapor al rehervidor, la concentración de sacarosa en el destilado <em>desciende inicialmente</em> antes de subir. Esto ocurre porque el vapor primero arrastra más impurezas hacia la cabeza de la columna (efecto rápido) antes de mejorar la separación térmica (efecto lento dominante). El modelo tiene un cero en el semiplano derecho: <strong>G(s) = Kp·(1−τ_z·s) / [(τ₁s+1)(τ₂s+1)]</strong>. Un controlador PID estándar "confunde" la señal inicial inversa — por eso la acción derivativa D se desactiva en columnas con respuesta inversa.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ESTABILIDAD ==================== -->
+  <div id="estabilidad" class="section">
+    <div class="section-title">Análisis de Estabilidad — Criterios Generales</div>
+    <div class="section-desc">// LAZO CERRADO · POLINOMIO CARACTERÍSTICO · CONDICIÓN BIBO · MARGENES</div>
+
+    <div class="warn-box">
+      <div class="ib-content">
+        <strong>¿Por qué es crítica la estabilidad?</strong> Un lazo de control inestable puede causar oscilaciones que dañen equipos, generen condiciones peligrosas (temperatura fuera de rango en un reactor exotérmico) o produzcan producto fuera de especificación de forma irreversible. <strong>Nunca se debe operar un lazo que no haya sido verificado como estable.</strong>
+      </div>
+    </div>
+
+    <div class="term-grid">
+      <div class="term-card green">
+        <div class="term-title">Estabilidad BIBO</div>
+        <div class="term-def">Bounded Input → Bounded Output. Un sistema es BIBO estable si para cualquier entrada acotada, la salida es acotada. Condición: todos los polos del lazo cerrado deben tener parte real estrictamente negativa.</div>
+        <div class="term-formula">Re(pᵢ) &lt; 0  ∀ i → sistema BIBO estable</div>
+      </div>
+      <div class="term-card orange">
+        <div class="term-title">Función de Transferencia en Lazo Cerrado</div>
+        <div class="term-def">Para el lazo estándar feedback negativo con controlador Gc(s) y proceso G(s):</div>
+        <div class="term-formula">T(s) = Gc(s)·G(s) / [1 + Gc(s)·G(s)·H(s)]</div>
+      </div>
+      <div class="term-card">
+        <div class="term-title">Polinomio Característico</div>
+        <div class="term-def">El denominador de T(s): p(s) = 1 + Gc·G·H = 0. Las raíces de este polinomio son los polos del lazo cerrado. Si todas tienen parte real negativa → estabilidad.</div>
+        <div class="term-formula">p(s) = aₙsⁿ + aₙ₋₁sⁿ⁻¹ + ... + a₁s + a₀ = 0</div>
+      </div>
+      <div class="term-card gold">
+        <div class="term-title">Condición Necesaria de Estabilidad</div>
+        <div class="term-def">Para que todas las raíces tengan parte real negativa, es necesario (pero no suficiente) que todos los coeficientes del polinomio característico sean del mismo signo (todos positivos para la convención estándar).</div>
+        <div class="term-formula">Si ∃ aᵢ ≤ 0 o aᵢ cambia de signo → sistema INESTABLE (sin calcular raíces)</div>
+      </div>
+    </div>
+
+    <!-- SVG: lazo cerrado tipo -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <defs>
+          <marker id="la" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+          <marker id="la2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker>
+        </defs>
+        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Lazo de Control — Diagrama de Bloques Estándar con Realimentación Negativa</text>
+
+        <!-- SP -->
+        <text x="25" y="85" fill="#ffd700" font-family="Share Tech Mono" font-size="10">R(s)</text>
+        <line x1="50" y1="82" x2="88" y2="82" stroke="#ffd700" stroke-width="1.5" marker-end="url(#la)"/>
+        <!-- Sumador -->
+        <circle cx="100" cy="82" r="12" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="94" y="87" fill="#00d4ff" font-family="Share Tech Mono" font-size="13">Σ</text>
+        <!-- Error -->
+        <line x1="112" y1="82" x2="155" y2="82" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#la)"/>
+        <text x="130" y="76" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">E(s)</text>
+        <!-- Controlador -->
+        <rect x="155" y="65" width="110" height="34" fill="#0f1626" stroke="#00d4ff" stroke-width="1.5" rx="3"/>
+        <text x="210" y="82" fill="#00d4ff" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Gc(s)</text>
+        <text x="210" y="93" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Controlador PID</text>
+        <line x1="265" y1="82" x2="305" y2="82" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#la)"/>
+        <text x="282" y="76" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">U(s)</text>
+        <!-- Proceso -->
+        <rect x="305" y="65" width="100" height="34" fill="#0f1626" stroke="#ff6b35" stroke-width="1.5" rx="3"/>
+        <text x="355" y="82" fill="#ff6b35" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">G(s)</text>
+        <text x="355" y="93" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Proceso</text>
+        <line x1="405" y1="82" x2="455" y2="82" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#la2)"/>
+        <text x="428" y="76" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Y(s)</text>
+        <!-- Output -->
+        <text x="460" y="86" fill="#ffd700" font-family="Share Tech Mono" font-size="10">Y(s)</text>
+        <!-- Transmisor -->
+        <rect x="305" y="115" width="100" height="30" fill="#0f1626" stroke="#39ff14" stroke-width="1.5" rx="3"/>
+        <text x="355" y="134" fill="#39ff14" font-family="Share Tech Mono" font-size="9" text-anchor="middle">H(s)=Transmisor</text>
+        <!-- Feedback lines -->
+        <line x1="440" y1="82" x2="440" y2="130" stroke="#39ff14" stroke-width="1.5"/>
+        <line x1="100" y1="130" x2="440" y2="130" stroke="#39ff14" stroke-width="1.5"/>
+        <line x1="100" y1="94" x2="100" y2="130" stroke="#39ff14" stroke-width="1.5" marker-end="url(#la)"/>
+        <!-- Minus sign at sumador -->
+        <text x="106" y="104" fill="#ff6b35" font-family="Share Tech Mono" font-size="10">−</text>
+        <!-- Polinomio característico label -->
+        <text x="360" y="155" fill="#ffd700" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Polinomio característico: 1 + Gc(s)·G(s)·H(s) = 0 → raíces = polos lazo cerrado → determinan estabilidad</text>
+      </svg>
+    </div>
+
+    <div class="ext-links-box">
+      <div class="ext-links-title">📡 FUENTES EXTERNAS — ESTABILIDAD DE SISTEMAS</div>
+      <div class="ext-link-item">
+        <span class="ext-link-icon">🖥️</span>
+        <div class="ext-link-info">
+          <div class="ext-link-name">MATLAB — Root Locus y Lugar de Raíces</div>
+          <div class="ext-link-desc">Función rlocus() de MATLAB para trazar el lugar de raíces del lazo cerrado. Visualiza cómo se mueven los polos al variar Kc. Documentación oficial con ejemplos de procesos químicos.</div>
+        </div>
+        <a href="https://www.mathworks.com/help/control/ref/lti.rlocus.html" class="ext-link-url" target="_blank" rel="noopener">🔗 rlocus()</a>
+      </div>
+      <div class="ext-link-item">
+        <span class="ext-link-icon">📗</span>
+        <div class="ext-link-info">
+          <div class="ext-link-name">Control Systems Academy — Stability Analysis</div>
+          <div class="ext-link-desc">Recurso educativo gratuito con explicaciones visuales e interactivas de estabilidad de sistemas de control, criterio de Routh y márgenes de estabilidad.</div>
+        </div>
+        <a href="https://www.controlsystemsacademy.com" class="ext-link-url orange" target="_blank" rel="noopener">🔗 CS Academy</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ANÁLISIS EN FRECUENCIA ==================== -->
+  <div id="frecuencia" class="section">
+    <div class="section-title">Análisis en Frecuencia</div>
+    <div class="section-desc">// G(jω) · RESPUESTA SINUSOIDAL EN ESTADO ESTACIONARIO · MAGNITUD Y FASE</div>
+
+    <div class="info-box">
+      <div class="ib-content">
+        El análisis en frecuencia estudia cómo un sistema lineal <em>amplifica o atenúa</em> señales sinusoidales de diferente frecuencia, y qué desfase introduce entre la entrada y la salida. Sustituyendo <strong>s = jω</strong> en G(s) se obtiene G(jω), la respuesta en frecuencia. Esta información, representada en diagramas de Bode o Nyquist, permite determinar los márgenes de estabilidad sin necesidad de calcular los polos del lazo cerrado.
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="math-box">
+        <div class="math-title">📐 Respuesta Sinusoidal en Estado Estacionario</div>
+        <div class="math-step">Si u(t) = A·sin(ωt), entonces para t→∞:</div>
+        <div class="math-step">y_ss(t) = A·|G(jω)|·sin(ωt + ∠G(jω))</div>
+        <div class="math-step"><strong>Magnitud:</strong> |G(jω)| = amplitud de salida / amplitud de entrada</div>
+        <div class="math-step"><strong>Fase:</strong> ∠G(jω) = desfase entre entrada y salida [rad o °]</div>
+        <div class="math-step" style="margin-top:8px;"><strong>Para G(s)=Kp/(τs+1), s=jω:</strong></div>
+        <div class="math-step">G(jω) = Kp/(jωτ+1) = Kp·(1−jωτ)/(1+ω²τ²)</div>
+        <div class="math-step">|G(jω)| = Kp / √(1+ω²τ²)</div>
+        <div class="math-result">∠G(jω) = −arctan(ωτ) [siempre negativo → atraso de fase]</div>
+      </div>
+      <div class="math-box">
+        <div class="math-title">📐 Frecuencias Características</div>
+        <div class="math-step"><strong>Frecuencia de esquina (corner frequency):</strong></div>
+        <div class="math-step">ωc = 1/τ  → |G(jωc)| = Kp/√2 ≈ 0.707·Kp  (-3 dB)</div>
+        <div class="math-step">∠G(jωc) = −45°</div>
+        <div class="math-step" style="margin-top:8px;"><strong>Frecuencia de cruce de ganancia (gain crossover):</strong></div>
+        <div class="math-step">ωgc: |G_LA(jωgc)| = 1 (0 dB)</div>
+        <div class="math-step"><strong>Frecuencia de cruce de fase (phase crossover):</strong></div>
+        <div class="math-step">ωpc: ∠G_LA(jωpc) = −180°</div>
+        <div class="math-result">Margen de ganancia Gm: frecuencia donde fase = −180°. Margen de fase Pm: fase cuando |G_LA|=1</div>
+      </div>
+    </div>
+
+    <div class="term-grid" style="margin-top:8px;">
+      <div class="term-card">
+        <div class="term-title">Magnitud en dB</div>
+        <div class="term-def">La magnitud en decibeles permite escala logarítmica y suma de módulos de bloques en serie en lugar de multiplicación. Rango industrial típico: −40 dB a +40 dB.</div>
+        <div class="term-formula">|G|_dB = 20·log₁₀(|G(jω)|)  [dB]</div>
+      </div>
+      <div class="term-card orange">
+        <div class="term-title">Pendiente Asintótica</div>
+        <div class="term-def">Cada polo de orden n añade −20n dB/década a la curva de magnitud para ω≫ωc. Cada cero añade +20 dB/década. Esta propiedad permite trazar Bode asintótico de forma manual.</div>
+        <div class="term-formula">n polos → −20n dB/dec  |  m ceros → +20m dB/dec</div>
+      </div>
+      <div class="term-card green">
+        <div class="term-title">Tiempo Muerto θ en Frecuencia</div>
+        <div class="term-def">El tiempo muerto e^(−θs) no afecta la magnitud del Bode pero añade una fase proporcional a la frecuencia. A altas frecuencias su efecto sobre la fase es devastador para la estabilidad.</div>
+        <div class="term-formula">∠e^(−jωθ) = −ω·θ [rad] = −ω·θ·(180/π) [°]</div>
+      </div>
+      <div class="term-card gold">
+        <div class="term-title">Función de Sensibilidad</div>
+        <div class="term-def">S(s) = 1/[1+L(s)] donde L(s)=Gc·G es la función de lazo abierto. Cuantifica cómo las perturbaciones afectan la salida. El pico de |S(jω)| está relacionado con el margen de módulo Mm.</div>
+        <div class="term-formula">||S||∞ = 1/Mm  →  Mm_min = 0.5 (6 dB) para robustez</div>
+      </div>
+    </div>
+
+    <div class="industrial-example">
+      <div class="ie-title">▸ ANÁLISIS EN FRECUENCIA — LAZO DE PRESIÓN PLANTA H₂SO₄</div>
+      <div class="ie-body">
+        El lazo de presión del evaporador de la planta de ácido sulfúrico tiene G_LA(s) = Kc·2·e^(−0.3s)/(3s+1). A la frecuencia de cruce de fase ωpc donde ∠G_LA = −180°, se calcula: ωpc tal que −arctan(3ωpc) − 0.3·ωpc = −π. Por iteración: ωpc ≈ 4.7 rad/min. El margen de ganancia es Gm = 1/|G_LA(jωpc)| = (3s+1)/2 evaluado, lo que determina la Kc máxima antes de inestabilidad. Esto se visualiza en el diagrama de Bode de la sección siguiente.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== BODE & NYQUIST ==================== -->
+  <div id="bode" class="section">
+    <div class="section-title">Diagramas de Bode y Nyquist</div>
+    <div class="section-desc">// MAGNITUD dB · FASE ° · CURVA DE NYQUIST · CRITERIO DE NYQUIST</div>
+
+    <div class="info-box">
+      <div class="ib-content">
+        Los <strong>diagramas de Bode</strong> (magnitud y fase vs. log(ω)) y el <strong>diagrama de Nyquist</strong> (parte imaginaria vs. parte real de G_LA(jω)) son las dos representaciones gráficas estándar de la respuesta en frecuencia. Bode es más intuitivo para sintonización; Nyquist es más completo matemáticamente y permite analizar sistemas con tiempo muerto y ceros de fase no mínima.
+      </div>
+    </div>
+
+    <!-- SVG Bode plot FOPDT -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Diagrama de Bode — G(s) = Kp·e^(−θs)/(τs+1)  [FOPDT]</text>
+
+        <!-- MAGNITUDE PLOT (top half) -->
+        <text x="30" y="45" fill="#5a7a9a" font-family="Rajdhani,sans-serif" font-size="12" font-weight="600">Magnitud [dB]</text>
+
+        <!-- Axes magnitude -->
+        <line x1="80" y1="165" x2="700" y2="165" stroke="#1e2d4a" stroke-width="1.5"/>
+        <line x1="80" y1="45" x2="80" y2="170" stroke="#1e2d4a" stroke-width="1.5"/>
+
+        <!-- Grid lines magnitude -->
+        <line x1="80" y1="55" x2="700" y2="55" stroke="#1e2d4a" stroke-width="0.5" stroke-dasharray="3,4"/>
+        <line x1="80" y1="85" x2="700" y2="85" stroke="#1e2d4a" stroke-width="0.5" stroke-dasharray="3,4"/>
+        <line x1="80" y1="115" x2="700" y2="115" stroke="#1e2d4a" stroke-width="0.5" stroke-dasharray="3,4"/>
+        <line x1="80" y1="145" x2="700" y2="145" stroke="#1e2d4a" stroke-width="0.5" stroke-dasharray="3,4"/>
+
+        <text x="72" y="59" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="end">20</text>
+        <text x="72" y="89" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="end">0</text>
+        <text x="72" y="119" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="end">−20</text>
+        <text x="72" y="149" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="end">−40</text>
+
+        <!-- 0 dB line -->
+        <line x1="80" y1="85" x2="700" y2="85" stroke="#ffd700" stroke-width="1" stroke-dasharray="5,3" opacity="0.5"/>
+        <text x="705" y="89" fill="#ffd700" font-family="Share Tech Mono" font-size="8">0 dB</text>
+
+        <!-- Bode magnitude: flat then -20dB/dec (for Kp=1) -->
+        <!-- Asymptotic: flat at 0 dB until ω=1/τ, then -20dB/dec -->
+        <!-- Corner at x≈300 (ω=1/τ), starts at left at 0dB, ends at right at -40dB -->
+        <path d="M80,85 L300,85 Q330,85 360,110 Q420,135 480,145 Q560,155 700,163"
+              fill="none" stroke="#00d4ff" stroke-width="2.5"/>
+
+        <!-- Phase contribution of time delay (adds more phase lag at high freq) -->
+        <path d="M80,85 L280,85 Q310,90 340,115 Q380,138 430,152 Q510,163 700,167"
+              fill="none" stroke="#ff6b35" stroke-width="2" stroke-dasharray="8,4"/>
+        <text x="580" y="160" fill="#ff6b35" font-family="Share Tech Mono" font-size="8">con θ</text>
+        <text x="580" y="145" fill="#00d4ff" font-family="Share Tech Mono" font-size="8">sin θ</text>
+
+        <!-- Corner frequency mark -->
+        <line x1="300" y1="75" x2="300" y2="175" stroke="#39ff14" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="300" y="178" fill="#39ff14" font-family="Share Tech Mono" font-size="8" text-anchor="middle">ωc=1/τ</text>
+        <text x="300" y="72" fill="#39ff14" font-family="Share Tech Mono" font-size="7" text-anchor="middle">−3 dB</text>
+
+        <!-- Gain crossover -->
+        <line x1="460" y1="75" x2="460" y2="175" stroke="#ffd700" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="460" y="178" fill="#ffd700" font-family="Share Tech Mono" font-size="8" text-anchor="middle">ωgc</text>
+
+        <!-- Asymptote line -20dB/decade -->
+        <line x1="310" y1="85" x2="700" y2="171" stroke="#5a7a9a" stroke-width="1" stroke-dasharray="3,5" opacity="0.5"/>
+        <text x="640" y="170" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">−20 dB/dec</text>
+
+        <!-- Freq axis labels -->
+        <text x="140" y="180" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">0.01/τ</text>
+        <text x="220" y="180" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">0.1/τ</text>
+        <text x="380" y="180" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">10/τ</text>
+        <text x="540" y="180" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">100/τ</text>
+        <text x="680" y="180" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">ω →</text>
+
+        <!-- PHASE PLOT (bottom half) -->
+        <text x="30" y="210" fill="#5a7a9a" font-family="Rajdhani,sans-serif" font-size="12" font-weight="600">Fase [°]</text>
+
+        <!-- Axes phase -->
+        <line x1="80" y1="350" x2="700" y2="350" stroke="#1e2d4a" stroke-width="1.5"/>
+        <line x1="80" y1="195" x2="80" y2="355" stroke="#1e2d4a" stroke-width="1.5"/>
+
+        <line x1="80" y1="215" x2="700" y2="215" stroke="#1e2d4a" stroke-width="0.5" stroke-dasharray="3,4"/>
+        <line x1="80" y1="250" x2="700" y2="250" stroke="#1e2d4a" stroke-width="0.5" stroke-dasharray="3,4"/>
+        <line x1="80" y1="285" x2="700" y2="285" stroke="#1e2d4a" stroke-width="0.5" stroke-dasharray="3,4"/>
+        <line x1="80" y1="320" x2="700" y2="320" stroke="#1e2d4a" stroke-width="0.5" stroke-dasharray="3,4"/>
+
+        <text x="72" y="219" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="end">0°</text>
+        <text x="72" y="254" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="end">−45°</text>
+        <text x="72" y="289" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="end">−90°</text>
+        <text x="72" y="324" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="end">−135°</text>
+        <text x="72" y="354" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="end">−180°</text>
+
+        <!-- -180° line (critical) -->
+        <line x1="80" y1="350" x2="700" y2="350" stroke="#ff6b35" stroke-width="1" stroke-dasharray="5,3" opacity="0.7"/>
+
+        <!-- Phase curve without delay -->
+        <path d="M80,215 L200,215 Q260,215 300,250 Q340,280 380,286 Q440,288 700,289"
+              fill="none" stroke="#00d4ff" stroke-width="2.5"/>
+
+        <!-- Phase curve WITH time delay (goes to -180 and beyond) -->
+        <path d="M80,215 L180,215 Q230,215 275,250 Q310,278 345,295 Q390,318 430,335 Q480,350 540,355 Q620,358 700,360"
+              fill="none" stroke="#ff6b35" stroke-width="2" stroke-dasharray="8,4"/>
+
+        <!-- Phase crossover for delayed system -->
+        <line x1="460" y1="200" x2="460" y2="355" stroke="#ffd700" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="460" y="200" fill="#ffd700" font-family="Share Tech Mono" font-size="8" text-anchor="middle">ωpc</text>
+
+        <!-- PM annotation -->
+        <line x1="460" y1="285" x2="460" y2="335" stroke="#39ff14" stroke-width="2"/>
+        <text x="470" y="313" fill="#39ff14" font-family="Share Tech Mono" font-size="9">Pm</text>
+
+        <!-- Freq axis labels phase -->
+        <text x="300" y="365" fill="#39ff14" font-family="Share Tech Mono" font-size="8" text-anchor="middle">−45° en ω=1/τ</text>
+        <text x="680" y="365" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">ω →</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 6 — Diagrama de Bode para proceso FOPDT. Línea continua azul: sin tiempo muerto. Línea punteada naranja: con tiempo muerto θ. El tiempo muerto añade fase negativa proporcional a ω, llevando el sistema antes a −180° y reduciendo el margen de ganancia Gm y el margen de fase Pm.</div>
+    </div>
+
+    <!-- Nyquist diagram -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Diagrama de Nyquist — Curva G_LA(jω) en el Plano Complejo</text>
+
+        <!-- Left: Nyquist plane -->
+        <line x1="30" y1="150" x2="360" y2="150" stroke="#1e2d4a" stroke-width="1.5"/>
+        <line x1="195" y1="30" x2="195" y2="275" stroke="#1e2d4a" stroke-width="1.5"/>
+        <text x="365" y="154" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">Re</text>
+        <text x="200" y="28" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">Im</text>
+
+        <!-- Critical point -1 -->
+        <circle cx="135" cy="150" r="5" fill="#ff6b35" stroke="none"/>
+        <text x="128" y="165" fill="#ff6b35" font-family="Share Tech Mono" font-size="9" text-anchor="middle">−1</text>
+        <text x="128" y="175" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">punto crítico</text>
+
+        <!-- Nyquist curve for stable system (doesn't encircle -1,0) -->
+        <!-- Starts at (Kp, 0) and spirals to origin -->
+        <path d="M310,150 Q300,100 250,80 Q200,65 155,80 Q120,95 100,130 Q85,155 95,175 Q115,205 155,215 Q200,225 250,215 Q295,205 310,180 Q315,165 310,150"
+              fill="rgba(0,212,255,0.05)" stroke="#00d4ff" stroke-width="2"/>
+
+        <!-- Arrow indicating direction -->
+        <text x="308" y="145" fill="#00d4ff" font-family="Share Tech Mono" font-size="12">▼</text>
+        <text x="160" y="60" fill="#00d4ff" font-family="Share Tech Mono" font-size="9">ω→∞ encoge a origen</text>
+
+        <!-- Kp point -->
+        <circle cx="310" cy="150" r="4" fill="#ffd700"/>
+        <text x="315" y="145" fill="#ffd700" font-family="Share Tech Mono" font-size="8">ω=0: G=Kp</text>
+
+        <!-- Stability circle of radius 1 from -1 -->
+        <circle cx="135" cy="150" r="60" fill="none" stroke="#39ff14" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+        <text x="195" y="215" fill="#39ff14" font-family="Share Tech Mono" font-size="8" text-anchor="middle">|G+1|=1</text>
+
+        <!-- Gm annotation -->
+        <line x1="135" y1="150" x2="195" y2="150" stroke="#ffd700" stroke-width="2"/>
+        <text x="165" y="143" fill="#ffd700" font-family="Share Tech Mono" font-size="8" text-anchor="middle">1/Gm</text>
+
+        <!-- Label stable -->
+        <text x="170" y="40" fill="#39ff14" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">ESTABLE</text>
+        <text x="170" y="52" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">no encircula (−1,0)</text>
+
+        <!-- Right: Nyquist unstable -->
+        <line x1="390" y1="150" x2="710" y2="150" stroke="#1e2d4a" stroke-width="1.5"/>
+        <line x1="550" y1="30" x2="550" y2="275" stroke="#1e2d4a" stroke-width="1.5"/>
+        <text x="715" y="154" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">Re</text>
+        <text x="555" y="28" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">Im</text>
+
+        <!-- Critical point -1 right diagram -->
+        <circle cx="490" cy="150" r="5" fill="#ff6b35"/>
+        <text x="483" y="165" fill="#ff6b35" font-family="Share Tech Mono" font-size="9" text-anchor="middle">−1</text>
+
+        <!-- Nyquist curve unstable (encircles -1,0) -->
+        <path d="M660,150 Q640,60 550,40 Q460,25 420,80 Q395,115 410,150 Q420,180 450,210 Q500,250 560,255 Q620,250 660,220 Q680,195 680,160 Q678,152 660,150"
+              fill="rgba(255,107,53,0.08)" stroke="#ff6b35" stroke-width="2"/>
+
+        <!-- The -1 is encircled - mark it -->
+        <circle cx="490" cy="150" r="30" fill="none" stroke="#ff6b35" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.8"/>
+        <text x="555" y="40" fill="#ff6b35" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">INESTABLE</text>
+        <text x="555" y="52" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">encircula (−1,0)</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 7 — Diagrama de Nyquist. Criterio: el sistema en lazo cerrado es estable si la curva G_LA(jω) NO encircula el punto crítico (−1, 0j). Izquierda: sistema estable. Derecha: sistema inestable (encircula el punto crítico).</div>
+    </div>
+
+    <div class="accordion-item" onclick="toggleAccordion(this)">
+      <div class="accordion-header">
+        <div class="accordion-title">📐 Criterio de Nyquist Completo (Forma General)</div>
+        <span class="accordion-icon">+</span>
+      </div>
+      <div class="accordion-body">
+        El criterio de Nyquist formal: <strong>N = Z − P</strong><br>
+        N = número de encirculaciones de (−1,0) en sentido horario<br>
+        Z = número de polos del lazo cerrado en el semiplano derecho (inestables)<br>
+        P = número de polos del lazo abierto en el semiplano derecho<br><br>
+        <strong>Para sistemas con P=0 (lazo abierto estable, usual en Ing. Química):</strong><br>
+        Z = N → si N = 0 (no encircula), Z = 0 → lazo cerrado estable ✓<br>
+        Si N ≠ 0 → Z ≠ 0 → lazo cerrado inestable ✗<br><br>
+        <strong>Caso especial con tiempo muerto:</strong> El tiempo muerto e^(−jωθ) hace que la curva de Nyquist espiralee al origen con una longitud de espiral que aumenta con θ. Para sistemas FOPDT, el criterio de estabilidad se aplica directamente verificando si la espiral pasa por dentro o fuera del punto (−1,0).
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MÁRGENES ==================== -->
+  <div id="margenes" class="section">
+    <div class="section-title">Márgenes de Estabilidad</div>
+    <div class="section-desc">// MARGEN DE GANANCIA Gm · MARGEN DE FASE Pm · MARGEN DE MÓDULO Mm</div>
+
+    <div class="info-box">
+      <div class="ib-content">
+        Los márgenes de estabilidad cuantifican <em>cuánto puede variar</em> la ganancia o la fase del lazo antes de que el sistema se vuelva inestable. En la práctica industrial, los modelos de proceso tienen incertidumbre — por eso se diseña con <strong>márgenes de seguridad</strong> adecuados que garanticen estabilidad robusta ante variaciones del proceso.
+      </div>
+    </div>
+
+    <div class="term-grid">
+      <div class="term-card">
+        <div class="term-title">Margen de Ganancia — Gm</div>
+        <div class="term-def">Factor por el cual la ganancia del lazo puede multiplicarse antes de que el sistema se vuelva marginalmente estable. Se calcula a la frecuencia de cruce de fase ωpc donde ∠G_LA = −180°.</div>
+        <div class="term-formula">Gm = 1/|G_LA(jωpc)|  →  Gm_dB = −20·log₁₀|G_LA(jωpc)|</div>
+      </div>
+      <div class="term-card orange">
+        <div class="term-title">Margen de Fase — Pm</div>
+        <div class="term-def">Grados adicionales de fase negativa que puede soportar el lazo antes de ser inestable. Se calcula a la frecuencia de cruce de ganancia ωgc donde |G_LA| = 1 (0 dB).</div>
+        <div class="term-formula">Pm = 180° + ∠G_LA(jωgc)  [positivo es buena señal]</div>
+      </div>
+      <div class="term-card green">
+        <div class="term-title">Margen de Módulo — Mm</div>
+        <div class="term-def">Distancia mínima de la curva de Nyquist G_LA(jω) al punto crítico (−1,0). Es el margen de estabilidad más conservador y completo: incluye simultáneamente variaciones de ganancia Y fase.</div>
+        <div class="term-formula">Mm = min_ω |G_LA(jω) − (−1)| = 1/||S||∞</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;margin-top:8px;">Especificaciones de Diseño Recomendadas</div>
+
+    <table class="sensor-table">
+      <thead><tr><th>MARGEN</th><th>MÍNIMO ACEPTABLE</th><th>RECOMENDADO (industria)</th><th>EXCELENTE</th><th>INTERPRETACIÓN</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Gm (dB)</strong></td>
+          <td style="color:#ff6b35">4–6 dB</td>
+          <td style="color:#ffd700">6–12 dB</td>
+          <td style="color:#39ff14">&gt; 12 dB</td>
+          <td>La ganancia puede multiplicarse por Gm antes de oscilación. 6 dB = factor 2.</td>
+        </tr>
+        <tr>
+          <td><strong>Pm (°)</strong></td>
+          <td style="color:#ff6b35">20–30°</td>
+          <td style="color:#ffd700">30–60°</td>
+          <td style="color:#39ff14">&gt; 60°</td>
+          <td>La fase puede retrasarse Pm grados antes de oscilación. 45°: buen balance velocidad/estabilidad.</td>
+        </tr>
+        <tr>
+          <td><strong>Mm (dB)</strong></td>
+          <td style="color:#ff6b35">&lt; −6 dB</td>
+          <td style="color:#ffd700">−6 dB</td>
+          <td style="color:#39ff14">≤ −6 dB (Mm ≥ 0.5)</td>
+          <td>Mm=0.5 equivale a pico de sensibilidad Ms=2. Mm&lt;0.5 → sistema muy sensible a incertidumbre.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="problem-box">
+      <p><strong>Problema 4 — Cálculo de márgenes de estabilidad:</strong><br>
+      El lazo de nivel del Tanque T-201 en la PTAR Cañaveralejo tiene la función de lazo abierto: G_LA(s) = Kc·2.5 / [s·(2s+1)]. Con Kc=1, calcule: (a) frecuencia de cruce de fase ωpc, (b) margen de ganancia Gm, (c) frecuencia de cruce de ganancia ωgc, (d) margen de fase Pm.</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">▸ SOLUCIÓN</div>
+        <div class="math-step">G_LA(jω) = 2.5 / [jω·(2jω+1)] = 2.5 / [j2ω²·(−1) + jω]</div>
+        <div class="math-step">= 2.5 / [−2ω² + jω]  →  parte real y imaginaria</div>
+        <div class="math-step"><strong>(a) Frecuencia de cruce de fase ωpc (∠G_LA = −180°):</strong></div>
+        <div class="math-step">∠G_LA = −90° − arctan(2ω) = −180° → arctan(2ω) = 90° → 2ω → ∞</div>
+        <div class="math-step">Esto ocurre solo para ω→∞ en este sistema (polo integrador). Para ωpc finita se necesita tiempo muerto o polos adicionales.</div>
+        <div class="math-step"><strong>Con Kc=1:</strong> |G_LA(jω)| = 2.5 / [ω·√(1+4ω²)]</div>
+        <div class="math-step"><strong>(c) Cruce de ganancia ωgc:</strong> |G_LA(jωgc)| = 1 → 2.5/[ωgc·√(1+4ωgc²)] = 1</div>
+        <div class="math-step">Por prueba y error: ωgc ≈ 1.10 rad/min → ωgc = <strong>1.10 rad/min</strong></div>
+        <div class="math-step"><strong>(d) Pm:</strong> ∠G_LA(j·1.10) = −90° − arctan(2×1.10) = −90° − arctan(2.20)</div>
+        <div class="math-step">= −90° − 65.6° = −155.6°</div>
+        <div class="math-step">Pm = 180° + (−155.6°) = <strong>24.4°</strong></div>
+        <div class="math-result">Pm = 24.4° → margen marginal (mínimo recomendado 30°). Reducir Kc para mejorar el margen de fase. Sistema integrador: Gm → ∞ (teóricamente no se cruza −180° sin tiempo muerto).</div>
+      </div>
+    </div>
+
+    <div class="quiz-box" id="qmargen">
+      <div class="quiz-q">❓ Un lazo tiene Pm=45° y Gm=10 dB. ¿Cuál afirmación es CORRECTA?</div>
+      <div class="quiz-opt" onclick="checkQuiz('qmargen',this,'wrong')">A. El sistema está en el límite de estabilidad</div>
+      <div class="quiz-opt" onclick="checkQuiz('qmargen',this,'wrong')">B. El sistema es inestable porque Pm &lt; 60°</div>
+      <div class="quiz-opt" onclick="checkQuiz('qmargen',this,'correct')">C. El sistema es estable con márgenes aceptables para la industria</div>
+      <div class="quiz-opt" onclick="checkQuiz('qmargen',this,'wrong')">D. Necesita más ganancia para ser estable</div>
+      <div class="quiz-feedback" id="qmargen-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">
+        ✅ Correcto. Pm=45° está dentro del rango recomendado (30–60°) y Gm=10 dB es bueno (mínimo 6 dB). El sistema es <strong>estable con márgenes adecuados</strong>. Pm=60° sería excelente pero no es requisito — Pm=45° es el estándar de diseño clásico para segundo orden con respuesta aceptable.
+      </div>
+    </div>
+
+    <div class="ext-links-box">
+      <div class="ext-links-title">📡 FUENTES EXTERNAS — MÁRGENES Y DISEÑO ROBUSTO</div>
+      <div class="ext-link-item">
+        <span class="ext-link-icon">🖥️</span>
+        <div class="ext-link-info">
+          <div class="ext-link-name">MATLAB allmargin() — Cálculo automático de márgenes</div>
+          <div class="ext-link-desc">Función de MATLAB que calcula automáticamente Gm, Pm y las frecuencias de cruce para una función de transferencia dada. Incluye visualización en Bode con anotaciones de márgenes.</div>
+        </div>
+        <a href="https://www.mathworks.com/help/control/ref/lti.allmargin.html" class="ext-link-url" target="_blank" rel="noopener">🔗 allmargin()</a>
+      </div>
+      <div class="ext-link-item">
+        <span class="ext-link-icon">🔧</span>
+        <div class="ext-link-info">
+          <div class="ext-link-name">Online Bode Plot Tool — Herramienta interactiva gratuita</div>
+          <div class="ext-link-desc">Herramienta web para trazar diagramas de Bode de cualquier función de transferencia, calcular márgenes de estabilidad y experimentar con diferentes valores de parámetros.</div>
+        </div>
+        <a href="https://www.eecs.umich.edu/courses/eecs461/tool/bode/bode.html" class="ext-link-url orange" target="_blank" rel="noopener">🔗 Bode Tool</a>
+      </div>
+      <div class="ext-link-item">
+        <span class="ext-link-icon">📗</span>
+        <div class="ext-link-info">
+          <div class="ext-link-name">Skogestad & Postlethwaite — Multivariable Feedback Design (Cap. 2)</div>
+          <div class="ext-link-desc">Referencia avanzada para márgenes de estabilidad, función de sensibilidad S(s) y diseño robusto. Capítulo 2 disponible gratuitamente en el sitio web del autor (NTNU).</div>
+        </div>
+        <a href="https://folk.ntnu.no/skoge/book/2nd_edition/matlab.html" class="ext-link-url green" target="_blank" rel="noopener">🔗 Skogestad NTNU</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ROUTH-HURWITZ ==================== -->
+  <div id="routh" class="section">
+    <div class="section-title">Criterio de Estabilidad de Routh-Hurwitz</div>
+    <div class="section-desc">// TABLA DE ROUTH · CONDICIÓN NECESARIA Y SUFICIENTE · GANANCIA CRÍTICA · ROUTH ESPECIAL</div>
+
+    <div class="info-box">
+      <div class="ib-content">
+        El criterio de Routh-Hurwitz permite determinar si <em>todas</em> las raíces de un polinomio tienen parte real negativa <strong>sin calcular las raíces explícitamente</strong>. Solo se requieren operaciones aritméticas sencillas sobre los coeficientes del polinomio característico. Es el método de análisis de estabilidad más usado en el diseño analítico de controladores PID en procesos químicos.
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Construcción de la Tabla de Routh</div>
+
+    <div class="math-box">
+      <div class="math-title">📐 Algoritmo Paso a Paso</div>
+      <div class="math-step"><strong>Polinomio característico:</strong> p(s) = aₙsⁿ + aₙ₋₁sⁿ⁻¹ + ... + a₁s + a₀</div>
+      <div class="math-step"><strong>Paso 1 — Condición necesaria:</strong> Verificar que todos los coeficientes aᵢ sean positivos (mismo signo). Si no → inestable de inmediato.</div>
+      <div class="math-step"><strong>Paso 2 — Construir tabla:</strong></div>
+      <div class="math-step">Fila sⁿ:    aₙ        aₙ₋₂    aₙ₋₄   ...</div>
+      <div class="math-step">Fila sⁿ⁻¹:  aₙ₋₁      aₙ₋₃    aₙ₋₅   ...</div>
+      <div class="math-step">Fila sⁿ⁻²:  b₁        b₂      b₃     ...</div>
+      <div class="math-step">           donde b₁ = (aₙ₋₁·aₙ₋₂ − aₙ·aₙ₋₃)/aₙ₋₁</div>
+      <div class="math-step">           b₂ = (aₙ₋₁·aₙ₋₄ − aₙ·aₙ₋₅)/aₙ₋₁</div>
+      <div class="math-step"><strong>... continuar hasta fila s⁰</strong></div>
+      <div class="math-step"><strong>Paso 3 — Contar cambios de signo:</strong></div>
+      <div class="math-result">Número de raíces con Re&gt;0 = número de cambios de signo en la 1ª columna de la tabla.</div>
+    </div>
+
+    <!-- Problema Routh completo -->
+    <div class="problem-box">
+      <p><strong>Problema 5 — Routh-Hurwitz para lazo de temperatura CSTR:</strong><br>
+      El polinomio característico del lazo cerrado de un CSTR con controlador PID es:<br>
+      <strong>p(s) = s³ + 6s² + 11s + (6 + Kc)</strong><br>
+      Determine: (a) el rango de Kc para estabilidad, (b) la Kc crítica (ganancia límite), (c) la frecuencia de oscilación en la Kc crítica.</p>
+
+      <div class="math-box" style="margin-top:12px;">
+        <div class="math-title">▸ SOLUCIÓN — Tabla de Routh para n=3</div>
+        <div class="math-step"><strong>Coeficientes:</strong> a₃=1, a₂=6, a₁=11, a₀=(6+Kc)</div>
+        <div class="math-step"><strong>Condición necesaria:</strong> Todos deben ser positivos → Kc &gt; −6 ✓ (Kc positiva siempre cumple)</div>
+        <div class="math-step" style="margin-top:8px;"><strong>Tabla de Routh:</strong></div>
+        <div class="math-step">s³ │  1        11</div>
+        <div class="math-step">s² │  6        (6+Kc)</div>
+        <div class="math-step">s¹ │  b₁       0</div>
+        <div class="math-step">s⁰ │  (6+Kc)</div>
+        <div class="math-step" style="margin-top:8px;"><strong>Calcular b₁:</strong></div>
+        <div class="math-step">b₁ = (6×11 − 1×(6+Kc))/6 = (66 − 6 − Kc)/6 = (60 − Kc)/6</div>
+        <div class="math-step"><strong>Condición de estabilidad (primera columna toda positiva):</strong></div>
+        <div class="math-step">a₂ = 6 &gt; 0 ✓ (siempre)</div>
+        <div class="math-step">b₁ = (60−Kc)/6 &gt; 0 → <strong>Kc &lt; 60</strong></div>
+        <div class="math-step">s⁰: (6+Kc) &gt; 0 → <strong>Kc &gt; −6</strong> (siempre para Kc positiva)</div>
+        <div class="math-result">Sistema estable para: −6 &lt; Kc &lt; 60  →  para controladores Kc &gt; 0: rango estable es 0 &lt; Kc &lt; 60</div>
+        <div class="math-step" style="margin-top:8px;"><strong>(b) Kc crítica = 60</strong></div>
+        <div class="math-step"><strong>(c) Frecuencia de oscilación en Kc=60:</strong></div>
+        <div class="math-step">En Kc crítica, fila s¹ = 0. La ecuación auxiliar es la fila s²:</div>
+        <div class="math-step">6s² + (6+60) = 0 → 6s² + 66 = 0 → s² = −11</div>
+        <div class="math-step">s = ±j√11 = ±j·3.317 rad/s</div>
+        <div class="math-result">Kc_crit = 60 · ωosc = 3.317 rad/s = 0.528 Hz · Período de oscilación = 1.895 s</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;margin-top:20px;">Casos Especiales en la Tabla de Routh</div>
+
+    <div class="accordion-item" onclick="toggleAccordion(this)">
+      <div class="accordion-header">
+        <div class="accordion-title">⚠️ Caso Especial 1 — Primer elemento de una fila = 0 (otros ≠ 0)</div>
+        <span class="accordion-icon">+</span>
+      </div>
+      <div class="accordion-body">
+        Si el primer elemento de una fila es cero pero el resto no, la tabla no puede continuar normalmente. <strong>Solución: sustituir el 0 por ε → 0⁺ (epsilon positivo pequeño)</strong> y continuar. Al evaluar el signo de la primera columna con ε→0, se determina si hay cambios de signo. Este caso indica que hay al menos un par de raíces conjugadas en el eje imaginario — el sistema está en el límite de estabilidad.
+      </div>
+    </div>
+
+    <div class="accordion-item" onclick="toggleAccordion(this)">
+      <div class="accordion-header">
+        <div class="accordion-title">⚠️ Caso Especial 2 — Fila completa de ceros (raíces simétricas)</div>
+        <span class="accordion-icon">+</span>
+      </div>
+      <div class="accordion-body">
+        Ocurre cuando hay raíces simétricas respecto al origen: pares ±jω (eje imaginario) o pares ±σ (eje real) o cuartetos complejos. <strong>Solución: usar la ecuación auxiliar A(s)</strong>, construida a partir de la fila anterior a la fila de ceros. Derivar A(s) respecto a s para obtener los coeficientes de la fila de sustitución y continuar la tabla.<br><br>
+        <strong>Procedimiento:</strong><br>
+        1. Sea la fila anterior a la fila de ceros: a·sⁿ + b·sⁿ⁻² + c·sⁿ⁻⁴ + ...<br>
+        2. Ecuación auxiliar A(s) = a·sⁿ + b·sⁿ⁻² + c·sⁿ⁻⁴<br>
+        3. dA/ds = a·n·sⁿ⁻¹ + b·(n−2)·sⁿ⁻³ + ...<br>
+        4. Los coeficientes de dA/ds reemplazan la fila de ceros.
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;margin-top:20px;">Resumen Comparativo — Tres Criterios de Estabilidad</div>
+
+    <table class="sensor-table">
+      <thead><tr><th>CRITERIO</th><th>MÉTODO</th><th>INFORMACIÓN QUE DA</th><th>LIMITACIÓN</th><th>USO PRINCIPAL</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Routh-Hurwitz</strong></td>
+          <td>Tabla algebraica sobre coeficientes del polinomio característico</td>
+          <td>Número de raíces inestables. Rango de Kc para estabilidad. Kc crítica y ωosc.</td>
+          <td>Solo aplica a sistemas con coeficientes constantes. No funciona con tiempo muerto exacto.</td>
+          <td>Diseño analítico de PID. Estabilidad paramétrica.</td>
+        </tr>
+        <tr>
+          <td><strong>Margen de Ganancia Gm</strong></td>
+          <td>Diagrama de Bode / Nyquist a la frecuencia ωpc</td>
+          <td>Factor de seguridad en ganancia. Cuánto puede aumentar Kc antes de inestabilidad.</td>
+          <td>No captura variaciones simultáneas de ganancia y fase.</td>
+          <td>Sintonización PID con Bode. Control industrial estándar.</td>
+        </tr>
+        <tr>
+          <td><strong>Margen de Módulo Mm</strong></td>
+          <td>Distancia mínima en plano de Nyquist al punto (−1,0)</td>
+          <td>Margen de estabilidad más completo. Considera variaciones simultáneas Gm y Pm.</td>
+          <td>Más difícil de calcular analíticamente. Requiere función de sensibilidad S(s).</td>
+          <td>Diseño robusto. Especificación de control avanzado.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="quiz-box" id="qrouth">
+      <div class="quiz-q">❓ Para p(s) = s³ + 2s² + 4s + K, ¿cuál es el valor máximo de K para que el sistema sea estable?</div>
+      <div class="quiz-opt" onclick="checkQuiz('qrouth',this,'wrong')">A. K &lt; 4</div>
+      <div class="quiz-opt" onclick="checkQuiz('qrouth',this,'correct')">B. K &lt; 8</div>
+      <div class="quiz-opt" onclick="checkQuiz('qrouth',this,'wrong')">C. K &lt; 2</div>
+      <div class="quiz-opt" onclick="checkQuiz('qrouth',this,'wrong')">D. K &lt; 16</div>
+      <div class="quiz-feedback" id="qrouth-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">
+        ✅ Tabla Routh: s³|1,4  s²|2,K  s¹|b₁  s⁰|K.<br>
+        b₁ = (2×4 − 1×K)/2 = (8−K)/2.<br>
+        Condición: b₁ &gt; 0 → K &lt; 8. Y s⁰: K &gt; 0.<br>
+        Sistema estable para <strong>0 &lt; K &lt; 8</strong>. Kc_crit = 8 → ωosc = √(a₀/b₁)|_(b₁→0) = √(K/b₁) → ω = √4 = 2 rad/s.
+      </div>
+    </div>
+
+    <div class="industrial-example" style="margin-top:20px;">
+      <div class="ie-title">▸ APLICACIÓN INTEGRADA — PLANTA DE ÁCIDO NÍTRICO (ECOPETROL)</div>
+      <div class="ie-body">
+        En la planta de ácido nítrico de Ecopetrol, el lazo de control de temperatura del reactor de oxidación catalítica tiene el polinomio característico en lazo cerrado:<br>
+        <strong>p(s) = s⁴ + 7s³ + 14s² + (8+2Kc)s + Kc·τI⁻¹</strong><br><br>
+        El ingeniero de proceso aplica Routh-Hurwitz para encontrar el rango de Kc estable sin necesidad de calcular 4 raíces de un polinomio de cuarto grado. Adicionalmente, usa el diagrama de Bode (MATLAB margin()) para encontrar los márgenes Gm y Pm del lazo diseñado, verificando que Pm ≥ 45° y Gm ≥ 8 dB antes de poner el controlador en automático. Este proceso sistemático —Routh para límites analíticos + Bode para márgenes— es el estándar industrial para la puesta en marcha segura de lazos de control en plantas de proceso continuo.
+      </div>
+    </div>
+
+    <div class="ext-links-box">
+      <div class="ext-links-title">🔢 FUENTES EXTERNAS — ROUTH-HURWITZ Y ANÁLISIS DE ESTABILIDAD</div>
+      <div class="ext-link-item">
+        <span class="ext-link-icon">📗</span>
+        <div class="ext-link-info">
+          <div class="ext-link-name">LibreTexts — Criterio de Routh-Hurwitz (Chemical Process Control)</div>
+          <div class="ext-link-desc">Sección completa dedicada a Routh-Hurwitz en el contexto de control de procesos químicos: tabla de Routh, casos especiales, aplicación a controladores PID.</div>
+        </div>
+        <a href="https://eng.libretexts.org/Bookshelves/Industrial_and_Systems_Engineering/Chemical_Process_Dynamics_and_Controls_(Woolf)/11%3A_Control_Architectures/11.01%3A_Routh_Stability_Criterion" class="ext-link-url" target="_blank" rel="noopener">🔗 LibreTexts</a>
+      </div>
+      <div class="ext-link-item">
+        <span class="ext-link-icon">🖥️</span>
+        <div class="ext-link-info">
+          <div class="ext-link-name">MATLAB — Función roots() y pole()</div>
+          <div class="ext-link-desc">Para verificar analíticamente: roots([aₙ,...,a₀]) calcula todas las raíces del polinomio. pole(G_LC) obtiene los polos del lazo cerrado. Complemento computacional al criterio de Routh.</div>
+        </div>
+        <a href="https://www.mathworks.com/help/matlab/ref/roots.html" class="ext-link-url orange" target="_blank" rel="noopener">🔗 roots()</a>
+      </div>
+      <div class="ext-link-item">
+        <span class="ext-link-icon">📘</span>
+        <div class="ext-link-info">
+          <div class="ext-link-name">Smith & Corripio — Control Automático de Procesos (Cap. 9–11)</div>
+          <div class="ext-link-desc">Capítulos de estabilidad en lazo cerrado, criterio de Routh y análisis en frecuencia aplicados a procesos químicos industriales. Texto base del curso 740021C. Disponible en Biblioteca UniValle.</div>
+        </div>
+        <a href="https://campusvirtual.univalle.edu.co" class="ext-link-url green" target="_blank" rel="noopener">🔗 Moodle 740021C</a>
+      </div>
+    </div>
+  </div>
+
+  </main>
+
+  <!-- FLOATING BACK BUTTON -->
+  <div style="position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;">
+    <a href="instrumentacion_protocolos_industriales.html" title="Unidad I: Instrumentación"
+       style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;background:rgba(11,15,26,0.92);backdrop-filter:blur(12px);color:#39ff14;border:1px solid rgba(57,255,20,.35);padding:.55rem 1.1rem;border-radius:2rem;text-decoration:none;letter-spacing:.05em;transition:all .25s;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap;"
+       onmouseover="this.style.background='rgba(57,255,20,0.12)'" onmouseout="this.style.background='rgba(11,15,26,0.92)'">
+      ← Unidad I
+    </a>
+    <a href="index.html" title="Página de bienvenida del curso"
+       style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;background:rgba(11,15,26,0.92);backdrop-filter:blur(12px);color:#0AAFB4;border:1px solid rgba(10,175,180,.35);padding:.55rem 1.1rem;border-radius:2rem;text-decoration:none;letter-spacing:.05em;transition:all .25s;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap;"
+       onmouseover="this.style.background='rgba(10,175,180,0.12)'" onmouseout="this.style.background='rgba(11,15,26,0.92)'">
+      ⌂ Inicio
+    </a>
+  </div>
+
+  <footer>
+    <div class="container">
+      © 2026 · Dr. Jose Antonio Lara Ramos · Escuela de Ingeniería Química · Universidad del Valle · GAOX Minciencias A1<br/>
+      Unidad II: Dinámica de Procesos · Curso 740021C · Material de uso educativo exclusivo
+    </div>
+  </footer>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      event.currentTarget.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleAccordion(item) {
+      item.classList.toggle('open');
+    }
+
+    function checkQuiz(quizId, element, result) {
+      var opts = document.querySelectorAll('#' + quizId + ' .quiz-opt');
+      opts.forEach(function(o){ o.style.pointerEvents = 'none'; });
+      element.classList.add(result);
+      var fb = document.getElementById(quizId + '-fb');
+      if (fb) fb.classList.add('show');
+    }
+  </script>
+</body>
+</html>
