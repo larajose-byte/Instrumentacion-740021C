@@ -189,10 +189,278 @@
     footer{border-top:1px solid var(--border);padding:18px 0;text-align:center;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);position:relative;z-index:1;}
     footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
 
-    ::-webkit-scrollbar{width:6px;height:6px;}
-    ::-webkit-scrollbar-track{background:var(--bg);}
-    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
-    ::-webkit-scrollbar-thumb:hover{background:var(--accent);}
+  
+    /* ── VIDEO CARDS ── */
+    .video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:18px 0;}
+    .video-card{background:var(--panel);border:1px solid var(--border);overflow:hidden;transition:all .3s;cursor:pointer;}
+    .video-card:hover{border-color:var(--accent2);box-shadow:var(--glow2);transform:translateY(-3px);}
+    .video-thumb{position:relative;width:100%;padding-top:56.25%;background:#000;overflow:hidden;}
+    .video-thumb img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+    .video-card:hover .video-thumb img{transform:scale(1.05);}
+    .video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:54px;height:54px;background:rgba(255,107,53,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+    .video-card:hover .video-play{background:var(--accent2);transform:translate(-50%,-50%) scale(1.1);}
+    .video-play svg{width:20px;height:20px;fill:#fff;margin-left:4px;}
+    .video-info{padding:12px 15px;}
+    .video-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.35;}
+    .video-meta{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);display:flex;gap:12px;}
+    .video-tag{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--accent2);border:1px solid rgba(255,107,53,.3);padding:2px 7px;letter-spacing:1px;}
+    .video-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:10000;align-items:center;justify-content:center;}
+    .video-modal.open{display:flex;}
+    .video-modal-inner{position:relative;width:min(900px,95vw);}
+    .video-modal-inner iframe{width:100%;aspect-ratio:16/9;border:none;}
+    .video-close{position:absolute;top:-36px;right:0;background:none;border:none;color:#fff;font-size:26px;cursor:pointer;font-family:'Share Tech Mono',monospace;}
+
+    /* ── INTERACTIVE DEMOS ── */
+    .demo-box{background:var(--panel2);border:1px solid var(--border);border-top:3px solid var(--accent3);padding:20px;margin:18px 0;}
+    .demo-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--accent3);margin-bottom:4px;}
+    .demo-desc{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);margin-bottom:14px;letter-spacing:1px;}
+    .demo-controls{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px;align-items:flex-end;}
+    .demo-ctrl{display:flex;flex-direction:column;gap:5px;min-width:120px;}
+    .demo-ctrl label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:1px;}
+    .demo-ctrl input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--border);border-radius:2px;outline:none;}
+    .demo-ctrl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border-radius:50%;cursor:pointer;}
+    .demo-ctrl input[type=range].orange::-webkit-slider-thumb{background:var(--accent2);}
+    .demo-ctrl input[type=range].green::-webkit-slider-thumb{background:var(--accent3);}
+    .demo-val{font-family:'Share Tech Mono',monospace;font-size:11px;color:#fff;text-align:center;}
+    .demo-canvas{width:100%;height:220px;background:#060a14;border:1px solid var(--border);}
+    .demo-canvas canvas{width:100%;height:100%;display:block;}
+    .demo-btn{padding:8px 20px;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.35);color:var(--accent3);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;cursor:pointer;transition:all .2s;}
+    .demo-btn:hover{background:rgba(57,255,20,.2);}
+    .demo-btn.orange{background:rgba(255,107,53,.1);border-color:rgba(255,107,53,.35);color:var(--accent2);}
+    .demo-btn.orange:hover{background:rgba(255,107,53,.2);}
+    .demo-output{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);margin-top:8px;padding:8px;background:rgba(0,0,0,.3);border:1px solid var(--border);min-height:36px;}
+
+    /* ── RIGHTS / DERECHOS ── */
+    .rights-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10001;align-items:center;justify-content:center;}
+    .rights-modal.open{display:flex;}
+    .rights-modal-box{background:var(--panel);border:1px solid var(--border);max-width:600px;width:90%;padding:28px 30px;position:relative;}
+    .rights-close-btn{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--text-dim);font-size:22px;cursor:pointer;}
+
+    /* ── NOTEBOOK CELL ── */
+    .nb-cell{background:#060a14;border:1px solid var(--border);border-left:3px solid var(--accent);margin:6px 0;font-family:'Share Tech Mono',monospace;font-size:12px;}
+    .nb-header{display:flex;align-items:center;gap:10px;padding:6px 12px;background:rgba(0,212,255,.04);border-bottom:1px solid var(--border);}
+    .nb-label{font-size:10px;color:var(--accent);letter-spacing:2px;}
+    .nb-run{padding:2px 12px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.25);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:9px;cursor:pointer;transition:all .2s;letter-spacing:1px;}
+    .nb-run:hover{background:rgba(0,212,255,.25);}
+    .nb-body{padding:10px 14px;color:#b0ffb0;white-space:pre;overflow-x:auto;}
+    .nb-out{padding:8px 14px;border-top:1px solid var(--border);color:#ffd700;font-size:11px;display:none;white-space:pre;}
+    .nb-out.show{display:block;}
+
+    /* ── LINK PILL ── */
+    .link-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:10px;text-decoration:none;letter-spacing:1px;transition:all .2s;margin:3px;}
+    .link-pill:hover{background:rgba(0,212,255,.18);border-color:var(--accent);}
+    .link-pill.orange{background:rgba(255,107,53,.07);border-color:rgba(255,107,53,.2);color:var(--accent2);}
+    .link-pill.orange:hover{background:rgba(255,107,53,.18);}
+    .link-pill.green{background:rgba(57,255,20,.05);border-color:rgba(57,255,20,.2);color:var(--accent3);}
+    .link-pill.green:hover{background:rgba(57,255,20,.18);}
+    .link-pill.gold{background:rgba(255,215,0,.05);border-color:rgba(255,215,0,.2);color:var(--accent4);}
+    .link-pill.gold:hover{background:rgba(255,215,0,.18);}
+
+  ::-webkit-scrollbar{width:6px;height:6px;}
+  
+    /* ── VIDEO CARDS ── */
+    .video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:18px 0;}
+    .video-card{background:var(--panel);border:1px solid var(--border);overflow:hidden;transition:all .3s;cursor:pointer;}
+    .video-card:hover{border-color:var(--accent2);box-shadow:var(--glow2);transform:translateY(-3px);}
+    .video-thumb{position:relative;width:100%;padding-top:56.25%;background:#000;overflow:hidden;}
+    .video-thumb img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+    .video-card:hover .video-thumb img{transform:scale(1.05);}
+    .video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:54px;height:54px;background:rgba(255,107,53,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+    .video-card:hover .video-play{background:var(--accent2);transform:translate(-50%,-50%) scale(1.1);}
+    .video-play svg{width:20px;height:20px;fill:#fff;margin-left:4px;}
+    .video-info{padding:12px 15px;}
+    .video-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.35;}
+    .video-meta{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);display:flex;gap:12px;}
+    .video-tag{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--accent2);border:1px solid rgba(255,107,53,.3);padding:2px 7px;letter-spacing:1px;}
+    .video-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:10000;align-items:center;justify-content:center;}
+    .video-modal.open{display:flex;}
+    .video-modal-inner{position:relative;width:min(900px,95vw);}
+    .video-modal-inner iframe{width:100%;aspect-ratio:16/9;border:none;}
+    .video-close{position:absolute;top:-36px;right:0;background:none;border:none;color:#fff;font-size:26px;cursor:pointer;font-family:'Share Tech Mono',monospace;}
+
+    /* ── INTERACTIVE DEMOS ── */
+    .demo-box{background:var(--panel2);border:1px solid var(--border);border-top:3px solid var(--accent3);padding:20px;margin:18px 0;}
+    .demo-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--accent3);margin-bottom:4px;}
+    .demo-desc{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);margin-bottom:14px;letter-spacing:1px;}
+    .demo-controls{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px;align-items:flex-end;}
+    .demo-ctrl{display:flex;flex-direction:column;gap:5px;min-width:120px;}
+    .demo-ctrl label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:1px;}
+    .demo-ctrl input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--border);border-radius:2px;outline:none;}
+    .demo-ctrl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border-radius:50%;cursor:pointer;}
+    .demo-ctrl input[type=range].orange::-webkit-slider-thumb{background:var(--accent2);}
+    .demo-ctrl input[type=range].green::-webkit-slider-thumb{background:var(--accent3);}
+    .demo-val{font-family:'Share Tech Mono',monospace;font-size:11px;color:#fff;text-align:center;}
+    .demo-canvas{width:100%;height:220px;background:#060a14;border:1px solid var(--border);}
+    .demo-canvas canvas{width:100%;height:100%;display:block;}
+    .demo-btn{padding:8px 20px;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.35);color:var(--accent3);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;cursor:pointer;transition:all .2s;}
+    .demo-btn:hover{background:rgba(57,255,20,.2);}
+    .demo-btn.orange{background:rgba(255,107,53,.1);border-color:rgba(255,107,53,.35);color:var(--accent2);}
+    .demo-btn.orange:hover{background:rgba(255,107,53,.2);}
+    .demo-output{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);margin-top:8px;padding:8px;background:rgba(0,0,0,.3);border:1px solid var(--border);min-height:36px;}
+
+    /* ── RIGHTS / DERECHOS ── */
+    .rights-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10001;align-items:center;justify-content:center;}
+    .rights-modal.open{display:flex;}
+    .rights-modal-box{background:var(--panel);border:1px solid var(--border);max-width:600px;width:90%;padding:28px 30px;position:relative;}
+    .rights-close-btn{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--text-dim);font-size:22px;cursor:pointer;}
+
+    /* ── NOTEBOOK CELL ── */
+    .nb-cell{background:#060a14;border:1px solid var(--border);border-left:3px solid var(--accent);margin:6px 0;font-family:'Share Tech Mono',monospace;font-size:12px;}
+    .nb-header{display:flex;align-items:center;gap:10px;padding:6px 12px;background:rgba(0,212,255,.04);border-bottom:1px solid var(--border);}
+    .nb-label{font-size:10px;color:var(--accent);letter-spacing:2px;}
+    .nb-run{padding:2px 12px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.25);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:9px;cursor:pointer;transition:all .2s;letter-spacing:1px;}
+    .nb-run:hover{background:rgba(0,212,255,.25);}
+    .nb-body{padding:10px 14px;color:#b0ffb0;white-space:pre;overflow-x:auto;}
+    .nb-out{padding:8px 14px;border-top:1px solid var(--border);color:#ffd700;font-size:11px;display:none;white-space:pre;}
+    .nb-out.show{display:block;}
+
+    /* ── LINK PILL ── */
+    .link-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:10px;text-decoration:none;letter-spacing:1px;transition:all .2s;margin:3px;}
+    .link-pill:hover{background:rgba(0,212,255,.18);border-color:var(--accent);}
+    .link-pill.orange{background:rgba(255,107,53,.07);border-color:rgba(255,107,53,.2);color:var(--accent2);}
+    .link-pill.orange:hover{background:rgba(255,107,53,.18);}
+    .link-pill.green{background:rgba(57,255,20,.05);border-color:rgba(57,255,20,.2);color:var(--accent3);}
+    .link-pill.green:hover{background:rgba(57,255,20,.18);}
+    .link-pill.gold{background:rgba(255,215,0,.05);border-color:rgba(255,215,0,.2);color:var(--accent4);}
+    .link-pill.gold:hover{background:rgba(255,215,0,.18);}
+
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  
+    /* ── VIDEO CARDS ── */
+    .video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:18px 0;}
+    .video-card{background:var(--panel);border:1px solid var(--border);overflow:hidden;transition:all .3s;cursor:pointer;}
+    .video-card:hover{border-color:var(--accent2);box-shadow:var(--glow2);transform:translateY(-3px);}
+    .video-thumb{position:relative;width:100%;padding-top:56.25%;background:#000;overflow:hidden;}
+    .video-thumb img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+    .video-card:hover .video-thumb img{transform:scale(1.05);}
+    .video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:54px;height:54px;background:rgba(255,107,53,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+    .video-card:hover .video-play{background:var(--accent2);transform:translate(-50%,-50%) scale(1.1);}
+    .video-play svg{width:20px;height:20px;fill:#fff;margin-left:4px;}
+    .video-info{padding:12px 15px;}
+    .video-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.35;}
+    .video-meta{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);display:flex;gap:12px;}
+    .video-tag{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--accent2);border:1px solid rgba(255,107,53,.3);padding:2px 7px;letter-spacing:1px;}
+    .video-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:10000;align-items:center;justify-content:center;}
+    .video-modal.open{display:flex;}
+    .video-modal-inner{position:relative;width:min(900px,95vw);}
+    .video-modal-inner iframe{width:100%;aspect-ratio:16/9;border:none;}
+    .video-close{position:absolute;top:-36px;right:0;background:none;border:none;color:#fff;font-size:26px;cursor:pointer;font-family:'Share Tech Mono',monospace;}
+
+    /* ── INTERACTIVE DEMOS ── */
+    .demo-box{background:var(--panel2);border:1px solid var(--border);border-top:3px solid var(--accent3);padding:20px;margin:18px 0;}
+    .demo-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--accent3);margin-bottom:4px;}
+    .demo-desc{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);margin-bottom:14px;letter-spacing:1px;}
+    .demo-controls{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px;align-items:flex-end;}
+    .demo-ctrl{display:flex;flex-direction:column;gap:5px;min-width:120px;}
+    .demo-ctrl label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:1px;}
+    .demo-ctrl input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--border);border-radius:2px;outline:none;}
+    .demo-ctrl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border-radius:50%;cursor:pointer;}
+    .demo-ctrl input[type=range].orange::-webkit-slider-thumb{background:var(--accent2);}
+    .demo-ctrl input[type=range].green::-webkit-slider-thumb{background:var(--accent3);}
+    .demo-val{font-family:'Share Tech Mono',monospace;font-size:11px;color:#fff;text-align:center;}
+    .demo-canvas{width:100%;height:220px;background:#060a14;border:1px solid var(--border);}
+    .demo-canvas canvas{width:100%;height:100%;display:block;}
+    .demo-btn{padding:8px 20px;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.35);color:var(--accent3);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;cursor:pointer;transition:all .2s;}
+    .demo-btn:hover{background:rgba(57,255,20,.2);}
+    .demo-btn.orange{background:rgba(255,107,53,.1);border-color:rgba(255,107,53,.35);color:var(--accent2);}
+    .demo-btn.orange:hover{background:rgba(255,107,53,.2);}
+    .demo-output{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);margin-top:8px;padding:8px;background:rgba(0,0,0,.3);border:1px solid var(--border);min-height:36px;}
+
+    /* ── RIGHTS / DERECHOS ── */
+    .rights-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10001;align-items:center;justify-content:center;}
+    .rights-modal.open{display:flex;}
+    .rights-modal-box{background:var(--panel);border:1px solid var(--border);max-width:600px;width:90%;padding:28px 30px;position:relative;}
+    .rights-close-btn{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--text-dim);font-size:22px;cursor:pointer;}
+
+    /* ── NOTEBOOK CELL ── */
+    .nb-cell{background:#060a14;border:1px solid var(--border);border-left:3px solid var(--accent);margin:6px 0;font-family:'Share Tech Mono',monospace;font-size:12px;}
+    .nb-header{display:flex;align-items:center;gap:10px;padding:6px 12px;background:rgba(0,212,255,.04);border-bottom:1px solid var(--border);}
+    .nb-label{font-size:10px;color:var(--accent);letter-spacing:2px;}
+    .nb-run{padding:2px 12px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.25);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:9px;cursor:pointer;transition:all .2s;letter-spacing:1px;}
+    .nb-run:hover{background:rgba(0,212,255,.25);}
+    .nb-body{padding:10px 14px;color:#b0ffb0;white-space:pre;overflow-x:auto;}
+    .nb-out{padding:8px 14px;border-top:1px solid var(--border);color:#ffd700;font-size:11px;display:none;white-space:pre;}
+    .nb-out.show{display:block;}
+
+    /* ── LINK PILL ── */
+    .link-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:10px;text-decoration:none;letter-spacing:1px;transition:all .2s;margin:3px;}
+    .link-pill:hover{background:rgba(0,212,255,.18);border-color:var(--accent);}
+    .link-pill.orange{background:rgba(255,107,53,.07);border-color:rgba(255,107,53,.2);color:var(--accent2);}
+    .link-pill.orange:hover{background:rgba(255,107,53,.18);}
+    .link-pill.green{background:rgba(57,255,20,.05);border-color:rgba(57,255,20,.2);color:var(--accent3);}
+    .link-pill.green:hover{background:rgba(57,255,20,.18);}
+    .link-pill.gold{background:rgba(255,215,0,.05);border-color:rgba(255,215,0,.2);color:var(--accent4);}
+    .link-pill.gold:hover{background:rgba(255,215,0,.18);}
+
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  
+    /* ── VIDEO CARDS ── */
+    .video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:18px 0;}
+    .video-card{background:var(--panel);border:1px solid var(--border);overflow:hidden;transition:all .3s;cursor:pointer;}
+    .video-card:hover{border-color:var(--accent2);box-shadow:var(--glow2);transform:translateY(-3px);}
+    .video-thumb{position:relative;width:100%;padding-top:56.25%;background:#000;overflow:hidden;}
+    .video-thumb img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+    .video-card:hover .video-thumb img{transform:scale(1.05);}
+    .video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:54px;height:54px;background:rgba(255,107,53,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+    .video-card:hover .video-play{background:var(--accent2);transform:translate(-50%,-50%) scale(1.1);}
+    .video-play svg{width:20px;height:20px;fill:#fff;margin-left:4px;}
+    .video-info{padding:12px 15px;}
+    .video-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.35;}
+    .video-meta{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);display:flex;gap:12px;}
+    .video-tag{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--accent2);border:1px solid rgba(255,107,53,.3);padding:2px 7px;letter-spacing:1px;}
+    .video-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:10000;align-items:center;justify-content:center;}
+    .video-modal.open{display:flex;}
+    .video-modal-inner{position:relative;width:min(900px,95vw);}
+    .video-modal-inner iframe{width:100%;aspect-ratio:16/9;border:none;}
+    .video-close{position:absolute;top:-36px;right:0;background:none;border:none;color:#fff;font-size:26px;cursor:pointer;font-family:'Share Tech Mono',monospace;}
+
+    /* ── INTERACTIVE DEMOS ── */
+    .demo-box{background:var(--panel2);border:1px solid var(--border);border-top:3px solid var(--accent3);padding:20px;margin:18px 0;}
+    .demo-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--accent3);margin-bottom:4px;}
+    .demo-desc{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);margin-bottom:14px;letter-spacing:1px;}
+    .demo-controls{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px;align-items:flex-end;}
+    .demo-ctrl{display:flex;flex-direction:column;gap:5px;min-width:120px;}
+    .demo-ctrl label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:1px;}
+    .demo-ctrl input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--border);border-radius:2px;outline:none;}
+    .demo-ctrl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border-radius:50%;cursor:pointer;}
+    .demo-ctrl input[type=range].orange::-webkit-slider-thumb{background:var(--accent2);}
+    .demo-ctrl input[type=range].green::-webkit-slider-thumb{background:var(--accent3);}
+    .demo-val{font-family:'Share Tech Mono',monospace;font-size:11px;color:#fff;text-align:center;}
+    .demo-canvas{width:100%;height:220px;background:#060a14;border:1px solid var(--border);}
+    .demo-canvas canvas{width:100%;height:100%;display:block;}
+    .demo-btn{padding:8px 20px;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.35);color:var(--accent3);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;cursor:pointer;transition:all .2s;}
+    .demo-btn:hover{background:rgba(57,255,20,.2);}
+    .demo-btn.orange{background:rgba(255,107,53,.1);border-color:rgba(255,107,53,.35);color:var(--accent2);}
+    .demo-btn.orange:hover{background:rgba(255,107,53,.2);}
+    .demo-output{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);margin-top:8px;padding:8px;background:rgba(0,0,0,.3);border:1px solid var(--border);min-height:36px;}
+
+    /* ── RIGHTS / DERECHOS ── */
+    .rights-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10001;align-items:center;justify-content:center;}
+    .rights-modal.open{display:flex;}
+    .rights-modal-box{background:var(--panel);border:1px solid var(--border);max-width:600px;width:90%;padding:28px 30px;position:relative;}
+    .rights-close-btn{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--text-dim);font-size:22px;cursor:pointer;}
+
+    /* ── NOTEBOOK CELL ── */
+    .nb-cell{background:#060a14;border:1px solid var(--border);border-left:3px solid var(--accent);margin:6px 0;font-family:'Share Tech Mono',monospace;font-size:12px;}
+    .nb-header{display:flex;align-items:center;gap:10px;padding:6px 12px;background:rgba(0,212,255,.04);border-bottom:1px solid var(--border);}
+    .nb-label{font-size:10px;color:var(--accent);letter-spacing:2px;}
+    .nb-run{padding:2px 12px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.25);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:9px;cursor:pointer;transition:all .2s;letter-spacing:1px;}
+    .nb-run:hover{background:rgba(0,212,255,.25);}
+    .nb-body{padding:10px 14px;color:#b0ffb0;white-space:pre;overflow-x:auto;}
+    .nb-out{padding:8px 14px;border-top:1px solid var(--border);color:#ffd700;font-size:11px;display:none;white-space:pre;}
+    .nb-out.show{display:block;}
+
+    /* ── LINK PILL ── */
+    .link-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:10px;text-decoration:none;letter-spacing:1px;transition:all .2s;margin:3px;}
+    .link-pill:hover{background:rgba(0,212,255,.18);border-color:var(--accent);}
+    .link-pill.orange{background:rgba(255,107,53,.07);border-color:rgba(255,107,53,.2);color:var(--accent2);}
+    .link-pill.orange:hover{background:rgba(255,107,53,.18);}
+    .link-pill.green{background:rgba(57,255,20,.05);border-color:rgba(57,255,20,.2);color:var(--accent3);}
+    .link-pill.green:hover{background:rgba(57,255,20,.18);}
+    .link-pill.gold{background:rgba(255,215,0,.05);border-color:rgba(255,215,0,.2);color:var(--accent4);}
+    .link-pill.gold:hover{background:rgba(255,215,0,.18);}
+
+  ::-webkit-scrollbar-thumb:hover{background:var(--accent);}
     @media(max-width:600px){.cards-grid{grid-template-columns:1fr;}}
   </style>
 </head>
@@ -230,6 +498,7 @@
       </nav>
     </div>
   </header>
+
   <main class="container">
 
 
@@ -238,92 +507,78 @@
     <div class="section-title">Unidad III — Control de Procesos</div>
     <div class="section-desc">// FUNDAMENTOS · DISEÑO PID · ARQUITECTURAS AVANZADAS · SIMULACIÓN DINÁMICA</div>
 
-    <div class="info-box">
-      <div class="ib-content"><strong>Integración de la trilogía del curso:</strong> La Unidad I nos dio los instrumentos (sensores, válvulas, señales). La Unidad II nos dio el modelo matemático del proceso G(s) y las herramientas de análisis de estabilidad. Ahora, la Unidad III usa todo ese conocimiento para <em>diseñar el controlador</em> que cierre el lazo, especifique la respuesta deseada y maneje las perturbaciones industriales reales. El destino final: una planta que se controla sola.</div>
-    </div>
+    <div class="info-box"><div class="ib-content"><strong>Integración de la trilogía del curso:</strong> La Unidad I nos dio los instrumentos (sensores, válvulas, señales ISA). La Unidad II nos dio el modelo matemático del proceso G(s) y las herramientas de estabilidad. Ahora, la Unidad III usa todo ese conocimiento para <em>diseñar el controlador</em> que cierre el lazo, especifique la respuesta deseada y maneje las perturbaciones industriales reales. El destino final: una planta que se controla sola.</div></div>
 
     <div class="diagram-box">
       <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" style="max-width:760px;width:100%">
-        <defs><marker id="ma" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
-        <marker id="ma2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker></defs>
+        <defs><marker id="ma" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker><marker id="ma2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker></defs>
         <text x="380" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Mapa de la Unidad III — Control de Procesos</text>
-        <!-- Bloque 1 -->
         <rect x="10" y="30" width="140" height="60" fill="rgba(0,212,255,.08)" stroke="#00d4ff" stroke-width="1.5" rx="4"/>
         <text x="80" y="56" fill="#00d4ff" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">FUNDAMENTOS</text>
         <text x="80" y="69" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Lazo abierto/cerrado</text>
         <text x="80" y="80" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Acciones P·I·D</text>
         <line x1="150" y1="60" x2="188" y2="60" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#ma)"/>
-        <!-- Bloque 2 -->
         <rect x="188" y="30" width="145" height="60" fill="rgba(255,107,53,.08)" stroke="#ff6b35" stroke-width="1.5" rx="4"/>
         <text x="260" y="53" fill="#ff6b35" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">DISEÑO PID</text>
         <text x="260" y="66" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Empírico · Polos · IMC</text>
         <text x="260" y="77" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Índices IAE·ISE·ITAE</text>
         <line x1="333" y1="60" x2="368" y2="60" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#ma2)"/>
-        <!-- Bloque 3 -->
         <rect x="368" y="30" width="145" height="60" fill="rgba(57,255,20,.07)" stroke="#39ff14" stroke-width="1.5" rx="4"/>
         <text x="440" y="50" fill="#39ff14" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">ARQUITECTURAS</text>
         <text x="440" y="63" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Cascada · Feedforward</text>
         <text x="440" y="74" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Predictor de Smith</text>
         <line x1="513" y1="60" x2="548" y2="60" stroke="#39ff14" stroke-width="1.5" marker-end="url(#ma)"/>
-        <!-- Bloque 4 -->
         <rect x="548" y="30" width="200" height="60" fill="rgba(255,215,0,.07)" stroke="#ffd700" stroke-width="1.5" rx="4"/>
         <text x="648" y="50" fill="#ffd700" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">SIMULACIÓN</text>
         <text x="648" y="63" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">MATLAB · Simulink</text>
         <text x="648" y="74" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Aspen Hysys Dinámico</text>
-        <!-- Bottom row -->
         <line x1="80" y1="90" x2="80" y2="120" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4,3"/>
         <line x1="260" y1="90" x2="260" y2="120" stroke="#ff6b35" stroke-width="1" stroke-dasharray="4,3"/>
         <line x1="440" y1="90" x2="440" y2="120" stroke="#39ff14" stroke-width="1" stroke-dasharray="4,3"/>
         <line x1="648" y1="90" x2="648" y2="120" stroke="#ffd700" stroke-width="1" stroke-dasharray="4,3"/>
         <line x1="80" y1="120" x2="648" y2="120" stroke="#1e2d4a" stroke-width="1.5"/>
         <text x="364" y="145" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="13" font-weight="600" text-anchor="middle">Resultado: Lazo de control industrial robusto, estable y eficiente</text>
-        <text x="100" y="165" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Kc · τI · τD</text>
-        <text x="265" y="165" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Especificaciones</text>
-        <text x="430" y="165" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Control avanzado</text>
-        <text x="600" y="165" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Validación digital</text>
         <text x="380" y="195" fill="#c8d8f0" font-family="Share Tech Mono" font-size="9" text-anchor="middle">→ Integra los resultados de Unidad I (G_proceso) y Unidad II (estabilidad, márgenes) para diseñar Gc(s)</text>
       </svg>
-      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 1 — Mapa conceptual Unidad III. Flujo desde fundamentos del lazo cerrado hasta la simulación dinámica completa en MATLAB, Simulink y Aspen Hysys.</div>
+    </div>
+
+    <!-- VIDEOS INTRODUCTORIOS -->
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">🎬 Videos Introductorios</div>
+    <div class="video-grid">
+      <div class="video-card" onclick="openVideo('rRDekCEKsGk')">
+        <div class="video-thumb"><img src="https://img.youtube.com/vi/rRDekCEKsGk/hqdefault.jpg" alt="PID Control"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="video-info"><div class="video-title">¿Qué es el Control PID? — Explicación visual completa</div><div class="video-meta"><span class="video-tag">FUNDAMENTOS</span><span>Brian Douglas · 16 min</span></div></div>
+      </div>
+      <div class="video-card" onclick="openVideo('wkfEZmsQqiA')">
+        <div class="video-thumb"><img src="https://img.youtube.com/vi/wkfEZmsQqiA/hqdefault.jpg" alt="Control Loops"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="video-info"><div class="video-title">Control en Lazo Cerrado — Intuición y Análisis</div><div class="video-meta"><span class="video-tag">LAZO CERRADO</span><span>MATLAB Tech Talks · 10 min</span></div></div>
+      </div>
+      <div class="video-card" onclick="openVideo('sFqFrmMJ-sg')">
+        <div class="video-thumb"><img src="https://img.youtube.com/vi/sFqFrmMJ-sg/hqdefault.jpg" alt="PID Tuning"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="video-info"><div class="video-title">Sintonización PID — Métodos prácticos industriales</div><div class="video-meta"><span class="video-tag">SINTONIZACIÓN</span><span>MATLAB · 12 min</span></div></div>
+      </div>
     </div>
 
     <div class="section-title" style="font-size:19px;margin-bottom:14px;">Objetivos de Aprendizaje</div>
     <div class="cards-grid">
-      <div class="card">
-        <div class="card-tag">TEMA 6a — CARACTERÍSTICAS</div>
-        <div class="card-title">Fundamentos del Lazo Cerrado</div>
-        <div class="card-body">Comparar sistemáticamente lazo abierto vs cerrado. Cuantificar cómo cada acción de control (P, I, D) afecta la ganancia, velocidad, error y robustez ante incertidumbre paramétrica y perturbaciones.</div>
-        <ul class="spec-list">
-          <li>Error de estado estacionario vs tipo de controlador</li>
-          <li>Efecto de perturbaciones de carga y de SP</li>
-          <li>Incertidumbres paramétricas y robustez</li>
-        </ul>
-      </div>
-      <div class="card orange">
-        <div class="card-tag">TEMA 6b — DISEÑO PID</div>
-        <div class="card-title">Diseño de Controladores PID</div>
-        <div class="card-body">Diseñar controladores PID mediante métodos empíricos (Z-N, Cohen-Coon, IMC), asignación analítica de polos y herramientas computacionales como el Control System Designer de MATLAB.</div>
-        <ul class="spec-list">
-          <li>Índices de desempeño: ISE, IAE, ITAE, ITSE</li>
-          <li>Métodos empíricos lazo abierto y cerrado</li>
-          <li>PID discreto por equivalente digital (Tustin, ZOH)</li>
-        </ul>
-      </div>
-      <div class="card green">
-        <div class="card-tag">TEMAS 7–8 — ARQUITECTURAS Y SIM.</div>
-        <div class="card-title">Control Avanzado y Simulación</div>
-        <div class="card-body">Implementar estructuras de control avanzadas: cascada, feedforward, predictor de Smith. Simular lazos completos en MATLAB/Simulink y validar en Aspen Hysys dinámico.</div>
-        <ul class="spec-list">
-          <li>Predictor de Smith para procesos con gran tiempo muerto</li>
-          <li>Control cascada: lazo maestro + lazo esclavo</li>
-          <li>Feedforward de referencia y de disturbio</li>
-        </ul>
-      </div>
+      <div class="card"><div class="card-tag">TEMA 6a — CARACTERÍSTICAS</div><div class="card-title">Fundamentos del Lazo Cerrado</div><div class="card-body">Comparar sistemáticamente lazo abierto vs cerrado. Cuantificar cómo cada acción (P, I, D) afecta ganancia, velocidad, error y robustez ante incertidumbre paramétrica y perturbaciones.</div><ul class="spec-list"><li>Error de estado estacionario vs tipo de controlador</li><li>Efecto de perturbaciones de carga y de SP</li><li>Incertidumbres paramétricas y robustez</li></ul></div>
+      <div class="card orange"><div class="card-tag">TEMA 6b — DISEÑO PID</div><div class="card-title">Diseño de Controladores PID</div><div class="card-body">Diseñar controladores PID mediante métodos empíricos (Z-N, Cohen-Coon, IMC), asignación analítica de polos y herramientas computacionales como el Control System Designer de MATLAB.</div><ul class="spec-list"><li>Índices de desempeño: ISE, IAE, ITAE, ITSE</li><li>Métodos empíricos lazo abierto y cerrado</li><li>PID discreto: Tustin, ZOH, mapeo polo-cero</li></ul></div>
+      <div class="card green"><div class="card-tag">TEMAS 7–8 — ARQUITECTURAS Y SIM.</div><div class="card-title">Control Avanzado y Simulación</div><div class="card-body">Implementar estructuras avanzadas: cascada, feedforward, predictor de Smith. Simular lazos completos en MATLAB/Simulink y validar en Aspen Hysys dinámico.</div><ul class="spec-list"><li>Predictor de Smith para gran tiempo muerto</li><li>Control cascada: lazo maestro + lazo esclavo</li><li>Feedforward de referencia y de disturbio</li></ul></div>
     </div>
 
-    <div class="industrial-example">
-      <div class="ie-title">▸ VISIÓN INTEGRADA — INGENIO RIOPAILA-CASTILLA (VALLE DEL CAUCA)</div>
-      <div class="ie-body">En el proceso de evaporación múltiple efecto de Riopaila-Castilla, un ingeniero de control aplica cada herramienta de esta unidad: (1) identifica que el lazo simple P genera 8% de offset inaceptable en Brix → agrega acción I. (2) El tiempo muerto del evaporador (θ=4 min, τ=12 min) hace que Z-N sintonice demasiado agresivo → usa IMC con λ=8 min. (3) La perturbación de alimentación (variación de Brix de caña) es medible → agrega feedforward directo de disturbio. (4) Valida todo en Aspen Hysys dinámico antes de implementar en el DCS. Resultado: offset cero, OS&lt;5%, tiempo de asentamiento &lt;25 min.</div>
+    <!-- LINKS DE REFERENCIA -->
+    <div class="section-title" style="font-size:18px;margin-bottom:12px;margin-top:10px;">📚 Recursos de Referencia</div>
+    <div style="margin-bottom:20px;">
+      <a href="https://www.mathworks.com/products/control.html" class="link-pill" target="_blank" rel="noopener">🖥️ MATLAB Control Toolbox</a>
+      <a href="https://folk.ntnu.no/skoge/prost/proceedings/ifac2005/Papers/Paper1240.pdf" class="link-pill orange" target="_blank" rel="noopener">📄 SIMC Rules (Skogestad)</a>
+      <a href="https://eng.libretexts.org/Bookshelves/Industrial_and_Systems_Engineering/Chemical_Process_Dynamics_and_Controls_(Woolf)" class="link-pill green" target="_blank" rel="noopener">📗 LibreTexts Process Control</a>
+      <a href="https://www.isa.org/standards-and-publications/isa-standards/isa-standards-committees/isa18" class="link-pill gold" target="_blank" rel="noopener">⚙️ ISA-18 Alarmas</a>
+      <a href="https://ctms.engin.umich.edu/CTMS/index.php?aux=Home" class="link-pill" target="_blank" rel="noopener">🎓 CTMS Michigan</a>
+      <a href="https://www.sciencedirect.com/book/9780750678322/process-control" class="link-pill orange" target="_blank" rel="noopener">📘 Marlin - Process Control</a>
+      <a href="https://campusvirtual.univalle.edu.co" class="link-pill green" target="_blank" rel="noopener">🎓 Moodle 740021C UniValle</a>
     </div>
+
+    <div class="industrial-example"><div class="ie-title">▸ VISIÓN INTEGRADA — INGENIO RIOPAILA-CASTILLA (VALLE DEL CAUCA)</div><div class="ie-body">En el proceso de evaporación múltiple efecto de Riopaila-Castilla, un ingeniero de control aplica cada herramienta de esta unidad: (1) identifica que el lazo simple P genera 8% de offset inaceptable en Brix → agrega acción I. (2) El tiempo muerto del evaporador (θ=4 min, τ=12 min) hace que Z-N sintonice demasiado agresivo → usa IMC con λ=8 min. (3) La perturbación de alimentación (variación de Brix de caña) es medible → agrega feedforward. (4) Valida en Aspen Hysys dinámico antes de implementar en el DCS Honeywell. Resultado: offset cero, OS&lt;5%, ts&lt;25 min.</div></div>
   </div>
 
 
@@ -461,108 +716,92 @@
     <div class="section-title">Acciones de Control — P · I · D</div>
     <div class="section-desc">// PROPORCIONAL · INTEGRAL · DERIVATIVA · PI · PD · PID IDEAL Y REAL</div>
 
-    <div class="info-box"><div class="ib-content">La ley de control PID combina tres acciones matemáticas sobre el error e(t)=SP−PV. Cada acción cumple una función específica: <strong>P corrige proporcionalmente al error presente</strong>, <strong>I elimina el error acumulado histórico</strong> y <strong>D anticipa el error futuro</strong>. Comprender el impacto individual de cada acción es esencial para sintonizar el controlador de forma racional.</div></div>
+    <div class="info-box"><div class="ib-content">La ley PID combina tres acciones sobre el error e(t)=SP−PV. <strong>P</strong> corrige proporcionalmente al error presente, <strong>I</strong> elimina el error acumulado histórico y <strong>D</strong> anticipa el error futuro. Experimente con el simulador interactivo abajo para visualizar el impacto de cada parámetro.</div></div>
 
     <div class="math-box">
       <div class="math-title">📐 Ley de Control PID — Formas Paralela, Serie e Ideal</div>
-      <div class="math-step"><strong>Forma paralela (estándar ISA):</strong></div>
-      <div class="math-step">u(t) = Kc·[e(t) + (1/τI)·∫e(t)dt + τD·de(t)/dt]  +  u_bias</div>
-      <div class="math-step"><strong>Función de transferencia (forma paralela, dominio s):</strong></div>
-      <div class="math-step">Gc(s) = Kc·[1 + 1/(τI·s) + τD·s] = Kc·(τI·τD·s² + τI·s + 1)/(τI·s)</div>
-      <div class="math-step"><strong>Forma serie (interactuante — DCS industriales):</strong></div>
-      <div class="math-step">Gc(s) = Kc·(1 + 1/(τI·s))·(1 + τD·s)  ← introduce cero adicional</div>
-      <div class="math-step"><strong>PID real (filtro derivativo, N=5–20 típico):</strong></div>
-      <div class="math-result">Gc(s) = Kc·[1 + 1/(τI·s) + τD·s/(τD·s/N + 1)]  ← evita amplificación de ruido en D</div>
+      <div class="math-step"><strong>Forma paralela (estándar ISA):</strong>   u(t) = Kc·[e(t) + (1/τI)·∫e dt + τD·de/dt]  +  u_bias</div>
+      <div class="math-step"><strong>Función de transferencia:</strong>   Gc(s) = Kc·(τI·τD·s² + τI·s + 1)/(τI·s)</div>
+      <div class="math-step"><strong>Forma serie (interactuante):</strong>   Gc(s) = Kc·(1+1/(τI·s))·(1+τD·s)</div>
+      <div class="math-result">PID real (con filtro derivativo N=5–20):  Gc(s) = Kc·[1 + 1/(τI·s) + τD·s/(τD·s/N + 1)]</div>
     </div>
 
-    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Impacto de Cada Acción de Control</div>
+    <!-- INTERACTIVE PID SIMULATOR -->
+    <div class="demo-box">
+      <div class="demo-title">🎛️ Simulador Interactivo PID — Sistema de Primer Orden</div>
+      <div class="demo-desc">// PROCESO G(s)=Kp/(τs+1) · AJUSTE EN TIEMPO REAL · RESPUESTA AL ESCALÓN</div>
+      <div class="demo-controls">
+        <div class="demo-ctrl">
+          <label>Kc (Ganancia)</label>
+          <input type="range" id="sl_kc" min="0.1" max="5" step="0.05" value="1.5">
+          <div class="demo-val" id="val_kc">1.50</div>
+        </div>
+        <div class="demo-ctrl">
+          <label class="orange">τI — Integral (min)</label>
+          <input type="range" class="orange" id="sl_ti" min="0.5" max="20" step="0.5" value="8">
+          <div class="demo-val" id="val_ti">8.0</div>
+        </div>
+        <div class="demo-ctrl">
+          <label class="green">τD — Derivativa (min)</label>
+          <input type="range" class="green" id="sl_td" min="0" max="5" step="0.1" value="0">
+          <div class="demo-val" id="val_td">0.0</div>
+        </div>
+        <div class="demo-ctrl">
+          <label>Kp Proceso</label>
+          <input type="range" id="sl_kp" min="0.2" max="4" step="0.1" value="2">
+          <div class="demo-val" id="val_kp">2.0</div>
+        </div>
+        <div class="demo-ctrl">
+          <label>τ Proceso (min)</label>
+          <input type="range" id="sl_tau" min="1" max="20" step="0.5" value="6">
+          <div class="demo-val" id="val_tau">6.0</div>
+        </div>
+        <div class="demo-ctrl">
+          <label>θ Tiempo Muerto</label>
+          <input type="range" id="sl_theta" min="0" max="6" step="0.2" value="1">
+          <div class="demo-val" id="val_theta">1.0</div>
+        </div>
+      </div>
+      <div class="demo-canvas"><canvas id="pidCanvas" width="800" height="220"></canvas></div>
+      <div class="demo-output" id="pidOutput">Ajuste los parámetros para ver la respuesta al escalón unitario en tiempo real.</div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="demo-btn" onclick="setPIDPreset('P')">Solo P (offset)</button>
+        <button class="demo-btn" onclick="setPIDPreset('PI')">PI optimizado</button>
+        <button class="demo-btn" onclick="setPIDPreset('PID')">PID completo</button>
+        <button class="demo-btn orange" onclick="setPIDPreset('aggressive')">PID agresivo</button>
+        <button class="demo-btn orange" onclick="setPIDPreset('ZN')">Z-N automático</button>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Impacto de Cada Acción</div>
     <div class="term-grid">
-      <div class="term-card">
-        <div class="term-title">Acción Proporcional — P</div>
-        <div class="term-def">Salida proporcional al error actual. Es la base de todo controlador. Aumentar Kc hace el lazo más rápido pero reduce los márgenes de estabilidad. <span class="action-badge ab-p">P</span></div>
-        <div class="term-formula">u_P(t) = Kc·e(t)  →  Gc_P(s) = Kc</div>
-        <div style="margin-top:8px;font-size:12px;color:var(--text)">↑ Kc: velocidad ↑, amortiguamiento ↓, margen ↓<br>Offset permanente en SS ante perturbaciones</div>
+      <div class="term-card"><div class="term-title">Acción P — Proporcional</div><div class="term-def">Salida proporcional al error actual. Base de todo controlador. ↑ Kc → más rápido, menos margen. Produce offset permanente ante perturbaciones sostenidas. <span class="action-badge ab-p">P</span></div><div class="term-formula">u_P = Kc·e(t)  →  e_ss = 1/(1+Kp·Kc) ≠ 0</div></div>
+      <div class="term-card orange"><div class="term-title">Acción I — Integral</div><div class="term-def">Elimina offset acumulando el error. ↓ τI → más agresiva. Peligro: windup ante saturación del actuador. <span class="action-badge ab-i">I</span></div><div class="term-formula">u_I = (Kc/τI)·∫e dt  →  e_ss = 0 (tipo 1)</div></div>
+      <div class="term-card green"><div class="term-title">Acción D — Derivativa</div><div class="term-def">Anticipa el error usando de/dt. Agrega amortiguamiento → reduce OS. ¡Amplifica ruido de alta frecuencia! Siempre usar con filtro N. <span class="action-badge ab-d">D</span></div><div class="term-formula">u_D = Kc·τD·de/dt  →  Gc_D(s)=Kc·τD·s/(τD·s/N+1)</div></div>
+    </div>
+
+    <!-- VIDEO acción PID -->
+    <div class="section-title" style="font-size:18px;margin-bottom:12px;">🎬 Videos — Acción de Control</div>
+    <div class="video-grid">
+      <div class="video-card" onclick="openVideo('4Y7zG48uHRo')">
+        <div class="video-thumb"><img src="https://img.youtube.com/vi/4Y7zG48uHRo/hqdefault.jpg" alt="PID"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="video-info"><div class="video-title">Proporcional, Integral, Derivativo — Visualización intuitiva</div><div class="video-meta"><span class="video-tag">P·I·D</span><span>Brian Douglas · 14 min</span></div></div>
       </div>
-      <div class="term-card orange">
-        <div class="term-title">Acción Integral — I</div>
-        <div class="term-def">Elimina el offset acumulando el error en el tiempo. Cuanto mayor el error acumulado, mayor la corrección. Peligro: <em>windup</em> ante saturación del actuador. <span class="action-badge ab-i">I</span></div>
-        <div class="term-formula">u_I(t) = (Kc/τI)·∫e(t)dt  →  Gc_I(s) = Kc/(τI·s)</div>
-        <div style="margin-top:8px;font-size:12px;color:var(--text)">↓ τI: eliminación offset más rápida, ↑ oscilación<br>e_ss = 0 para entradas escalón (sistema tipo 1)</div>
-      </div>
-      <div class="term-card green">
-        <div class="term-title">Acción Derivativa — D</div>
-        <div class="term-def">Anticipa el error futuro usando su tasa de cambio. Agrega amortiguamiento → reduce sobreimpulso. Amplifica ruido de alta frecuencia → siempre usar con filtro N. <span class="action-badge ab-d">D</span></div>
-        <div class="term-formula">u_D(t) = Kc·τD·de(t)/dt  →  Gc_D(s) = Kc·τD·s</div>
-        <div style="margin-top:8px;font-size:12px;color:var(--text)">↑ τD: amortiguamiento ↑, ruido amplificado ↑<br>No usar en procesos con ruido significativo o resp. inversa</div>
+      <div class="video-card" onclick="openVideo('XfAt6jr9QvM')">
+        <div class="video-thumb"><img src="https://img.youtube.com/vi/XfAt6jr9QvM/hqdefault.jpg" alt="Anti windup"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="video-info"><div class="video-title">Anti-Windup en Controladores PID — Problema y solución</div><div class="video-meta"><span class="video-tag">ANTI-WINDUP</span><span>MATLAB · 8 min</span></div></div>
       </div>
     </div>
 
-    <!-- SVG: respuestas comparativas de cada controlador -->
-    <div class="diagram-box">
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
-        <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Respuesta al Escalón de SP — Comparativa P · PI · PD · PID</text>
-        <!-- Axes -->
-        <line x1="60" y1="220" x2="700" y2="220" stroke="#1e2d4a" stroke-width="1.5"/>
-        <line x1="60" y1="50" x2="60" y2="225" stroke="#1e2d4a" stroke-width="1.5"/>
-        <text x="706" y="224" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">t →</text>
-        <text x="65" y="48" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">PV</text>
-        <!-- SP line -->
-        <line x1="60" y1="80" x2="700" y2="80" stroke="#ffd700" stroke-width="1" stroke-dasharray="5,3"/>
-        <text x="706" y="84" fill="#ffd700" font-family="Share Tech Mono" font-size="9">SP</text>
-        <!-- P only: offset -->
-        <path d="M60,220 Q130,150 200,115 Q280,95 700,100" fill="none" stroke="#5a7a9a" stroke-width="2"/>
-        <text x="620" y="98" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">P solo</text>
-        <text x="620" y="108" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">(offset)</text>
-        <!-- PI: reaches SP, slight overshoot -->
-        <path d="M60,220 Q140,130 200,85 Q240,65 280,74 Q340,80 700,80" fill="none" stroke="#ff6b35" stroke-width="2.5"/>
-        <text x="300" y="68" fill="#ff6b35" font-family="Share Tech Mono" font-size="9">PI</text>
-        <!-- PD: fast, no overshoot, offset -->
-        <path d="M60,220 Q110,120 165,95 Q220,88 350,92 Q500,97 700,100" fill="none" stroke="#00d4ff" stroke-width="2.5"/>
-        <text x="380" y="90" fill="#00d4ff" font-family="Share Tech Mono" font-size="9">PD (offset)</text>
-        <!-- PID: fast, reaches SP, minimal OS -->
-        <path d="M60,220 Q120,110 175,78 Q210,65 250,73 Q310,79 700,80" fill="none" stroke="#39ff14" stroke-width="3"/>
-        <text x="270" y="63" fill="#39ff14" font-family="Share Tech Mono" font-size="10" font-weight="700">PID ← óptimo</text>
-
-        <!-- Annotations -->
-        <line x1="700" y1="100" x2="700" y2="80" stroke="#5a7a9a" stroke-width="1.5"/>
-        <text x="705" y="93" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">offset P</text>
-
-        <!-- Legend -->
-        <rect x="80" y="240" width="14" height="3" fill="#5a7a9a" rx="1"/>
-        <text x="100" y="247" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">Control P (offset SS)</text>
-        <rect x="230" y="240" width="14" height="3" fill="#ff6b35" rx="1"/>
-        <text x="250" y="247" fill="#ff6b35" font-family="Share Tech Mono" font-size="9">Control PI (e_ss=0)</text>
-        <rect x="380" y="240" width="14" height="3" fill="#00d4ff" rx="1"/>
-        <text x="400" y="247" fill="#00d4ff" font-family="Share Tech Mono" font-size="9">Control PD (rápido, offset)</text>
-        <rect x="560" y="240" width="14" height="3" fill="#39ff14" rx="1"/>
-        <text x="580" y="247" fill="#39ff14" font-family="Share Tech Mono" font-size="9">Control PID (óptimo)</text>
-        <text x="360" y="270" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">El PID combina: rapidez de PD + eliminación de offset de PI. Proceso: G(s)=Kp/(τs+1) con Kp=2, τ=5 min.</text>
-      </svg>
-      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 2 — Comparativa de respuesta al escalón de SP para los cuatro tipos de controlador. P: rápido pero con offset permanente. PI: elimina offset pero más oscilatorio. PD: muy rápido sin OS pero no elimina offset. PID: combina las ventajas de PI y PD.</div>
-    </div>
-
-    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Selección del Tipo de Controlador por Proceso</div>
-    <table class="sensor-table">
-      <thead><tr><th>TIPO</th><th>USAR CUANDO</th><th>EVITAR CUANDO</th><th>TÍPICO EN</th></tr></thead>
-      <tbody>
-        <tr><td><span class="action-badge ab-p">P</span></td><td>Proceso muy rápido. Offset tolerable (lazo de flujo). Protección ante reset windup.</td><td>Proceso lento con perturbaciones frecuentes. Requiere e_ss=0.</td><td>Lazo de flujo secundario en cascada. Lazo de presión de gas.</td></tr>
-        <tr><td><span class="action-badge ab-p">P</span><span class="action-badge ab-i">I → PI</span></td><td>La mayoría de lazos de proceso. Elimina offset. Proceso sin derivativo (ruido, resp. inversa).</td><td>Proceso con tiempo muerto muy grande (θ/τ &gt; 0.5). Necesita D.</td><td>Temperatura, nivel, flujo, presión. &gt;90% de lazos industriales.</td></tr>
-        <tr><td><span class="action-badge ab-p">P</span><span class="action-badge ab-d">D → PD</span></td><td>Proceso muy rápido sin ruido. Se acepta offset. Servo de posición.</td><td>Proceso con ruido en PV. Proceso con respuesta inversa.</td><td>Control de servo-válvulas. Posicionadores de válvulas de alta precisión.</td></tr>
-        <tr><td><span class="action-badge ab-pid">PID</span></td><td>Proceso moderado a lento, sin ruido excesivo, con perturbaciones de carga. θ/τ moderado.</td><td>Proceso con respuesta inversa. Gran ruido de proceso. θ/τ &gt; 0.8.</td><td>Temperatura en intercambiadores. CSTR. Columnas de destilación.</td></tr>
-      </tbody>
-    </table>
-
-    <div class="warn-box">
-      <div class="ib-content"><strong>Anti-windup en acción integral:</strong> Cuando la salida del controlador satura el actuador (válvula al 100% o 0%), la acción integral continúa acumulando error aunque la salida ya no pueda incrementarse. Al desaparecer la saturación, el integrador "desenrolla" produciendo un sobreimpulso severo. Los DCS industriales siempre implementan protección anti-windup: back-calculation, conditional integration o clamping. Sin anti-windup, el control PI/PID puede ser peligroso en arranques o cambios grandes de SP.</div>
-    </div>
+    <div class="warn-box"><div class="ib-content"><strong>Anti-windup:</strong> Cuando la válvula satura (100% o 0%), la acción I sigue acumulando error — al salir de saturación, el integrador desenrolla y produce sobreimpulso severo. Los DCS industriales siempre implementan: back-calculation, conditional integration o clamping. <strong>Sin anti-windup un arranque puede ser peligroso.</strong></div></div>
 
     <div class="quiz-box" id="qacciones">
-      <div class="quiz-q">❓ Un lazo de temperatura tiene ruido de ±0.3°C en la señal del termopar. ¿Qué tipo de controlador es MÁS adecuado?</div>
+      <div class="quiz-q">❓ Con ruido de ±0.3°C en el termopar, ¿qué controlador es más adecuado?</div>
       <div class="quiz-opt" onclick="checkQuiz('qacciones',this,'wrong')">A. PID con τD grande para anticipar cambios</div>
-      <div class="quiz-opt" onclick="checkQuiz('qacciones',this,'correct')">B. PI con filtro de ruido en la señal de PV</div>
+      <div class="quiz-opt" onclick="checkQuiz('qacciones',this,'correct')">B. PI con filtro de ruido en PV (recomendado)</div>
       <div class="quiz-opt" onclick="checkQuiz('qacciones',this,'wrong')">C. PD porque es más rápido que PI</div>
       <div class="quiz-opt" onclick="checkQuiz('qacciones',this,'wrong')">D. Solo P porque el ruido no importa</div>
-      <div class="quiz-feedback" id="qacciones-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">✅ Con ruido en el sensor, la acción D amplifica el ruido de alta frecuencia exponencialmente (de_D/dt). Se prefiere <strong>PI</strong> que elimina el offset sin amplificar ruido. Si se necesita D, siempre con filtro de primer orden (N=5–10).</div>
+      <div class="quiz-feedback" id="qacciones-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">✅ La acción D amplifica ruido de alta frecuencia exponencialmente (de_D/dt). Se prefiere <strong>PI</strong> que elimina offset sin amplificar ruido. Si se necesita D, siempre con filtro (N=5–10).</div>
     </div>
   </div>
 
@@ -691,94 +930,165 @@
   <!-- ==================== MÉTODOS EMPÍRICOS ==================== -->
   <div id="empiricos" class="section">
     <div class="section-title">Métodos Empíricos de Sintonización PID</div>
-    <div class="section-desc">// ZIEGLER-NICHOLS · COHEN-COON · IMC · LAMBDA TUNING · LAZO ABIERTO Y CERRADO</div>
+    <div class="section-desc">// ZIEGLER-NICHOLS · COHEN-COON · IMC-SIMC · LAMBDA TUNING · LAZO ABIERTO Y CERRADO</div>
 
-    <div class="info-box"><div class="ib-content">Los métodos empíricos sintetizan reglas de sintonización derivadas de experimentos en procesos FOPDT reales. No requieren modelos matemáticos exactos — solo los parámetros identificados experimentalmente: <strong>Kp, τ y θ</strong> (prueba de lazo abierto) o <strong>Kc_ult y P_ult</strong> (prueba de lazo cerrado de Ziegler-Nichols). Son el punto de partida obligado en la industria.</div></div>
+    <div class="info-box"><div class="ib-content">Los métodos empíricos sintetizan reglas derivadas de experimentos en procesos FOPDT reales. No requieren modelos exactos — solo los parámetros identificados: <strong>Kp, τ y θ</strong> (prueba lazo abierto) o <strong>Kc_ult y P_ult</strong> (prueba Z-N lazo cerrado).</div></div>
+
+    <!-- CALCULADORA INTERACTIVA DE SINTONIZACIÓN -->
+    <div class="demo-box">
+      <div class="demo-title">🔢 Calculadora de Sintonización PID — Todos los Métodos</div>
+      <div class="demo-desc">// INGRESE Kp · τ · θ → OBTIENE Kc · τI · τD PARA CADA MÉTODO</div>
+      <div class="demo-controls" style="align-items:center;">
+        <div class="demo-ctrl">
+          <label>Kp (Ganancia proceso)</label>
+          <input type="range" id="tc_kp" min="0.1" max="5" step="0.1" value="1.8" oninput="calcTuning()">
+          <div class="demo-val" id="tc_kp_v">1.8</div>
+        </div>
+        <div class="demo-ctrl">
+          <label class="orange">τ — Constante de tiempo (min)</label>
+          <input type="range" class="orange" id="tc_tau" min="0.5" max="30" step="0.5" value="6.5" oninput="calcTuning()">
+          <div class="demo-val" id="tc_tau_v">6.5</div>
+        </div>
+        <div class="demo-ctrl">
+          <label class="green">θ — Tiempo muerto (min)</label>
+          <input type="range" class="green" id="tc_theta" min="0.1" max="10" step="0.1" value="1.8" oninput="calcTuning()">
+          <div class="demo-val" id="tc_theta_v">1.8</div>
+        </div>
+        <div class="demo-ctrl" style="min-width:140px;">
+          <label class="gold">λ IMC (min)</label>
+          <input type="range" class="gold" id="tc_lam" min="0.5" max="20" step="0.5" value="3.0" oninput="calcTuning()">
+          <div class="demo-val" id="tc_lam_v">3.0</div>
+        </div>
+      </div>
+      <div id="tuning_table" style="overflow-x:auto;"></div>
+      <div class="demo-output" id="tuning_advice">Ajuste los parámetros del proceso para ver las sintonías calculadas.</div>
+    </div>
 
     <div class="section-title" style="font-size:19px;margin-bottom:14px;">Ziegler-Nichols — Lazo Abierto (Curva de Reacción)</div>
     <div class="math-box">
-      <div class="math-title">📐 Procedimiento Experimental</div>
-      <div class="math-step"><strong>1.</strong> Con el lazo en manual, aplicar escalón de 5–10% en la salida del controlador (MV)</div>
-      <div class="math-step"><strong>2.</strong> Registrar la respuesta de PV hasta estado estacionario → curva en S</div>
-      <div class="math-step"><strong>3.</strong> Trazar la tangente en el punto de inflexión de la curva en S</div>
-      <div class="math-step"><strong>4.</strong> Identificar: θ (tiempo muerto) = intersección tangente con línea inicial</div>
-      <div class="math-step"><strong>5.</strong> Identificar: τ (constante de tiempo) = diferencia entre θ y punto donde tangente cruza SS</div>
-      <div class="math-step"><strong>6.</strong> Kp = ΔPV_ss / ΔMV (ganancia estática del proceso)</div>
+      <div class="math-title">📐 Procedimiento Experimental — Prueba de Escalón en LA</div>
+      <div class="math-step"><strong>1.</strong> Lazo en manual → aplicar escalón de 5–10% en MV</div>
+      <div class="math-step"><strong>2.</strong> Registrar respuesta de PV hasta estado estacionario → curva en S</div>
+      <div class="math-step"><strong>3.</strong> Trazar tangente en punto de inflexión de la curva</div>
+      <div class="math-step"><strong>4.</strong> Identificar: θ = intersección tangente con línea inicial · τ = diferencia θ a cruce del SS · Kp = ΔPV_ss/ΔMV</div>
     </div>
 
     <table class="sensor-table">
-      <thead><tr><th>CONTROLADOR</th><th>Kc (Z-N Lazo Abierto)</th><th>τI</th><th>τD</th><th>OBSERVACIÓN</th></tr></thead>
+      <thead><tr><th>CONTROLADOR</th><th>Kc (Z-N LA)</th><th>τI</th><th>τD</th><th>OS típico</th></tr></thead>
       <tbody>
-        <tr><td><span class="action-badge ab-p">P</span></td><td>τ/(Kp·θ)</td><td>∞ (sin I)</td><td>0 (sin D)</td><td>Respuesta rápida, offset permanente</td></tr>
-        <tr><td><span class="action-badge ab-p">P</span><span class="action-badge ab-i">I → PI</span></td><td>0.9·τ/(Kp·θ)</td><td>3.33·θ</td><td>0</td><td>El más usado. OS moderado ~15–25%</td></tr>
-        <tr><td><span class="action-badge ab-pid">PID</span></td><td>1.2·τ/(Kp·θ)</td><td>2·θ</td><td>0.5·θ</td><td>Más agresivo. OS ~30–50% — a menudo se reduce Kc</td></tr>
+        <tr><td><span class="action-badge ab-p">P</span></td><td>τ/(Kp·θ)</td><td>∞</td><td>0</td><td>Offset permanente</td></tr>
+        <tr><td><span class="action-badge ab-p">P</span><span class="action-badge ab-i">I</span> → PI</td><td>0.9·τ/(Kp·θ)</td><td>3.33·θ</td><td>0</td><td>15–25% OS</td></tr>
+        <tr><td><span class="action-badge ab-pid">PID</span></td><td>1.2·τ/(Kp·θ)</td><td>2·θ</td><td>0.5·θ</td><td>30–50% OS — reducir Kc 20%</td></tr>
       </tbody>
     </table>
 
-    <div class="section-title" style="font-size:19px;margin-bottom:14px;margin-top:8px;">Ziegler-Nichols — Lazo Cerrado (Sintonía de Ciclo Último)</div>
-    <div class="two-col">
-      <div class="math-box">
-        <div class="math-title">📐 Procedimiento de Ciclo Último</div>
-        <div class="math-step"><strong>1.</strong> Eliminar acción I (τI→∞) y D (τD=0)</div>
-        <div class="math-step"><strong>2.</strong> Con el lazo en automático solo con P</div>
-        <div class="math-step"><strong>3.</strong> Aumentar Kc lentamente hasta que PV oscile con amplitud constante</div>
-        <div class="math-step"><strong>4.</strong> Registrar: Kc_ult = ganancia en oscilación sostenida</div>
-        <div class="math-step"><strong>5.</strong> Registrar: P_ult = período de oscilación [min]</div>
-        <div class="math-result">Kc_ult y P_ult → tabla Z-N lazo cerrado</div>
-      </div>
-      <div class="math-box">
-        <div class="math-title">📐 Tabla Z-N Lazo Cerrado</div>
-        <div class="math-step">Control P:   Kc = 0.5·Kc_ult</div>
-        <div class="math-step">Control PI:  Kc = 0.45·Kc_ult · τI = P_ult/1.2</div>
-        <div class="math-step">Control PID: Kc = 0.6·Kc_ult · τI = 0.5·P_ult · τD = P_ult/8</div>
-        <div class="math-step" style="color:var(--text-dim);margin-top:8px;">⚠ Z-N cerrado diseña con Gm≈2 (6dB) — margen mínimo. En práctica, reducir Kc en 20–30% para mayor robustez.</div>
-      </div>
-    </div>
-
-    <div class="section-title" style="font-size:19px;margin-bottom:14px;margin-top:8px;">IMC-PID (Internal Model Control)</div>
-    <div class="info-box"><div class="ib-content">El método IMC es el <strong>más recomendado en la industria</strong> para procesos FOPDT. Solo tiene un parámetro de diseño: <strong>λ (lambda)</strong>, el tiempo de lazo cerrado deseado. Aumentar λ → más lento y robusto; disminuir λ → más rápido y agresivo. Regla práctica: λ ≥ max(θ, τ/5) — nunca menor que el tiempo muerto.</div></div>
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">IMC-PID — Internal Model Control (Recomendado)</div>
+    <div class="info-box"><div class="ib-content">El método IMC es el <strong>más recomendado en la industria</strong>. Solo un parámetro de diseño: <strong>λ</strong> (tiempo de lazo cerrado deseado). Regla práctica: λ ≥ max(θ, τ/5). Nunca menor que θ.</div></div>
 
     <table class="sensor-table">
-      <thead><tr><th>CONTROLADOR</th><th>Kc (IMC)</th><th>τI</th><th>τD</th><th>RELACIÓN λ</th></tr></thead>
+      <thead><tr><th>CONTROLADOR</th><th>Kc (IMC)</th><th>τI</th><th>τD</th></tr></thead>
       <tbody>
-        <tr><td><span class="action-badge ab-p">P</span><span class="action-badge ab-i">I → PI</span></td><td>(τ+θ/2) / [Kp·(λ+θ/2)]</td><td>τ+θ/2</td><td>0</td><td>λ = τ: balance; λ=3τ: conservador</td></tr>
-        <tr><td><span class="action-badge ab-pid">PID (serie)</span></td><td>(τ+θ/2) / [Kp·(λ+θ/2)]</td><td>τ+θ/2</td><td>τ·θ / (2τ+θ)</td><td>τD≈θ/2 para θ pequeño</td></tr>
-        <tr><td><strong>Regla Skogestad (SIMC)</strong></td><td>τ / [Kp·(λ+θ)]</td><td>min(τ, 4(λ+θ))</td><td>τ₂/2 (si existe)</td><td>λ=θ → buena partida. λ=τ → muy robusto</td></tr>
+        <tr><td><span class="action-badge ab-p">P</span><span class="action-badge ab-i">I</span> PI</td><td>(τ+θ/2)/[Kp·(λ+θ/2)]</td><td>τ+θ/2</td><td>0</td></tr>
+        <tr><td><span class="action-badge ab-pid">PID</span></td><td>(τ+θ/2)/[Kp·(λ+θ/2)]</td><td>τ+θ/2</td><td>τ·θ/(2τ+θ)</td></tr>
+        <tr><td><strong>SIMC (Skogestad)</strong></td><td>τ/[Kp·(λ+θ)]</td><td>min(τ, 4(λ+θ))</td><td>θ/2 (aprox)</td></tr>
       </tbody>
     </table>
 
-    <div class="problem-box">
-      <p><strong>Sintonización IMC-PID — Intercambiador de calor Ecopetrol:</strong><br>
-      El intercambiador E-102 tiene G(s) = 1.8·e^(−1.8s)/(6.5s+1). Diseñar PI y PID con IMC usando λ=3.0 min. Comparar con Z-N lazo abierto.</p>
-      <div class="math-box" style="margin-top:10px;">
-        <div class="math-title">▸ SOLUCIÓN</div>
-        <div class="math-step">Datos: Kp=1.8 °C/%, τ=6.5 min, θ=1.8 min, λ=3.0 min</div>
-        <div class="math-step"><strong>IMC-PI:</strong></div>
-        <div class="math-step">Kc = (τ+θ/2)/[Kp·(λ+θ/2)] = (6.5+0.9)/[1.8×(3.0+0.9)] = 7.4/[1.8×3.9] = 7.4/7.02 = <strong>1.054 %/°C</strong></div>
-        <div class="math-step">τI = τ+θ/2 = 6.5+0.9 = <strong>7.4 min</strong></div>
-        <div class="math-step"><strong>IMC-PID:</strong></div>
-        <div class="math-step">τD = τ·θ/(2τ+θ) = 6.5×1.8/(13+1.8) = 11.7/14.8 = <strong>0.791 min</strong></div>
-        <div class="math-step"><strong>Z-N Lazo Abierto PI (referencia):</strong></div>
-        <div class="math-step">Kc_ZN = 0.9×τ/(Kp×θ) = 0.9×6.5/(1.8×1.8) = 5.85/3.24 = <strong>1.806 %/°C</strong></div>
-        <div class="math-step">τI_ZN = 3.33×θ = 3.33×1.8 = <strong>5.99 min</strong></div>
-        <div class="math-result">IMC: Kc=1.05 (más suave que Z-N=1.81), τI=7.4 min. Z-N más agresivo → mayor OS. IMC-PI es la sintonía recomendada para este lazo (θ/τ=0.28).</div>
+    <!-- Notebook celda simulada -->
+    <div class="section-title" style="font-size:18px;margin-bottom:10px;">📓 Notebook — Cálculo Paso a Paso (MATLAB)</div>
+    <div class="nb-cell">
+      <div class="nb-header"><span class="nb-label">IN [1]</span><button class="nb-run" onclick="runNb(1)">▶ Ejecutar</button><span style="font-size:10px;color:var(--text-dim);margin-left:auto;">IMC-PID para intercambiador Ecopetrol E-102</span></div>
+      <div class="nb-body">% Parámetros del proceso FOPDT
+Kp = 1.8; tau = 6.5; theta = 1.8; lambda = 3.0;
+
+% IMC-PI
+Kc_PI   = (tau + theta/2) / (Kp*(lambda + theta/2));
+tauI_PI = tau + theta/2;
+
+% IMC-PID
+tauD_PID = tau*theta / (2*tau + theta);
+
+fprintf('=== IMC-PI ===\n');
+fprintf('  Kc  = %.4f\n', Kc_PI);
+fprintf('  tauI = %.4f min\n', tauI_PI);
+fprintf('\n=== IMC-PID ===\n');
+fprintf('  Kc  = %.4f\n', Kc_PI);
+fprintf('  tauI = %.4f min\n', tauI_PI);
+fprintf('  tauD = %.4f min\n', tauD_PID);</div>
+      <div class="nb-out" id="nb_out_1">=== IMC-PI ===
+  Kc   = 1.0541
+  tauI = 7.4000 min
+
+=== IMC-PID ===
+  Kc   = 1.0541
+  tauI = 7.4000 min
+  tauD = 0.7911 min</div>
+    </div>
+
+    <div class="nb-cell">
+      <div class="nb-header"><span class="nb-label">IN [2]</span><button class="nb-run" onclick="runNb(2)">▶ Ejecutar</button><span style="font-size:10px;color:var(--text-dim);margin-left:auto;">Comparativa Z-N vs IMC — Márgenes de estabilidad</span></div>
+      <div class="nb-body">% Comparar sintonías: Z-N vs IMC
+Kc_ZN  = 0.9*tau/(Kp*theta);
+tauI_ZN= 3.33*theta;
+
+fprintf('=== Z-N Lazo Abierto PI ===\n');
+fprintf('  Kc  = %.4f  (%.1f%% más agresivo que IMC)\n',...
+        Kc_ZN, (Kc_ZN/Kc_PI-1)*100);
+fprintf('  tauI = %.4f min\n', tauI_ZN);
+
+% Razón de agresividad
+fprintf('\nRazón Kc_ZN/Kc_IMC = %.2f\n', Kc_ZN/Kc_PI);
+fprintf('Razón tauI_IMC/tauI_ZN = %.2f\n', tauI_PI/tauI_ZN);</div>
+      <div class="nb-out" id="nb_out_2">=== Z-N Lazo Abierto PI ===
+  Kc   = 1.8056  (71.3% más agresivo que IMC)
+  tauI = 5.9940 min
+
+Razón Kc_ZN/Kc_IMC = 1.71
+Razón tauI_IMC/tauI_ZN = 1.23</div>
+    </div>
+
+    <!-- Video sintonización -->
+    <div class="section-title" style="font-size:18px;margin-bottom:12px;margin-top:18px;">🎬 Videos — Sintonización PID</div>
+    <div class="video-grid">
+      <div class="video-card" onclick="openVideo('uXnDwJkR5kg')">
+        <div class="video-thumb"><img src="https://img.youtube.com/vi/uXnDwJkR5kg/hqdefault.jpg" alt="Ziegler Nichols"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="video-info"><div class="video-title">Método Ziegler-Nichols — Lazo Abierto y Cerrado</div><div class="video-meta"><span class="video-tag">Z-N</span><span>Control Lectures · 18 min</span></div></div>
+      </div>
+      <div class="video-card" onclick="openVideo('7dUVdrs1e18')">
+        <div class="video-thumb"><img src="https://img.youtube.com/vi/7dUVdrs1e18/hqdefault.jpg" alt="IMC"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="video-info"><div class="video-title">IMC y Lambda Tuning para procesos con tiempo muerto</div><div class="video-meta"><span class="video-tag">IMC</span><span>Process Control · 22 min</span></div></div>
+      </div>
+      <div class="video-card" onclick="openVideo('JEpAe4E9ssc')">
+        <div class="video-thumb"><img src="https://img.youtube.com/vi/JEpAe4E9ssc/hqdefault.jpg" alt="Cohen Coon"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="video-info"><div class="video-title">Cohen-Coon vs Z-N — ¿Cuándo usar cada método?</div><div class="video-meta"><span class="video-tag">COHEN-COON</span><span>ChE Process Control · 15 min</span></div></div>
       </div>
     </div>
 
     <div class="ext-links-box">
       <div class="ext-links-title">🔧 FUENTES — SINTONIZACIÓN PID</div>
-      <div class="ext-link-item"><span class="ext-link-icon">🖥️</span><div class="ext-link-info"><div class="ext-link-name">MATLAB pidtune() — Sintonización automática PID</div><div class="ext-link-desc">Función de MATLAB que sintoniza automáticamente controladores P, PI, PD, PID y PIDF minimizando ISE o ITAE con márgenes de estabilidad garantizados. Integrado en el Control System Toolbox.</div></div><a href="https://www.mathworks.com/help/control/ref/pidtune.html" class="ext-link-url" target="_blank" rel="noopener">🔗 pidtune()</a></div>
-      <div class="ext-link-item"><span class="ext-link-icon">⚙️</span><div class="ext-link-info"><div class="ext-link-name">PID Tuner Online — Herramienta web interactiva</div><div class="ext-link-desc">Simulador interactivo gratuito para experimentar con Z-N, Cohen-Coon e IMC. Permite ingresar Kp, τ, θ y comparar sintonías en tiempo real con gráfica de respuesta.</div></div><a href="https://pidtuner.com" class="ext-link-url orange" target="_blank" rel="noopener">🔗 pidtuner.com</a></div>
-      <div class="ext-link-item"><span class="ext-link-icon">📗</span><div class="ext-link-info"><div class="ext-link-name">Skogestad — Simple Analytic Rules for PID (SIMC)</div><div class="ext-link-desc">Paper seminal de Skogestad (2003) que propone las reglas SIMC — la versión simplificada e IMC-derivada más usada en la academia y la industria de procesos. Acceso gratuito desde NTNU.</div></div><a href="https://folk.ntnu.no/skoge/publications/2003/tuningpaper_jpc/tuningpaper_04May2003.pdf" class="ext-link-url green" target="_blank" rel="noopener">🔗 SIMC Paper</a></div>
+      <div class="ext-link-item"><span class="ext-link-icon">🖥️</span><div class="ext-link-info"><div class="ext-link-name">MATLAB pidtune() — Sintonización automática</div><div class="ext-link-desc">Sintoniza P/PI/PD/PID/PIDF minimizando ISE o ITAE con márgenes garantizados. Integrado en Control System Toolbox.</div></div><a href="https://www.mathworks.com/help/control/ref/pidtune.html" class="ext-link-url" target="_blank" rel="noopener">🔗 pidtune()</a></div>
+      <div class="ext-link-item"><span class="ext-link-icon">⚙️</span><div class="ext-link-info"><div class="ext-link-name">PID Tuner Online — Simulador gratuito</div><div class="ext-link-desc">Herramienta web interactiva: ingrese Kp, τ, θ y compare sintonías Z-N, IMC, Cohen-Coon en tiempo real.</div></div><a href="https://pidtuner.com" class="ext-link-url orange" target="_blank" rel="noopener">🔗 pidtuner.com</a></div>
+      <div class="ext-link-item"><span class="ext-link-icon">📗</span><div class="ext-link-info"><div class="ext-link-name">Skogestad — SIMC Rules (paper gratuito)</div><div class="ext-link-desc">Paper seminal 2003 que propone las reglas SIMC. Acceso gratuito desde NTNU. La referencia más citada en sintonización industrial.</div></div><a href="https://folk.ntnu.no/skoge/publications/2003/tuningpaper_jpc/tuningpaper_04May2003.pdf" class="ext-link-url green" target="_blank" rel="noopener">🔗 SIMC Paper</a></div>
+    </div>
+
+    <div class="problem-box">
+      <p><strong>Sintonización IMC-PID — Intercambiador E-102 Ecopetrol:</strong><br>G(s)=1.8·e^(−1.8s)/(6.5s+1). Diseñar PI y PID con IMC, λ=3.0 min.</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">▸ SOLUCIÓN</div>
+        <div class="math-step">IMC-PI: Kc=(6.5+0.9)/[1.8×(3+0.9)]=7.4/7.02=<strong>1.054</strong>; τI=<strong>7.4 min</strong></div>
+        <div class="math-step">IMC-PID: τD=6.5×1.8/(13+1.8)=11.7/14.8=<strong>0.791 min</strong></div>
+        <div class="math-step">Z-N PI (referencia): Kc=0.9×6.5/(1.8×1.8)=<strong>1.806</strong>; τI=3.33×1.8=<strong>5.99 min</strong></div>
+        <div class="math-result">IMC (Kc=1.05) vs Z-N (Kc=1.81): IMC 71% más suave → OS menor, más robusto ante incertidumbre de modelo.</div>
+      </div>
     </div>
 
     <div class="quiz-box" id="qimc">
-      <div class="quiz-q">❓ Para G(s)=2·e^(−2s)/(10s+1) con IMC-PI y λ=4 min: ¿cuál es el valor correcto de Kc?</div>
+      <div class="quiz-q">❓ Para G(s)=2·e^(−2s)/(10s+1) con IMC-PI y λ=4 min: ¿cuál es Kc?</div>
       <div class="quiz-opt" onclick="checkQuiz('qimc',this,'wrong')">A. Kc = 1.0</div>
-      <div class="quiz-opt" onclick="checkQuiz('qimc',this,'correct')">B. Kc = 0.917</div>
+      <div class="quiz-opt" onclick="checkQuiz('qimc',this,'correct')">B. Kc = 1.1</div>
       <div class="quiz-opt" onclick="checkQuiz('qimc',this,'wrong')">C. Kc = 2.25</div>
       <div class="quiz-opt" onclick="checkQuiz('qimc',this,'wrong')">D. Kc = 0.5</div>
-      <div class="quiz-feedback" id="qimc-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">✅ Kc = (τ+θ/2)/[Kp·(λ+θ/2)] = (10+1)/[2×(4+1)] = 11/[2×5] = 11/10 = <strong>1.1... </strong>→ Aprox 0.917 con la versión Skogestad: τ/[Kp·(λ+θ)] = 10/[2×(4+2)] = 10/12 = 0.833. La variación depende de la fórmula exacta usada. Usar siempre la misma fórmula consistentemente.</div>
+      <div class="quiz-feedback" id="qimc-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">✅ Kc=(τ+θ/2)/[Kp·(λ+θ/2)]=(10+1)/[2×(4+1)]=11/10=<strong>1.1</strong>. τI=10+1=11 min.</div>
     </div>
   </div>
 
@@ -1117,218 +1427,203 @@ LC_ZN = <span class="code-fn">feedback</span>(Gc_ZN*G, <span class="code-num">1<
   <!-- ==================== PREDICTOR DE SMITH ==================== -->
   <div id="smith" class="section">
     <div class="section-title">Predictor de Smith</div>
-    <div class="section-desc">// COMPENSACIÓN DE TIEMPO MUERTO · MODELO INTERNO · LAZO PREDICTOR · θ GRANDE</div>
+    <div class="section-desc">// COMPENSACIÓN DE TIEMPO MUERTO · MODELO INTERNO · θ GRANDE · θ/τ ≥ 0.3</div>
 
-    <div class="warn-box"><div class="ib-content"><strong>¿Cuándo usar el Predictor de Smith?</strong> Cuando θ/τ ≥ 0.3. Para procesos con gran tiempo muerto (columnas de destilación, hornos de crudización, procesos con transporte neumático largo), el PID convencional tiene márgenes de estabilidad muy reducidos — cualquier Kc razonable produce oscilación. El Predictor de Smith "saca" el tiempo muerto del lazo de control, permitiendo diseñar el PID como si el proceso no tuviera θ.</div></div>
+    <div class="warn-box"><div class="ib-content"><strong>¿Cuándo usar el Predictor de Smith?</strong> Cuando θ/τ ≥ 0.3. Para procesos con gran tiempo muerto (columnas, hornos, procesos con transporte largo), el PID convencional tiene márgenes reducidos. El Predictor de Smith "saca" el tiempo muerto del lazo interno, permitiendo diseñar el PID como si no hubiera θ.</div></div>
 
-    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Principio del Predictor de Smith</div>
     <div class="math-box">
-      <div class="math-title">📐 Estructura del Predictor</div>
-      <div class="math-step"><strong>Proceso real:</strong> G(s) = Gm(s)·e^(−θs)  donde Gm=Kp/(τs+1)</div>
+      <div class="math-title">📐 Estructura y Función de Transferencia del Predictor</div>
+      <div class="math-step"><strong>Proceso:</strong> G(s) = Gm(s)·e^(−θs)  donde Gm=Kp/(τs+1)</div>
       <div class="math-step"><strong>Modelo interno:</strong> Ĝ(s) = Ĝm(s)·e^(−θ̂s) (estimación del proceso)</div>
-      <div class="math-step"><strong>Señal predictor:</strong> yp(s) = Gc·Gm·(1−e^(−θs))·Y_sinθ(s)</div>
-      <div class="math-step"><strong>Efecto:</strong> El lazo de control ve el proceso SIN tiempo muerto: Gm(s)</div>
-      <div class="math-step">El PID se diseña para Gm(s) = Kp/(τs+1) → puede usar Z-N, IMC o asignación de polos normales</div>
-      <div class="math-step"><strong>Función de transferencia resultante (modelo exacto):</strong></div>
-      <div class="math-result">T(s) = Gc·Gm·e^(−θs) / [1 + Gc·Gm]  ← el e^(−θs) solo aparece en el numerador — no en el denominador</div>
+      <div class="math-step"><strong>Señal predictor:</strong> yp(s) = [Ĝm(s)−Ĝm(s)·e^(−θ̂s)]·U(s) = Ĝm·(1−e^(−θ̂s))·U(s)</div>
+      <div class="math-result">T(s) = Gc·Gm·e^(−θs)/[1+Gc·Gm]  ← θ solo en numerador → no afecta estabilidad del lazo interno</div>
     </div>
 
-    <!-- SVG: Smith Predictor block diagram -->
+    <!-- DEMO INTERACTIVA: Smith Predictor vs PID convencional -->
+    <div class="demo-box">
+      <div class="demo-title">⏱️ Comparativa Interactiva: Predictor de Smith vs PID Convencional</div>
+      <div class="demo-desc">// PROCESO FOPDT CON TIEMPO MUERTO · OBSERVE EL EFECTO DE θ/τ</div>
+      <div class="demo-controls">
+        <div class="demo-ctrl"><label>θ/τ Razón tiempo muerto</label><input type="range" id="sp_ratio" min="0.05" max="0.8" step="0.05" value="0.48" oninput="updateSmith()"><div class="demo-val" id="sp_ratio_v">0.48</div></div>
+        <div class="demo-ctrl"><label class="orange">λ IMC (múltiplo de τ)</label><input type="range" class="orange" id="sp_lam" min="0.1" max="2.0" step="0.05" value="0.5" oninput="updateSmith()"><div class="demo-val" id="sp_lam_v">0.50·τ</div></div>
+        <div class="demo-ctrl"><label class="green">Error modelo Δθ (%)</label><input type="range" class="green" id="sp_err" min="0" max="40" step="5" value="0" oninput="updateSmith()"><div class="demo-val" id="sp_err_v">0%</div></div>
+      </div>
+      <div class="demo-canvas"><canvas id="smithCanvas" width="800" height="220"></canvas></div>
+      <div class="demo-output" id="smithOutput">—</div>
+    </div>
+
     <div class="diagram-box">
       <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
-        <defs><marker id="a6" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
-        <marker id="a7" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker>
-        <marker id="a8" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ffd700"/></marker></defs>
+        <defs><marker id="a6" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker><marker id="a7" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker><marker id="a8" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ffd700"/></marker></defs>
         <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Predictor de Smith — Diagrama de Bloques Completo</text>
-        <!-- SP -->
         <text x="18" y="78" fill="#ffd700" font-family="Share Tech Mono" font-size="10">R(s)</text>
         <line x1="38" y1="75" x2="60" y2="75" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a6)"/>
-        <!-- Sumador principal -->
         <circle cx="72" cy="75" r="12" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
         <text x="66" y="80" fill="#00d4ff" font-family="Share Tech Mono" font-size="13">Σ</text>
         <text x="79" y="93" fill="#ff6b35" font-family="Share Tech Mono" font-size="9">−</text>
-        <!-- Error to PID -->
         <line x1="84" y1="75" x2="110" y2="75" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a6)"/>
-        <!-- PID -->
         <rect x="110" y="62" width="75" height="26" fill="#0f1626" stroke="#00d4ff" stroke-width="1.5" rx="3"/>
         <text x="147" y="73" fill="#00d4ff" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Gc(s)</text>
         <text x="147" y="83" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">PID sin θ</text>
-        <!-- PID to sumador proceso -->
         <line x1="185" y1="75" x2="215" y2="75" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a6)"/>
-        <!-- Proceso Gm -->
         <rect x="215" y="62" width="75" height="26" fill="#0f1626" stroke="#ff6b35" stroke-width="1.5" rx="3"/>
         <text x="252" y="73" fill="#ff6b35" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Gm(s)</text>
         <text x="252" y="83" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">sin θ</text>
-        <!-- Gm to delay -->
         <line x1="290" y1="75" x2="320" y2="75" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#a7)"/>
-        <!-- Delay -->
         <rect x="320" y="62" width="80" height="26" fill="#0f1626" stroke="#ff6b35" stroke-width="1.5" rx="3"/>
         <text x="360" y="73" fill="#ff6b35" font-family="Share Tech Mono" font-size="9" text-anchor="middle">e^(−θs)</text>
         <text x="360" y="83" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">Tiempo muerto real</text>
         <line x1="400" y1="75" x2="440" y2="75" stroke="#ff6b35" stroke-width="1.5"/>
         <text x="450" y="79" fill="#ffd700" font-family="Share Tech Mono" font-size="10">Y(s)</text>
-
-        <!-- SMITH PREDICTOR BOX -->
         <rect x="110" y="130" width="280" height="60" fill="rgba(57,255,20,0.03)" stroke="#39ff14" stroke-width="1.5" rx="4" stroke-dasharray="5,3"/>
         <text x="250" y="148" fill="#39ff14" font-family="Share Tech Mono" font-size="10" text-anchor="middle">PREDICTOR DE SMITH</text>
-        <!-- Model Gm hat -->
         <rect x="125" y="155" width="65" height="22" fill="#0f1626" stroke="#39ff14" stroke-width="1" rx="3"/>
         <text x="157" y="170" fill="#39ff14" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Ĝm(s)</text>
-        <!-- Model delay hat -->
         <rect x="215" y="155" width="65" height="22" fill="#0f1626" stroke="#39ff14" stroke-width="1" rx="3"/>
         <text x="247" y="170" fill="#39ff14" font-family="Share Tech Mono" font-size="8" text-anchor="middle">e^(−θ̂s)</text>
-        <!-- Internal sumador -->
         <circle cx="325" cy="166" r="9" fill="none" stroke="#39ff14" stroke-width="1"/>
         <text x="320" y="171" fill="#39ff14" font-family="Share Tech Mono" font-size="10">Σ</text>
-        <!-- Lines inside predictor -->
-        <line x1="200" y1="75" x2="200" y2="155" stroke="#39ff14" stroke-width="1" stroke-dasharray="3,3"/>
-        <line x1="200" y1="155" x2="200" y2="166" stroke="#39ff14" stroke-width="1" marker-end="url(#a6)"/>
+        <line x1="200" y1="75" x2="200" y2="166" stroke="#39ff14" stroke-width="1" stroke-dasharray="3,3"/>
         <line x1="190" y1="166" x2="215" y2="166" stroke="#39ff14" stroke-width="1" marker-end="url(#a6)"/>
         <line x1="280" y1="166" x2="316" y2="166" stroke="#39ff14" stroke-width="1" marker-end="url(#a6)"/>
-        <line x1="334" y1="166" x2="360" y2="166" stroke="#39ff14" stroke-width="1"/>
-        <!-- Sign at sumador -->
+        <line x1="334" y1="166" x2="395" y2="166" stroke="#39ff14" stroke-width="1"/>
         <text x="327" y="155" fill="#ff6b35" font-family="Share Tech Mono" font-size="9">−</text>
-        <!-- Model Gm hat output -->
         <line x1="157" y1="155" x2="157" y2="120" stroke="#39ff14" stroke-width="1" stroke-dasharray="3,3"/>
         <line x1="157" y1="120" x2="200" y2="120" stroke="#39ff14" stroke-width="1" stroke-dasharray="3,3"/>
-        <!-- Predictor output to main sumador -->
-        <line x1="360" y1="166" x2="395" y2="166" stroke="#39ff14" stroke-width="1"/>
         <line x1="395" y1="166" x2="395" y2="95" stroke="#39ff14" stroke-width="1"/>
         <line x1="72" y1="95" x2="395" y2="95" stroke="#39ff14" stroke-width="1.5"/>
         <line x1="72" y1="87" x2="72" y2="95" stroke="#39ff14" stroke-width="1.5" marker-end="url(#a6)"/>
-
-        <!-- Annotation -->
-        <text x="490" y="75" fill="#c8d8f0" font-family="Share Tech Mono" font-size="8">Señal realimentada:</text>
-        <text x="490" y="88" fill="#39ff14" font-family="Share Tech Mono" font-size="8">yp = Ĝm·(1−e^(−θ̂s))·u</text>
-        <text x="490" y="108" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">El lazo interno ve Gm(s)</text>
-        <text x="490" y="120" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">sin el tiempo muerto θ</text>
-        <text x="490" y="140" fill="#ffd700" font-family="Share Tech Mono" font-size="7">Sensible a error de modelo:</text>
-        <text x="490" y="152" fill="#ffd700" font-family="Share Tech Mono" font-size="7">si Ĝ ≠ G → degradación</text>
+        <text x="490" y="75" fill="#c8d8f0" font-family="Share Tech Mono" font-size="8">Lazo interno ve:</text>
+        <text x="490" y="88" fill="#39ff14" font-family="Share Tech Mono" font-size="8">Gm(s) sin θ</text>
+        <text x="490" y="108" fill="#ffd700" font-family="Share Tech Mono" font-size="7">Sensible a error de modelo</text>
+        <text x="490" y="120" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">si Ĝ ≠ G → degradación</text>
+        <text x="490" y="138" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">Alternativa moderna: MPC</text>
       </svg>
-      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 5 — Diagrama del Predictor de Smith. El predictor genera una estimación de la salida sin tiempo muerto a partir del modelo interno Ĝm y la elimina de la realimentación al controlador. El PID solo ve Gm(s) — diseño trivial.</div>
     </div>
 
-    <div class="problem-box">
-      <p><strong>Predictor de Smith — Columna de destilación Manuelita:</strong><br>
-      G(s) = 0.8·e^(−12s)/(25s+1). θ/τ = 0.48 → control PID convencional muy limitado. Diseñar el predictor de Smith con PID IMC (λ=10 min) para el proceso sin tiempo muerto Gm(s)=0.8/(25s+1).</p>
-      <div class="math-box" style="margin-top:10px;">
-        <div class="math-title">▸ SOLUCIÓN</div>
-        <div class="math-step"><strong>Sin predictor (PID Z-N para referencia):</strong></div>
-        <div class="math-step">Kc_ZN = 1.2×25/(0.8×12) = 30/9.6 = 3.125. Pero Pm será solo ~18° — lazo muy agresivo.</div>
-        <div class="math-step"><strong>Con Predictor de Smith — diseñar PID para Gm(s) sin θ:</strong></div>
-        <div class="math-step">IMC-PI para Gm(s): Kc = τ/[Kp·(λ)] = 25/[0.8×10] = <strong>3.125</strong> (¡mismo Kc!)</div>
-        <div class="math-step">τI = τ = <strong>25 min</strong> (no hay θ/2 porque usamos Gm sin θ)</div>
-        <div class="math-step"><strong>Diferencia fundamental:</strong></div>
-        <div class="math-step">Sin predictor: polos LC en zona inestable para Kc=3.125 con θ=12</div>
-        <div class="math-step">Con predictor: polos LC de Gm(s) bien ubicados — e^(−θs) solo en numerador</div>
-        <div class="math-step"><strong>En MATLAB:</strong></div>
-        <div class="math-step">Gm = tf(0.8,[25 1]); Gc = pid(3.125, 3.125/25);</div>
-        <div class="math-step">Smith_predictor = feedback(Gc*Gm,1)*tf(1,1,'InputDelay',12);</div>
-        <div class="math-result">El predictor de Smith permite Kc=3.125 con respuesta estable. Sin predictor, Kc máximo ≈ 0.5 para Pm≥30°.</div>
+    <!-- VIDEO Smith Predictor -->
+    <div class="section-title" style="font-size:18px;margin-bottom:12px;">🎬 Video — Predictor de Smith</div>
+    <div class="video-grid">
+      <div class="video-card" onclick="openVideo('ANAg4NQzjlU')">
+        <div class="video-thumb"><img src="https://img.youtube.com/vi/ANAg4NQzjlU/hqdefault.jpg" alt="Smith Predictor"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="video-info"><div class="video-title">Smith Predictor — Diseño y análisis de estabilidad</div><div class="video-meta"><span class="video-tag">SMITH PREDICTOR</span><span>Control Systems · 20 min</span></div></div>
+      </div>
+      <div class="video-card" onclick="openVideo('8hm-gKFBDMU')">
+        <div class="video-thumb"><img src="https://img.youtube.com/vi/8hm-gKFBDMU/hqdefault.jpg" alt="Dead Time Control"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="video-info"><div class="video-title">Control de procesos con tiempo muerto — Comparativa métodos</div><div class="video-meta"><span class="video-tag">TIEMPO MUERTO</span><span>Process Dynamics · 18 min</span></div></div>
       </div>
     </div>
 
-    <div class="warn-box"><div class="ib-content"><strong>Limitaciones del Predictor de Smith:</strong> (1) Es sensible a errores en el modelo — si el θ real difiere del modelo en más del 20%, el predictor puede desestabilizarse. (2) No funciona bien con procesos integradores (nivel sin válvula de salida). (3) Para perturbaciones de carga, el predictor no ofrece ventaja sobre el PID si la perturbación entra después del tiempo muerto. <strong>Alternativa moderna:</strong> Control Predictivo Basado en Modelo (MPC) — maneja tiempo muerto, restricciones y múltiples variables simultáneamente.</div></div>
+    <div class="problem-box">
+      <p><strong>Predictor de Smith — Columna de destilación Manuelita (θ/τ=0.48):</strong><br>G(s)=0.8·e^(−12s)/(25s+1). Diseñar PI con IMC para Gm(s) sin θ, λ=10 min.</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">▸ SOLUCIÓN</div>
+        <div class="math-step">Gm(s)=0.8/(25s+1). IMC-PI para Gm: Kc=25/(0.8×10)=<strong>3.125</strong>; τI=<strong>25 min</strong></div>
+        <div class="math-step">Sin predictor: Kc_max≈0.5 para Pm≥30° (θ/τ=0.48 limita severamente)</div>
+        <div class="math-step">Con predictor: Kc=3.125 estable → 6.25× más agresivo que sin predictor</div>
+        <div class="math-result">T(s)=feedback(3.125/(25s/(25s+1)))*tf(1,1,'InputDelay',12) → polos LC bien ubicados ✓</div>
+      </div>
+    </div>
+
+    <div class="warn-box"><div class="ib-content"><strong>Limitaciones del Predictor de Smith:</strong> (1) Sensible a errores de modelo — si θ real difiere &gt;20% del modelo → puede desestabilizarse. (2) No funciona con procesos integradores. (3) Para perturbaciones de carga aguas abajo del tiempo muerto, no ofrece ventaja. <strong>Alternativa moderna:</strong> MPC (Model Predictive Control) — maneja tiempo muerto, restricciones y múltiples variables.</div></div>
   </div>
 
 
   <!-- ==================== CONTROL CASCADA ==================== -->
   <div id="cascada" class="section">
     <div class="section-title">Control Cascada</div>
-    <div class="section-desc">// LAZO MAESTRO · LAZO ESCLAVO · RECHAZO ANTICIPADO · θ/τ EFECTIVO</div>
+    <div class="section-desc">// LAZO MAESTRO · LAZO ESCLAVO · RECHAZO ANTICIPADO · DISEÑO PASO A PASO</div>
 
-    <div class="info-box"><div class="ib-content">El <strong>control cascada</strong> usa dos controladores en serie: el <em>lazo esclavo</em> (interno, más rápido) controla una variable secundaria, y el <em>lazo maestro</em> (externo, más lento) controla la variable principal y genera el set-point del esclavo. La clave: el esclavo rechaza las perturbaciones internas antes de que afecten la variable principal. Resultado: el lazo maestro "ve" un proceso más rápido y lineal.</div></div>
+    <div class="info-box"><div class="ib-content">El control cascada usa dos controladores en serie: el <em>lazo esclavo</em> (interno, más rápido) controla una variable secundaria, y el <em>lazo maestro</em> (externo, más lento) controla la variable principal y genera el SP del esclavo. La clave: el esclavo rechaza perturbaciones internas <strong>antes</strong> de que afecten la variable principal.</div></div>
 
     <div class="diagram-box">
       <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
-        <defs><marker id="a9" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
-        <marker id="a10" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker></defs>
+        <defs><marker id="a9" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker><marker id="a10" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker></defs>
         <text x="360" y="18" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Control Cascada — Lazo Maestro y Lazo Esclavo</text>
-        <!-- SP primario -->
         <text x="8" y="78" fill="#ffd700" font-family="Share Tech Mono" font-size="9">SP₁</text>
         <line x1="28" y1="75" x2="48" y2="75" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a9)"/>
-        <!-- Sumador maestro -->
         <circle cx="58" cy="75" r="10" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
         <text x="52" y="80" fill="#00d4ff" font-family="Share Tech Mono" font-size="12">Σ</text>
         <line x1="68" y1="75" x2="90" y2="75" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a9)"/>
-        <!-- Controlador Maestro -->
         <rect x="90" y="62" width="80" height="26" fill="#0f1626" stroke="#00d4ff" stroke-width="2" rx="3"/>
         <text x="130" y="73" fill="#00d4ff" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">Gc₁(s)</text>
         <text x="130" y="84" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">MAESTRO (lento)</text>
-        <!-- SP₂ generado por maestro -->
         <line x1="170" y1="75" x2="195" y2="75" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#a9)"/>
         <text x="178" y="68" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">SP₂</text>
-        <!-- Sumador esclavo -->
         <circle cx="205" cy="75" r="10" fill="none" stroke="#ff6b35" stroke-width="1.5"/>
         <text x="199" y="80" fill="#ff6b35" font-family="Share Tech Mono" font-size="12">Σ</text>
         <line x1="215" y1="75" x2="238" y2="75" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#a10)"/>
-        <!-- Controlador Esclavo -->
         <rect x="238" y="62" width="80" height="26" fill="#0f1626" stroke="#ff6b35" stroke-width="2" rx="3"/>
         <text x="278" y="73" fill="#ff6b35" font-family="Rajdhani,sans-serif" font-size="12" font-weight="700" text-anchor="middle">Gc₂(s)</text>
         <text x="278" y="84" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7" text-anchor="middle">ESCLAVO (rápido)</text>
         <line x1="318" y1="75" x2="342" y2="75" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#a10)"/>
-        <!-- Perturbacion interna -->
         <text x="362" y="42" fill="#ffd700" font-family="Share Tech Mono" font-size="8" text-anchor="middle">D₂ (interna)</text>
         <line x1="362" y1="52" x2="362" y2="68" stroke="#ffd700" stroke-width="1.5" marker-end="url(#a9)"/>
-        <!-- Proceso esclavo -->
         <rect x="342" y="62" width="75" height="26" fill="#0f1626" stroke="#ff6b35" stroke-width="1.5" rx="3"/>
         <text x="379" y="73" fill="#ff6b35" font-family="Share Tech Mono" font-size="8" text-anchor="middle">G₂(s)</text>
-        <text x="379" y="84" fill="#5a7a9a" font-family="Share Tech Mono" font-size="6" text-anchor="middle">Proc. esclavo</text>
         <line x1="417" y1="75" x2="445" y2="75" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#a10)"/>
-        <!-- Proceso maestro -->
         <rect x="445" y="62" width="75" height="26" fill="#0f1626" stroke="#39ff14" stroke-width="1.5" rx="3"/>
         <text x="482" y="73" fill="#39ff14" font-family="Share Tech Mono" font-size="8" text-anchor="middle">G₁(s)</text>
-        <text x="482" y="84" fill="#5a7a9a" font-family="Share Tech Mono" font-size="6" text-anchor="middle">Proc. maestro</text>
         <line x1="520" y1="75" x2="560" y2="75" stroke="#39ff14" stroke-width="1.5"/>
         <text x="566" y="79" fill="#ffd700" font-family="Share Tech Mono" font-size="10">Y₁</text>
-        <!-- Realimentacion esclavo -->
         <line x1="430" y1="75" x2="430" y2="120" stroke="#ff6b35" stroke-width="1.5"/>
         <line x1="205" y1="120" x2="430" y2="120" stroke="#ff6b35" stroke-width="1.5"/>
         <line x1="205" y1="85" x2="205" y2="120" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#a10)"/>
         <text x="315" y="115" fill="#ff6b35" font-family="Share Tech Mono" font-size="7">Realim. esclavo (PV₂)</text>
-        <!-- Realimentacion maestro -->
         <line x1="550" y1="75" x2="550" y2="155" stroke="#39ff14" stroke-width="1.5"/>
         <line x1="58" y1="155" x2="550" y2="155" stroke="#39ff14" stroke-width="1.5"/>
         <line x1="58" y1="85" x2="58" y2="155" stroke="#39ff14" stroke-width="1.5" marker-end="url(#a9)"/>
         <text x="300" y="172" fill="#39ff14" font-family="Share Tech Mono" font-size="7">Realimentación maestro (PV₁)</text>
         <text x="58" y="105" fill="#ff6b35" font-family="Share Tech Mono" font-size="8">−</text>
         <text x="205" y="105" fill="#ff6b35" font-family="Share Tech Mono" font-size="8">−</text>
-        <!-- D2 rejection note -->
         <text x="590" y="90" fill="#ffd700" font-family="Share Tech Mono" font-size="7">D₂ rechazada</text>
         <text x="590" y="100" fill="#ffd700" font-family="Share Tech Mono" font-size="7">por lazo esclavo</text>
         <text x="590" y="112" fill="#5a7a9a" font-family="Share Tech Mono" font-size="7">→ Y₁ apenas afectada</text>
       </svg>
-      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. 6 — Control cascada. La perturbación D₂ interna es rechazada por el lazo esclavo antes de propagarse a la variable principal Y₁. El lazo maestro solo ve G₁(s)·LC₂(s) — un proceso más rápido y lineal.</div>
     </div>
 
-    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Reglas de Diseño para Control Cascada</div>
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Reglas de Diseño</div>
     <ul class="step-list">
-      <li><strong>Regla de velocidad:</strong> El lazo esclavo debe ser al menos 3–5× más rápido que el lazo maestro. Si τ₂ &gt; τ₁/3, la cascada no aporta beneficio sobre el lazo simple.</li>
-      <li><strong>Sintonizar primero el esclavo:</strong> Con el lazo maestro en manual, sintonizar el esclavo (Gc₂) hasta que responda rápido y sin oscilación. Típicamente P o PI con ganancia alta.</li>
-      <li><strong>Sintonizar el maestro:</strong> Con el esclavo en automático, el maestro ve G₁(s)·LC₂(s) como su proceso efectivo. Usar Z-N, IMC o CSD sobre este modelo combinado.</li>
-      <li><strong>Selección de la variable secundaria:</strong> Debe ser medible, correlacionada con la variable principal, y la perturbación más frecuente debe entrar entre las dos variables (antes de G₁ pero después de G₂).</li>
+      <li><strong>Regla de velocidad:</strong> El lazo esclavo debe ser al menos 3–5× más rápido que el maestro. Si τ₂ &gt; τ₁/3, la cascada no aporta beneficio.</li>
+      <li><strong>Sintonizar primero el esclavo:</strong> Con lazo maestro en manual, sintonizar Gc₂ hasta respuesta rápida sin oscilación. Típicamente P o PI con ganancia alta.</li>
+      <li><strong>Sintonizar el maestro:</strong> Con esclavo en automático, el maestro ve G₁·LC₂ como proceso efectivo. Usar Z-N, IMC o CSD sobre este modelo combinado.</li>
+      <li><strong>Selección de variable secundaria:</strong> Medible, correlacionada con variable principal, y la perturbación más frecuente debe entrar entre las dos variables.</li>
     </ul>
 
-    <div class="problem-box">
-      <p><strong>Cascada Temperatura — Intercambiador Incauca (Flujo de Vapor):</strong><br>
-      Proceso: Temperatura jugo G₁(s)=1.5/(8s+1). Variable secundaria: flujo de vapor G₂(s)=0.8/(0.5s+1). Perturbación de presión de vapor entra en G₂. La τ₂=0.5 ≪ τ₁=8 → cascada ideal. Diseñar Gc₂ (P) y Gc₁ (PI-IMC).</p>
-      <div class="math-box" style="margin-top:10px;">
-        <div class="math-title">▸ SOLUCIÓN</div>
-        <div class="math-step"><strong>Lazo esclavo Gc₂ (flujo, muy rápido, P puro):</strong></div>
-        <div class="math-step">Kc₂_ZN = τ₂/(Kp₂·θ₂) para θ₂≈0.05 min (pequeño) → Kc₂ = 0.5/(0.8×0.05) = 12.5 %/(m³/h)</div>
-        <div class="math-step">LC₂(s) = feedback(Gc₂·G₂,1) = (12.5×0.8/0.5) / (s + 12.5×0.8/0.5 + 1/0.5) = 20/(s+22) ≈ 0.909/(0.045s+1)</div>
-        <div class="math-step"><strong>Proceso efectivo del maestro:</strong></div>
-        <div class="math-step">G_eff(s) = G₁(s)·LC₂(s) ≈ 1.5/(8s+1) × 0.909/(0.045s+1) ≈ 1.364/(8s+1) (esclavo muy rápido → ≈ ganancia)</div>
-        <div class="math-step"><strong>Lazo maestro Gc₁ (PI-IMC, λ=5 min):</strong></div>
-        <div class="math-step">Kc₁ = τ₁/(Kp_eff·λ) = 8/(1.364×5) = <strong>1.17</strong></div>
-        <div class="math-step">τI₁ = τ₁ = <strong>8 min</strong></div>
-        <div class="math-result">Cascada: rechaza variaciones de presión de vapor 10× más rápido que lazo simple. SP de flujo cambia en ~1 s; temperatura en ~15 min sin cascada → ~5 min con cascada.</div>
+    <!-- VIDEO cascada -->
+    <div class="section-title" style="font-size:18px;margin-bottom:12px;">🎬 Video — Control Cascada</div>
+    <div class="video-grid">
+      <div class="video-card" onclick="openVideo('7YmGf4pQWuE')">
+        <div class="video-thumb"><img src="https://img.youtube.com/vi/7YmGf4pQWuE/hqdefault.jpg" alt="Cascade Control"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="video-info"><div class="video-title">Control Cascada — Diseño y sintonización práctica</div><div class="video-meta"><span class="video-tag">CASCADA</span><span>Process Control · 25 min</span></div></div>
+      </div>
+      <div class="video-card" onclick="openVideo('pR1SFAP9qVM')">
+        <div class="video-thumb"><img src="https://img.youtube.com/vi/pR1SFAP9qVM/hqdefault.jpg" alt="Cascade industrial"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="video-info"><div class="video-title">Cascada en industria — Temperatura con flujo como secundaria</div><div class="video-meta"><span class="video-tag">INDUSTRIAL</span><span>ISA · 20 min</span></div></div>
       </div>
     </div>
 
-    <div class="industrial-example">
-      <div class="ie-title">▸ CASCADA EN INDUSTRIA — REFINERÍA ECOPETROL BARRANCABERMEJA</div>
-      <div class="ie-body">En la torre de destilación atmosférica, la temperatura del plato 10 (TIC-10) es la variable principal. La variable secundaria es el flujo de reflujo (FIC-20). Perturbaciones frecuentes: variaciones de presión en la línea de reflujo, cambios de temperatura del reflujo. El lazo de flujo FIC-20 tiene τ₂≈5 s; el lazo de temperatura TIC-10 tiene τ₁≈15 min. Relación τ₁/τ₂ ≈ 180 → cascada muy efectiva. El lazo de flujo rechaza el 95% de las perturbaciones de presión antes de que afecten la temperatura. En operación: Kc₂=8, τI₂=0.1 min (PI rápido de flujo); Kc₁=1.5, τI₁=12 min (PI lento de temperatura).</div>
+    <div class="problem-box">
+      <p><strong>Cascada — Intercambiador Incauca (Temperatura con flujo de vapor):</strong><br>G₁(s)=1.5/(8s+1) [°C/m³/h], G₂(s)=0.8/(0.5s+1). Perturbación: variación de presión de vapor entra en G₂. Diseñar Gc₂ (P) y Gc₁ (PI-IMC).</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">▸ SOLUCIÓN</div>
+        <div class="math-step"><strong>Lazo esclavo Gc₂:</strong> τ₂=0.5, Kp₂=0.8, θ₂≈0.05 min (pequeño)</div>
+        <div class="math-step">Kc₂_ZN=τ₂/(Kp₂·θ₂)=0.5/(0.8×0.05)=<strong>12.5</strong>; LC₂≈0.909/(0.045s+1)</div>
+        <div class="math-step"><strong>Lazo maestro:</strong> G_eff≈G₁·0.909=1.364/(8s+1). IMC, λ=5:</div>
+        <div class="math-step">Kc₁=8/(1.364×5)=<strong>1.17</strong>; τI₁=<strong>8 min</strong></div>
+        <div class="math-result">Cascada rechaza variaciones de presión de vapor 10× más rápido que lazo simple.</div>
+      </div>
+    </div>
+
+    <div class="industrial-example"><div class="ie-title">▸ CASCADA EN REFINERÍA ECOPETROL BARRANCABERMEJA</div><div class="ie-body">Torre destilación atmosférica: TIC-10 (temperatura plato 10, τ₁≈15 min) maestro sobre FIC-20 (flujo reflujo, τ₂≈5 s). Relación τ₁/τ₂≈180 → cascada muy efectiva. El lazo de flujo rechaza 95% de perturbaciones de presión antes de afectar temperatura. Operación: Kc₂=8, τI₂=0.1 min (PI rápido); Kc₁=1.5, τI₁=12 min (PI lento).</div></div>
+
+    <div class="quiz-box" id="qcasc">
+      <div class="quiz-q">❓ En un lazo cascada, ¿cuál se sintoniza primero?</div>
+      <div class="quiz-opt" onclick="checkQuiz('qcasc',this,'correct')">A. El lazo esclavo (con el maestro en manual)</div>
+      <div class="quiz-opt" onclick="checkQuiz('qcasc',this,'wrong')">B. El lazo maestro (es el más importante)</div>
+      <div class="quiz-opt" onclick="checkQuiz('qcasc',this,'wrong')">C. Ambos simultáneamente</div>
+      <div class="quiz-opt" onclick="checkQuiz('qcasc',this,'wrong')">D. No importa el orden</div>
+      <div class="quiz-feedback" id="qcasc-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">✅ Siempre <strong>esclavo primero</strong> con el maestro en manual. El esclavo debe estar rápido y estable antes de cerrar el lazo maestro. Si se hace al revés, el maestro inestabiliza al esclavo durante su sintonización.</div>
     </div>
   </div>
 
@@ -1608,56 +1903,329 @@ t = <span class="code-num">0</span>:<span class="code-num">0.5</span>:<span clas
 
   </main>
 
+  <!-- VIDEO MODAL -->
+  <div class="video-modal" id="videoModal" onclick="closeVideo(event)">
+    <div class="video-modal-inner">
+      <button class="video-close" onclick="closeVideo(null)">✕ cerrar</button>
+      <iframe id="videoFrame" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    </div>
+  </div>
+
   <!-- FLOATING BUTTONS -->
   <div style="position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;">
-    <a href="instrumentacion_protocolos_industriales.html"
-       style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;background:rgba(11,15,26,0.93);backdrop-filter:blur(12px);color:var(--text-dim);border:1px solid var(--border);padding:.55rem 1.1rem;border-radius:2rem;text-decoration:none;transition:all .25s;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap;"
-       onmouseover="this.style.color='#fff';this.style.borderColor='rgba(255,255,255,0.3)'" onmouseout="this.style.color='#5a7a9a';this.style.borderColor='#1e2d4a'">← Unidad I</a>
-    <a href="unidad2_dinamica_procesos_740021C.html"
-       style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;background:rgba(11,15,26,0.93);backdrop-filter:blur(12px);color:#ff6b35;border:1px solid rgba(255,107,53,.35);padding:.55rem 1.1rem;border-radius:2rem;text-decoration:none;transition:all .25s;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap;"
-       onmouseover="this.style.background='rgba(255,107,53,0.12)'" onmouseout="this.style.background='rgba(11,15,26,0.93)'">← Unidad II</a>
-    <a href="index.html"
-       style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;background:rgba(11,15,26,0.93);backdrop-filter:blur(12px);color:#0AAFB4;border:1px solid rgba(10,175,180,.35);padding:.55rem 1.1rem;border-radius:2rem;text-decoration:none;transition:all .25s;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap;"
-       onmouseover="this.style.background='rgba(10,175,180,0.12)'" onmouseout="this.style.background='rgba(11,15,26,0.93)'">⌂ Inicio</a>
+    <a href="instrumentacion_protocolos_industriales.html" style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;background:rgba(11,15,26,0.93);backdrop-filter:blur(12px);color:var(--text-dim);border:1px solid var(--border);padding:.55rem 1.1rem;border-radius:2rem;text-decoration:none;transition:all .25s;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#5a7a9a'">← Unidad I</a>
+    <a href="unidad2_dinamica_procesos_740021C.html" style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;background:rgba(11,15,26,0.93);backdrop-filter:blur(12px);color:#ff6b35;border:1px solid rgba(255,107,53,.35);padding:.55rem 1.1rem;border-radius:2rem;text-decoration:none;transition:all .25s;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap;" onmouseover="this.style.background='rgba(255,107,53,0.12)'" onmouseout="this.style.background='rgba(11,15,26,0.93)'">← Unidad II</a>
+    <a href="index.html" style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;background:rgba(11,15,26,0.93);backdrop-filter:blur(12px);color:#0AAFB4;border:1px solid rgba(10,175,180,.35);padding:.55rem 1.1rem;border-radius:2rem;text-decoration:none;transition:all .25s;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap;" onmouseover="this.style.background='rgba(10,175,180,0.12)'" onmouseout="this.style.background='rgba(11,15,26,0.93)'">⌂ Inicio</a>
+    <button onclick="document.getElementById('rightsModal').classList.add('open')" style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;background:rgba(11,15,26,0.93);backdrop-filter:blur(12px);color:#ffd700;border:1px solid rgba(255,215,0,.25);padding:.55rem 1.1rem;border-radius:2rem;cursor:pointer;transition:all .25s;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap;" onmouseover="this.style.background='rgba(255,215,0,0.08)'" onmouseout="this.style.background='rgba(11,15,26,0.93)'">© Derechos</button>
+  </div>
+
+  <!-- RIGHTS MODAL -->
+  <div class="rights-modal" id="rightsModal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="rights-modal-box">
+      <button class="rights-close-btn" onclick="document.getElementById('rightsModal').classList.remove('open')">✕</button>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:2px;margin-bottom:14px;">// DERECHOS DE AUTOR Y LICENCIA</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:10px;">Material Didáctico 740021C</div>
+      <div style="font-size:13px;line-height:1.75;color:var(--text);">
+        <p>© 2026 <strong>Dr. Jose Antonio Lara Ramos</strong><br>
+        Escuela de Ingeniería Química · Universidad del Valle<br>
+        Grupo GAOX — Minciencias Categoría A1</p>
+        <p style="margin-top:10px;">Este material ha sido elaborado con fines educativos exclusivos para el curso <strong>740021C — Instrumentación y Control de Procesos</strong>, 8° semestre Ingeniería Química, Universidad del Valle, Cali, Colombia.</p>
+        <p style="margin-top:10px;"><strong>Uso permitido:</strong> Docencia universitaria, estudio personal, referencia académica con atribución al autor.</p>
+        <p style="margin-top:10px;"><strong>Uso no permitido:</strong> Reproducción comercial, distribución sin autorización escrita del autor, modificación sin crédito.</p>
+        <p style="margin-top:12px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent);">lara.jose@correounivalle.edu.co · Oficina 2027 E27</p>
+        <p style="margin-top:8px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);">Los videos enlazados son propiedad de sus respectivos autores en YouTube y se presentan exclusivamente como referencias educativas.</p>
+      </div>
+    </div>
   </div>
 
   <footer>
     <div class="container">
-      © 2026 · Dr. Jose Antonio Lara Ramos · Escuela de Ingeniería Química · Universidad del Valle · GAOX Minciencias A1<br/>
-      Unidad III: Control de Procesos · Curso 740021C · Semestre I 2026 · Material de uso educativo exclusivo
+      © 2026 · Dr. Jose Antonio Lara Ramos · Escuela de Ingeniería Química · Universidad del Valle · GAOX Minciencias A1 ·
+      <button onclick="document.getElementById('rightsModal').classList.add('open')" style="background:none;border:none;color:var(--accent4);font-family:'Share Tech Mono',monospace;font-size:11px;cursor:pointer;text-decoration:underline;">Ver derechos de autor</button>
+      <br/>Unidad III: Control de Procesos · Curso 740021C · Semestre I 2026
     </div>
   </footer>
 
   <script>
+    /* ─── NAVIGATION ─── */
     function showSection(id) {
-      document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active'); });
-      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
-      var sec = document.getElementById(id);
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      const sec = document.getElementById(id);
       if(sec) sec.classList.add('active');
       if(event && event.currentTarget) event.currentTarget.classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({top:0,behavior:'smooth'});
+      // Trigger canvas redraws when section becomes visible
+      if(id==='acciones') setTimeout(drawPID,50);
+      if(id==='smith')    setTimeout(drawSmith,50);
+      if(id==='empiricos') setTimeout(calcTuning,50);
     }
-
-    function toggleAccordion(item) {
-      item.classList.toggle('open');
-    }
-
-    function checkQuiz(quizId, element, result) {
-      var container = document.getElementById(quizId);
-      if(!container) return;
-      var opts = container.querySelectorAll('.quiz-opt');
-      opts.forEach(function(o){ o.style.pointerEvents = 'none'; });
-      element.classList.add(result);
-      var fb = document.getElementById(quizId + '-fb');
+    function toggleAccordion(item){ item.classList.toggle('open'); }
+    function checkQuiz(quizId,el,result){
+      document.querySelectorAll('#'+quizId+' .quiz-opt').forEach(o=>o.style.pointerEvents='none');
+      el.classList.add(result);
+      const fb=document.getElementById(quizId+'-fb');
       if(fb) fb.classList.add('show');
     }
+    function runNb(n){
+      const el=document.getElementById('nb_out_'+n);
+      if(el){ el.classList.add('show'); }
+    }
 
-    // Animate perf bars on load
-    document.addEventListener('DOMContentLoaded', function(){
-      document.querySelectorAll('.perf-fill').forEach(function(el){
-        var w = el.getAttribute('data-w') || '50%';
-        setTimeout(function(){ el.style.width = w; }, 300);
+    /* ─── VIDEO MODAL ─── */
+    function openVideo(id){
+      document.getElementById('videoFrame').src='https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0';
+      document.getElementById('videoModal').classList.add('open');
+    }
+    function closeVideo(e){
+      if(!e || e.target===document.getElementById('videoModal')){
+        document.getElementById('videoModal').classList.remove('open');
+        document.getElementById('videoFrame').src='';
+      }
+    }
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeVideo(null); });
+
+    /* ─── PID SIMULATOR ─── */
+    const pidSliders=['kc','ti','td','kp','tau','theta'];
+    pidSliders.forEach(id=>{
+      const el=document.getElementById('sl_'+id);
+      if(!el) return;
+      el.addEventListener('input',()=>{
+        document.getElementById('val_'+id).textContent=parseFloat(el.value).toFixed(id==='kc'||id==='kp'?2:1);
+        drawPID();
       });
+    });
+
+    function getV(id){ const el=document.getElementById(id); return el?parseFloat(el.value):0; }
+
+    function setPIDPreset(p){
+      const Kp=getV('sl_kp'), tau=getV('sl_tau'), theta=getV('sl_theta');
+      const presets={
+        P:    [tau/(Kp*Math.max(theta,0.1)), 20, 0],
+        PI:   [0.9*tau/(Kp*Math.max(theta,0.1)), 3.33*Math.max(theta,0.1), 0],
+        PID:  [1.2*tau/(Kp*Math.max(theta,0.1)), 2*Math.max(theta,0.1), 0.5*Math.max(theta,0.1)],
+        aggressive:[2.5*tau/(Kp*Math.max(theta,0.1)), 1.5*Math.max(theta,0.1), 0.3*Math.max(theta,0.1)],
+        ZN:   [1.2*tau/(Kp*Math.max(theta,0.1)), 2*Math.max(theta,0.1), 0.5*Math.max(theta,0.1)]
+      };
+      const [kc,ti,td]=presets[p]||presets.PI;
+      const set=(id,v,mn,mx)=>{
+        const el=document.getElementById('sl_'+id);
+        if(!el) return;
+        el.value=Math.min(Math.max(v,mn),mx);
+        document.getElementById('val_'+id).textContent=parseFloat(el.value).toFixed(id==='kc'?2:1);
+      };
+      set('kc',kc,0.1,5); set('ti',ti,0.5,20); set('td',td,0,5);
+      drawPID();
+    }
+
+    function simFOPDTwithPID(Kc,tauI,tauD,Kp,tau,theta,T,N){
+      // Euler forward simulation of PID + FOPDT with Padé approximation for delay
+      const dt=T/N;
+      const y=new Array(N).fill(0), u=new Array(N).fill(0);
+      const e_hist=new Array(N).fill(0);
+      let integral=0, prev_e=0;
+      const delay_buf=new Array(Math.ceil(theta/dt)+1).fill(0);
+      let db_idx=0;
+      const delay_len=Math.ceil(theta/dt);
+      for(let k=1;k<N;k++){
+        const t=k*dt;
+        const sp=t>0?1:0;
+        const pv=y[k-1];
+        const e=sp-pv;
+        integral+=e*dt;
+        const de=(e-prev_e)/dt;
+        prev_e=e;
+        let uk=Kc*(e+(1/(Math.max(tauI,0.01)))*integral+tauD*de);
+        uk=Math.max(-2,Math.min(2,uk)); // saturation
+        // Delay buffer
+        delay_buf[db_idx%delay_buf.length]=uk;
+        const delayed_u=delay_buf[(db_idx-delay_len+delay_buf.length)%delay_buf.length]||0;
+        db_idx++;
+        // FOPDT response: dy/dt = (Kp*u_delayed - y)/tau
+        const dy=(Kp*delayed_u - y[k-1])/tau;
+        y[k]=y[k-1]+dy*dt;
+        u[k]=uk;
+      }
+      return {y,u};
+    }
+
+    function drawPID(){
+      const canvas=document.getElementById('pidCanvas');
+      if(!canvas) return;
+      const ctx=canvas.getContext('2d');
+      const W=canvas.width, H=canvas.height;
+      ctx.clearRect(0,0,W,H);
+      ctx.fillStyle='#060a14'; ctx.fillRect(0,0,W,H);
+
+      const Kc=getV('sl_kc'), tauI=Math.max(getV('sl_ti'),0.1)||8;
+      const tauD=getV('sl_td'), Kp=getV('sl_kp'), tau=getV('sl_tau'), theta=getV('sl_theta');
+      const T=Math.max(tau*6,theta*5+20), N=600;
+      const {y,u}=simFOPDTwithPID(Kc,tauI,tauD,Kp,tau,theta,T,N);
+
+      const pad={l:45,r:20,t:20,b:30};
+      const cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
+      const ymax=Math.max(1.5,Math.max(...y.map(Math.abs))*1.1);
+
+      // Grid
+      ctx.strokeStyle='#1e2d4a'; ctx.lineWidth=0.5;
+      for(let i=0;i<=4;i++){
+        const cy=pad.t+cH*(1-i/4*(ymax-(-0.1))/(ymax+0.1));
+        // simplified: just draw SP=1 line
+      }
+      // Axes
+      ctx.strokeStyle='#1e2d4a'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+cH); ctx.lineTo(pad.l+cW,pad.t+cH); ctx.stroke();
+
+      // SP line
+      const spY=pad.t+cH*(1-1/ymax);
+      ctx.strokeStyle='rgba(255,215,0,0.5)'; ctx.lineWidth=1; ctx.setLineDash([5,3]);
+      ctx.beginPath(); ctx.moveTo(pad.l,spY); ctx.lineTo(pad.l+cW,spY); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='#ffd700'; ctx.font='9px Share Tech Mono'; ctx.fillText('SP=1',pad.l+2,spY-3);
+
+      // Zero line
+      const zY=pad.t+cH;
+      ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=0.5;
+      ctx.beginPath(); ctx.moveTo(pad.l,zY); ctx.lineTo(pad.l+cW,zY); ctx.stroke();
+
+      // Response curve
+      ctx.strokeStyle='#00d4ff'; ctx.lineWidth=2; ctx.beginPath();
+      y.forEach((v,k)=>{
+        const x=pad.l+cW*k/N;
+        const cy=pad.t+cH*(1-v/ymax);
+        k===0?ctx.moveTo(x,cy):ctx.lineTo(x,cy);
+      });
+      ctx.stroke();
+
+      // Compute metrics
+      const ss=y[N-1];
+      const ymax_val=Math.max(...y);
+      const os=ss>0.01?Math.max(0,(ymax_val-ss)/ss*100):0;
+      const ts_idx=y.slice().reverse().findIndex(v=>Math.abs(v-ss)>0.02*Math.abs(ss));
+      const ts=ts_idx>=0?(N-1-ts_idx)*T/N:T;
+      ctx.fillStyle='#c8d8f0'; ctx.font='10px Share Tech Mono';
+      ctx.fillText(`SS=${ss.toFixed(3)}  OS=${os.toFixed(1)}%  ts≈${ts.toFixed(1)}min  e_ss=${Math.abs(1-ss).toFixed(3)}`,pad.l+6,pad.t+12);
+
+      const out=document.getElementById('pidOutput');
+      if(out) out.textContent=`Kc=${Kc.toFixed(2)} | τI=${tauI.toFixed(1)} | τD=${tauD.toFixed(1)} | Proceso: Kp=${Kp.toFixed(1)}, τ=${tau.toFixed(1)}, θ=${theta.toFixed(1)} | SS=${ss.toFixed(3)} | OS=${os.toFixed(1)}% | ts≈${ts.toFixed(1)} min`;
+    }
+
+    /* ─── SMITH PREDICTOR DEMO ─── */
+    function updateSmith(){
+      const ratio=getV('sp_ratio'), lam_mult=getV('sp_lam'), err_pct=getV('sp_err');
+      document.getElementById('sp_ratio_v').textContent=ratio.toFixed(2);
+      document.getElementById('sp_lam_v').textContent=lam_mult.toFixed(2)+'·τ';
+      document.getElementById('sp_err_v').textContent=err_pct.toFixed(0)+'%';
+      drawSmith();
+    }
+
+    function drawSmith(){
+      const canvas=document.getElementById('smithCanvas');
+      if(!canvas) return;
+      const ctx=canvas.getContext('2d');
+      const W=canvas.width, H=canvas.height;
+      ctx.clearRect(0,0,W,H); ctx.fillStyle='#060a14'; ctx.fillRect(0,0,W,H);
+      const ratio=getV('sp_ratio')||0.48, lam_m=getV('sp_lam')||0.5, err=getV('sp_err')||0;
+      const tau=20, theta=tau*ratio, Kp=1.0;
+      const lambda=lam_m*tau;
+      const Kc_smith=tau/(Kp*lambda);
+      // Conservative conventional PID: Kc_conv limited by theta
+      const Kc_conv=Math.min(0.9*tau/(Kp*Math.max(theta,0.5)), Kc_smith*0.3);
+      const tauI=tau;
+
+      const T=tau*8, N=500;
+      const sim=(Kc,tauI_,theta_eff)=>simFOPDTwithPID(Kc,tauI_,0,Kp,tau,theta_eff,T,N);
+
+      const smith_res=sim(Kc_smith,tauI,theta*(1+err/100));
+      const conv_res=sim(Kc_conv,tauI*1.5,theta);
+
+      const pad={l:45,r:20,t:20,b:30};
+      const cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
+      const ymax=Math.max(1.5, Math.max(...smith_res.y.map(Math.abs), ...conv_res.y.map(Math.abs))*1.1);
+      const spY=pad.t+cH*(1-1/ymax);
+
+      ctx.strokeStyle='rgba(255,215,0,0.4)'; ctx.lineWidth=1; ctx.setLineDash([5,3]);
+      ctx.beginPath(); ctx.moveTo(pad.l,spY); ctx.lineTo(pad.l+cW,spY); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='#ffd700'; ctx.font='9px Share Tech Mono'; ctx.fillText('SP=1',pad.l+2,spY-3);
+
+      const drawCurve=(data,color,label)=>{
+        ctx.strokeStyle=color; ctx.lineWidth=2; ctx.beginPath();
+        data.y.forEach((v,k)=>{
+          const x=pad.l+cW*k/N, cy=pad.t+cH*(1-v/ymax);
+          k===0?ctx.moveTo(x,cy):ctx.lineTo(x,cy);
+        });
+        ctx.stroke();
+      };
+      drawCurve(smith_res,'#39ff14','Smith');
+      drawCurve(conv_res,'#ff6b35','Conv PID');
+
+      ctx.font='10px Share Tech Mono';
+      ctx.fillStyle='#39ff14'; ctx.fillText(`Smith Predictor (Kc=${Kc_smith.toFixed(2)})`,pad.l+6,pad.t+13);
+      ctx.fillStyle='#ff6b35'; ctx.fillText(`PID Convencional (Kc=${Kc_conv.toFixed(2)})`,pad.l+6,pad.t+26);
+
+      const ss_s=smith_res.y[N-1], ss_c=conv_res.y[N-1];
+      const out=document.getElementById('smithOutput');
+      if(out) out.textContent=`θ/τ=${ratio.toFixed(2)} | Smith SS=${ss_s.toFixed(3)}, Kc=${Kc_smith.toFixed(2)} | PID conv SS=${ss_c.toFixed(3)}, Kc=${Kc_conv.toFixed(2)} | Error modelo: ${err}%`;
+    }
+
+    /* ─── TUNING CALCULATOR ─── */
+    function calcTuning(){
+      const Kp=getV('tc_kp'), tau=getV('tc_tau'), theta=getV('tc_theta'), lam=getV('tc_lam');
+      document.getElementById('tc_kp_v').textContent=Kp.toFixed(1);
+      document.getElementById('tc_tau_v').textContent=tau.toFixed(1);
+      document.getElementById('tc_theta_v').textContent=theta.toFixed(1);
+      document.getElementById('tc_lam_v').textContent=lam.toFixed(1);
+
+      const th=Math.max(theta,0.001);
+      const r=th/tau;
+      // Methods
+      const methods=[
+        {name:'Z-N Lazo Abierto', color:'#ff6b35',
+          P: [tau/(Kp*th), '∞', '0'],
+          PI:[+(0.9*tau/(Kp*th)).toFixed(3), +(3.33*th).toFixed(3), '0'],
+          PID:[+(1.2*tau/(Kp*th)).toFixed(3), +(2*th).toFixed(3), +(0.5*th).toFixed(3)]},
+        {name:'Cohen-Coon PI', color:'#ffd700',
+          P: [+(1/(Kp*r)*(1+r/3)).toFixed(3),'∞','0'],
+          PI:[+(1/(Kp*r)*(0.9+r/12)).toFixed(3),+(th*(30+3*r)/(9+20*r)).toFixed(3),'0'],
+          PID:[+(1/(Kp*r)*(4/3+r/4)).toFixed(3),+(th*(32+6*r)/(13+8*r)).toFixed(3),+(4*th/(11+2*r)).toFixed(3)]},
+        {name:'IMC / SIMC', color:'#00d4ff',
+          P: ['—','—','—'],
+          PI:[+((tau+th/2)/(Kp*(lam+th/2))).toFixed(3),+(tau+th/2).toFixed(3),'0'],
+          PID:[+((tau+th/2)/(Kp*(lam+th/2))).toFixed(3),+(tau+th/2).toFixed(3),+(tau*th/(2*tau+th)).toFixed(3)]},
+        {name:'SIMC Skogestad', color:'#39ff14',
+          P: ['—','—','—'],
+          PI:[+(tau/(Kp*(lam+th))).toFixed(3),+(Math.min(tau,4*(lam+th))).toFixed(3),'0'],
+          PID:[+(tau/(Kp*(lam+th))).toFixed(3),+(Math.min(tau,4*(lam+th))).toFixed(3),+(th/2).toFixed(3)]}
+      ];
+
+      let html=`<table class="sensor-table"><thead><tr><th>MÉTODO</th><th>CTRL</th><th>Kc</th><th>τI (min)</th><th>τD (min)</th></tr></thead><tbody>`;
+      methods.forEach(m=>{
+        ['PI','PID'].forEach((t,i)=>{
+          const d=m[t];
+          html+=`<tr>${i===0?`<td rowspan="2" style="border-left:3px solid ${m.color};color:${m.color};font-weight:700;">${m.name}</td>`:''}
+          <td><span class="action-badge" style="border-color:${m.color}40;color:${m.color};background:${m.color}15;">${t}</span></td>
+          <td style="color:#fff;font-family:'Share Tech Mono',monospace;">${d[0]}</td>
+          <td style="font-family:'Share Tech Mono',monospace;">${d[1]}</td>
+          <td style="font-family:'Share Tech Mono',monospace;">${d[2]}</td></tr>`;
+        });
+      });
+      html+='</tbody></table>';
+      document.getElementById('tuning_table').innerHTML=html;
+
+      const r_s=r.toFixed(2);
+      const advice=r<0.1?'θ/τ muy pequeño → Z-N puede ser agresivo. IMC con λ pequeño (λ=0.5τ) es ideal.':
+                   r<0.3?'θ/τ moderado → IMC o SIMC con λ=τ son las mejores opciones.':
+                   r<0.5?'θ/τ significativo → considere Predictor de Smith o IMC conservador (λ=2τ).':
+                         'θ/τ grande (>0.5) → Predictor de Smith o MPC recomendado. Z-N inestable.';
+      document.getElementById('tuning_advice').textContent=`θ/τ = ${r_s} → ${advice}`;
+    }
+
+    /* ─── INIT ─── */
+    document.addEventListener('DOMContentLoaded', ()=>{
+      drawPID();
+      calcTuning();
+      updateSmith();
     });
   </script>
 </body>
