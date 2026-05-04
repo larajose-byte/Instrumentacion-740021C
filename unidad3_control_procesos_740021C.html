@@ -495,6 +495,8 @@
         <button class="tab-btn t3" onclick="showSection('cascada')">🔗 Cascada</button>
         <button class="tab-btn t3" onclick="showSection('ffwd')">➡️ Feedforward</button>
         <button class="tab-btn t3" onclick="showSection('sim')">🧪 Simulación</button>
+      
+        <button class="tab-btn t3" onclick="showSection('bloques')">&#9650; Bloques &amp; Accidentes</button>
       </nav>
     </div>
   </header>
@@ -544,20 +546,7 @@
 
     <!-- VIDEOS INTRODUCTORIOS -->
     <div class="section-title" style="font-size:19px;margin-bottom:14px;">🎬 Videos Introductorios</div>
-    <div class="video-grid">
-      <div class="video-card" onclick="openVideo('rRDekCEKsGk')">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/rRDekCEKsGk/hqdefault.jpg" alt="PID Control"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        <div class="video-info"><div class="video-title">¿Qué es el Control PID? — Explicación visual completa</div><div class="video-meta"><span class="video-tag">FUNDAMENTOS</span><span>Brian Douglas · 16 min</span></div></div>
-      </div>
-      <div class="video-card" onclick="openVideo('wkfEZmsQqiA')">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/wkfEZmsQqiA/hqdefault.jpg" alt="Control Loops"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        <div class="video-info"><div class="video-title">Control en Lazo Cerrado — Intuición y Análisis</div><div class="video-meta"><span class="video-tag">LAZO CERRADO</span><span>MATLAB Tech Talks · 10 min</span></div></div>
-      </div>
-      <div class="video-card" onclick="openVideo('sFqFrmMJ-sg')">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/sFqFrmMJ-sg/hqdefault.jpg" alt="PID Tuning"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        <div class="video-info"><div class="video-title">Sintonización PID — Métodos prácticos industriales</div><div class="video-meta"><span class="video-tag">SINTONIZACIÓN</span><span>MATLAB · 12 min</span></div></div>
-      </div>
-    </div>
+    <div class="video-grid" id="vg_intro"></div>
 
     <div class="section-title" style="font-size:19px;margin-bottom:14px;">Objetivos de Aprendizaje</div>
     <div class="cards-grid">
@@ -782,16 +771,7 @@
 
     <!-- VIDEO acción PID -->
     <div class="section-title" style="font-size:18px;margin-bottom:12px;">🎬 Videos — Acción de Control</div>
-    <div class="video-grid">
-      <div class="video-card" onclick="openVideo('4Y7zG48uHRo')">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/4Y7zG48uHRo/hqdefault.jpg" alt="PID"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        <div class="video-info"><div class="video-title">Proporcional, Integral, Derivativo — Visualización intuitiva</div><div class="video-meta"><span class="video-tag">P·I·D</span><span>Brian Douglas · 14 min</span></div></div>
-      </div>
-      <div class="video-card" onclick="openVideo('XfAt6jr9QvM')">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/XfAt6jr9QvM/hqdefault.jpg" alt="Anti windup"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        <div class="video-info"><div class="video-title">Anti-Windup en Controladores PID — Problema y solución</div><div class="video-meta"><span class="video-tag">ANTI-WINDUP</span><span>MATLAB · 8 min</span></div></div>
-      </div>
-    </div>
+    <div class="video-grid" id="vg_acciones"></div>
 
     <div class="warn-box"><div class="ib-content"><strong>Anti-windup:</strong> Cuando la válvula satura (100% o 0%), la acción I sigue acumulando error — al salir de saturación, el integrador desenrolla y produce sobreimpulso severo. Los DCS industriales siempre implementan: back-calculation, conditional integration o clamping. <strong>Sin anti-windup un arranque puede ser peligroso.</strong></div></div>
 
@@ -1049,20 +1029,7 @@ Razón tauI_IMC/tauI_ZN = 1.23</div>
 
     <!-- Video sintonización -->
     <div class="section-title" style="font-size:18px;margin-bottom:12px;margin-top:18px;">🎬 Videos — Sintonización PID</div>
-    <div class="video-grid">
-      <div class="video-card" onclick="openVideo('uXnDwJkR5kg')">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/uXnDwJkR5kg/hqdefault.jpg" alt="Ziegler Nichols"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        <div class="video-info"><div class="video-title">Método Ziegler-Nichols — Lazo Abierto y Cerrado</div><div class="video-meta"><span class="video-tag">Z-N</span><span>Control Lectures · 18 min</span></div></div>
-      </div>
-      <div class="video-card" onclick="openVideo('7dUVdrs1e18')">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/7dUVdrs1e18/hqdefault.jpg" alt="IMC"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        <div class="video-info"><div class="video-title">IMC y Lambda Tuning para procesos con tiempo muerto</div><div class="video-meta"><span class="video-tag">IMC</span><span>Process Control · 22 min</span></div></div>
-      </div>
-      <div class="video-card" onclick="openVideo('JEpAe4E9ssc')">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/JEpAe4E9ssc/hqdefault.jpg" alt="Cohen Coon"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        <div class="video-info"><div class="video-title">Cohen-Coon vs Z-N — ¿Cuándo usar cada método?</div><div class="video-meta"><span class="video-tag">COHEN-COON</span><span>ChE Process Control · 15 min</span></div></div>
-      </div>
-    </div>
+    <div class="video-grid" id="vg_empiricos"></div>
 
     <div class="ext-links-box">
       <div class="ext-links-title">🔧 FUENTES — SINTONIZACIÓN PID</div>
@@ -1503,16 +1470,7 @@ LC_ZN = <span class="code-fn">feedback</span>(Gc_ZN*G, <span class="code-num">1<
 
     <!-- VIDEO Smith Predictor -->
     <div class="section-title" style="font-size:18px;margin-bottom:12px;">🎬 Video — Predictor de Smith</div>
-    <div class="video-grid">
-      <div class="video-card" onclick="openVideo('ANAg4NQzjlU')">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/ANAg4NQzjlU/hqdefault.jpg" alt="Smith Predictor"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        <div class="video-info"><div class="video-title">Smith Predictor — Diseño y análisis de estabilidad</div><div class="video-meta"><span class="video-tag">SMITH PREDICTOR</span><span>Control Systems · 20 min</span></div></div>
-      </div>
-      <div class="video-card" onclick="openVideo('8hm-gKFBDMU')">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/8hm-gKFBDMU/hqdefault.jpg" alt="Dead Time Control"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        <div class="video-info"><div class="video-title">Control de procesos con tiempo muerto — Comparativa métodos</div><div class="video-meta"><span class="video-tag">TIEMPO MUERTO</span><span>Process Dynamics · 18 min</span></div></div>
-      </div>
-    </div>
+    <div class="video-grid" id="vg_smith"></div>
 
     <div class="problem-box">
       <p><strong>Predictor de Smith — Columna de destilación Manuelita (θ/τ=0.48):</strong><br>G(s)=0.8·e^(−12s)/(25s+1). Diseñar PI con IMC para Gm(s) sin θ, λ=10 min.</p>
@@ -1592,16 +1550,7 @@ LC_ZN = <span class="code-fn">feedback</span>(Gc_ZN*G, <span class="code-num">1<
 
     <!-- VIDEO cascada -->
     <div class="section-title" style="font-size:18px;margin-bottom:12px;">🎬 Video — Control Cascada</div>
-    <div class="video-grid">
-      <div class="video-card" onclick="openVideo('7YmGf4pQWuE')">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/7YmGf4pQWuE/hqdefault.jpg" alt="Cascade Control"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        <div class="video-info"><div class="video-title">Control Cascada — Diseño y sintonización práctica</div><div class="video-meta"><span class="video-tag">CASCADA</span><span>Process Control · 25 min</span></div></div>
-      </div>
-      <div class="video-card" onclick="openVideo('pR1SFAP9qVM')">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/pR1SFAP9qVM/hqdefault.jpg" alt="Cascade industrial"><div class="video-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        <div class="video-info"><div class="video-title">Cascada en industria — Temperatura con flujo como secundaria</div><div class="video-meta"><span class="video-tag">INDUSTRIAL</span><span>ISA · 20 min</span></div></div>
-      </div>
-    </div>
+    <div class="video-grid" id="vg_cascada"></div>
 
     <div class="problem-box">
       <p><strong>Cascada — Intercambiador Incauca (Temperatura con flujo de vapor):</strong><br>G₁(s)=1.5/(8s+1) [°C/m³/h], G₂(s)=0.8/(0.5s+1). Perturbación: variación de presión de vapor entra en G₂. Diseñar Gc₂ (P) y Gc₁ (PI-IMC).</p>
@@ -1901,6 +1850,347 @@ t = <span class="code-num">0</span>:<span class="code-num">0.5</span>:<span clas
   </div>
 
 
+
+  <!-- ==================== DIAGRAMA DE BLOQUES ==================== -->
+  <div id="bloques" class="section">
+    <div class="section-title">Diagramas de Bloques en Logica de Control</div>
+    <div class="section-desc">// ALGEBRA DE BLOQUES · REDUCCION · COMPARACION ELECTRICA · ACCIDENTES INDUSTRIALES</div>
+
+    <div class="info-box">
+      <div class="ib-content">Los <strong>diagramas de bloques</strong> son la representacion grafica de sistemas de control en el dominio de Laplace. Cada bloque contiene una funcion de transferencia, las flechas indican el flujo de señales, y los circulos son sumadores o restadores. El algebra de bloques permite reducir sistemas complejos con lazos anidados a una sola funcion de transferencia equivalente.</div>
+    </div>
+
+    <!-- ALGEBRA DE BLOQUES -->
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;">Algebra de Bloques — Reglas Fundamentales</div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <defs>
+          <marker id="bk1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+          <marker id="bk2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff6b35"/></marker>
+        </defs>
+        <text x="360" y="16" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Reglas de Reduccion de Diagramas de Bloques</text>
+
+        <!-- Rule 1: Series -->
+        <text x="10" y="45" fill="#00d4ff" font-family="Share Tech Mono" font-size="10">REGLA 1: Bloques en Serie → Multiplicar</text>
+        <line x1="10" y1="68" x2="40" y2="68" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#bk1)"/>
+        <rect x="40" y="58" width="50" height="20" fill="#0f1626" stroke="#00d4ff" rx="2"/>
+        <text x="65" y="72" fill="#00d4ff" font-family="Share Tech Mono" font-size="9" text-anchor="middle">G1(s)</text>
+        <line x1="90" y1="68" x2="115" y2="68" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#bk1)"/>
+        <rect x="115" y="58" width="50" height="20" fill="#0f1626" stroke="#00d4ff" rx="2"/>
+        <text x="140" y="72" fill="#00d4ff" font-family="Share Tech Mono" font-size="9" text-anchor="middle">G2(s)</text>
+        <line x1="165" y1="68" x2="190" y2="68" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="200" y="72" fill="#ffd700" font-family="Share Tech Mono" font-size="12">=</text>
+        <line x1="215" y1="68" x2="240" y2="68" stroke="#39ff14" stroke-width="1.5" marker-end="url(#bk1)"/>
+        <rect x="240" y="55" width="100" height="26" fill="#0f1626" stroke="#39ff14" rx="2"/>
+        <text x="290" y="72" fill="#39ff14" font-family="Share Tech Mono" font-size="9" text-anchor="middle">G1(s)*G2(s)</text>
+        <line x1="340" y1="68" x2="365" y2="68" stroke="#39ff14" stroke-width="1.5"/>
+
+        <!-- Rule 2: Parallel -->
+        <text x="10" y="115" fill="#ff6b35" font-family="Share Tech Mono" font-size="10">REGLA 2: Bloques en Paralelo → Sumar</text>
+        <line x1="10" y1="145" x2="50" y2="145" stroke="#ff6b35" stroke-width="1.5"/>
+        <line x1="50" y1="145" x2="50" y2="130" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#bk2)"/>
+        <line x1="50" y1="145" x2="50" y2="160" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#bk2)"/>
+        <rect x="60" y="120" width="50" height="20" fill="#0f1626" stroke="#ff6b35" rx="2"/>
+        <text x="85" y="134" fill="#ff6b35" font-family="Share Tech Mono" font-size="9" text-anchor="middle">G1(s)</text>
+        <rect x="60" y="150" width="50" height="20" fill="#0f1626" stroke="#ff6b35" rx="2"/>
+        <text x="85" y="164" fill="#ff6b35" font-family="Share Tech Mono" font-size="9" text-anchor="middle">G2(s)</text>
+        <line x1="110" y1="130" x2="130" y2="130" stroke="#ff6b35" stroke-width="1.5"/>
+        <line x1="110" y1="160" x2="130" y2="160" stroke="#ff6b35" stroke-width="1.5"/>
+        <circle cx="138" cy="145" r="9" fill="none" stroke="#ff6b35" stroke-width="1.5"/>
+        <text x="133" y="149" fill="#ff6b35" font-family="Share Tech Mono" font-size="11">S</text>
+        <line x1="130" y1="130" x2="130" y2="145" stroke="#ff6b35" stroke-width="1"/>
+        <line x1="130" y1="160" x2="130" y2="145" stroke="#ff6b35" stroke-width="1"/>
+        <line x1="147" y1="145" x2="175" y2="145" stroke="#ff6b35" stroke-width="1.5"/>
+        <text x="185" y="149" fill="#ffd700" font-family="Share Tech Mono" font-size="12">=</text>
+        <line x1="200" y1="145" x2="220" y2="145" stroke="#39ff14" stroke-width="1.5" marker-end="url(#bk1)"/>
+        <rect x="220" y="132" width="110" height="26" fill="#0f1626" stroke="#39ff14" rx="2"/>
+        <text x="275" y="149" fill="#39ff14" font-family="Share Tech Mono" font-size="9" text-anchor="middle">G1(s) + G2(s)</text>
+        <line x1="330" y1="145" x2="355" y2="145" stroke="#39ff14" stroke-width="1.5"/>
+
+        <!-- Rule 3: Feedback -->
+        <text x="10" y="210" fill="#ffd700" font-family="Share Tech Mono" font-size="10">REGLA 3: Realimentacion → G/(1+G*H)</text>
+        <text x="10" y="228" fill="#5a7a9a" font-family="Share Tech Mono" font-size="9">Negativa: G(s)/(1+G(s)*H(s))  |  Positiva: G(s)/(1-G(s)*H(s))</text>
+
+        <!-- Feedback loop diagram -->
+        <line x1="10" y1="270" x2="40" y2="270" stroke="#ffd700" stroke-width="1.5" marker-end="url(#bk1)"/>
+        <circle cx="50" cy="270" r="10" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="44" y="275" fill="#00d4ff" font-family="Share Tech Mono" font-size="12">S</text>
+        <text x="56" y="288" fill="#ff6b35" font-family="Share Tech Mono" font-size="10">-</text>
+        <line x1="60" y1="270" x2="90" y2="270" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#bk1)"/>
+        <rect x="90" y="260" width="55" height="20" fill="#0f1626" stroke="#00d4ff" rx="2"/>
+        <text x="117" y="274" fill="#00d4ff" font-family="Share Tech Mono" font-size="9" text-anchor="middle">G(s)</text>
+        <line x1="145" y1="270" x2="185" y2="270" stroke="#00d4ff" stroke-width="1.5"/>
+        <line x1="175" y1="270" x2="175" y2="300" stroke="#ff6b35" stroke-width="1.5"/>
+        <rect x="100" y="293" width="55" height="20" fill="#0f1626" stroke="#ff6b35" rx="2"/>
+        <text x="127" y="307" fill="#ff6b35" font-family="Share Tech Mono" font-size="9" text-anchor="middle">H(s)</text>
+        <line x1="175" y1="300" x2="100" y2="300" stroke="#ff6b35" stroke-width="1.5"/>
+        <line x1="50"  y1="300" x2="50"  y2="280" stroke="#ff6b35" stroke-width="1.5" marker-end="url(#bk1)"/>
+        <line x1="100" y1="300" x2="50" y2="300" stroke="#ff6b35" stroke-width="1.5"/>
+        <text x="200" y="274" fill="#ffd700" font-family="Share Tech Mono" font-size="12">=</text>
+        <line x1="215" y1="270" x2="240" y2="270" stroke="#39ff14" stroke-width="1.5" marker-end="url(#bk1)"/>
+        <rect x="240" y="255" width="150" height="30" fill="#0f1626" stroke="#39ff14" rx="2"/>
+        <text x="315" y="270" fill="#39ff14" font-family="Share Tech Mono" font-size="9" text-anchor="middle">G(s)</text>
+        <text x="315" y="282" fill="#39ff14" font-family="Share Tech Mono" font-size="9" text-anchor="middle">------</text>
+        <text x="315" y="295" fill="#39ff14" font-family="Share Tech Mono" font-size="8" text-anchor="middle">1 + G(s)*H(s)</text>
+        <line x1="390" y1="270" x2="415" y2="270" stroke="#39ff14" stroke-width="1.5"/>
+
+        <!-- Rule 4: Moving summing point -->
+        <text x="440" y="45" fill="#c8d8f0" font-family="Share Tech Mono" font-size="10">REGLA 4: Mover punto de suma</text>
+        <text x="440" y="65" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Antes del bloque: agregar G(s) en la nueva rama</text>
+        <text x="440" y="78" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Despues del bloque: agregar 1/G(s) en la nueva rama</text>
+        <text x="440" y="115" fill="#c8d8f0" font-family="Share Tech Mono" font-size="10">REGLA 5: Mover punto de bifurcacion</text>
+        <text x="440" y="135" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Antes del bloque: agregar 1/G(s) en la nueva rama</text>
+        <text x="440" y="148" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Despues del bloque: agregar G(s) en la nueva rama</text>
+        <text x="440" y="185" fill="#ffd700" font-family="Share Tech Mono" font-size="10">CASO ESPECIAL — Unity Feedback H(s)=1:</text>
+        <text x="440" y="205" fill="#39ff14" font-family="Share Tech Mono" font-size="10">T(s) = G(s) / (1 + G(s))</text>
+        <text x="440" y="225" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Lazo cerrado estandar con realimentacion unitaria</text>
+        <text x="440" y="240" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8">Kp_LC = Kp/(1+Kp), tau_LC = tau/(1+Kp)</text>
+      </svg>
+    </div>
+
+    <!-- PROBLEMA COMPLETO: Reduccion de lazo cascada -->
+    <div class="problem-box">
+      <p><strong>Ejemplo B1 — Reduccion de diagrama de bloques: Control Cascada</strong><br>
+      Sistema con lazo esclavo Gc2*G2 y lazo maestro Gc1*G1. Obtener T(s) = Y1(s)/R(s) y la funcion de transferencia de rechazo a perturbacion D2(s)/Y1(s).</p>
+      <div class="math-box" style="margin-top:10px;">
+        <div class="math-title">REDUCCION PASO A PASO</div>
+        <div class="math-step">PASO 1 — Reducir lazo esclavo (realimentacion unitaria):</div>
+        <div class="math-step">    LC2(s) = Gc2(s)*G2(s) / [1 + Gc2(s)*G2(s)]  ← bloque equivalente del esclavo</div>
+        <div class="math-step">PASO 2 — Sistema resultante: Gc1 en serie con LC2 en serie con G1, con realimentacion unitaria:</div>
+        <div class="math-step">    G_cadena(s) = Gc1(s) * LC2(s) * G1(s)</div>
+        <div class="math-step">PASO 3 — Lazo cerrado maestro:</div>
+        <div class="math-step">    T(s) = G_cadena(s) / [1 + G_cadena(s)]</div>
+        <div class="math-step">    T(s) = [Gc1*LC2*G1] / [1 + Gc1*LC2*G1]</div>
+        <div class="math-step">PASO 4 — Funcion de transferencia de perturbacion D2 (entra entre esclavo y G1):</div>
+        <div class="math-step">    Y1(s)/D2(s) = G1(s) * [1 - LC2(s)] / [1 + Gc1(s)*LC2(s)*G1(s)]</div>
+        <div class="math-result">Si |Gc2*G2| >> 1 a bajas frecuencias: LC2 → 1, entonces Y1/D2 → 0. La perturbacion D2 es completamente rechazada por el lazo esclavo — clave del control cascada.</div>
+      </div>
+    </div>
+
+    <!-- COMPARACION CON SISTEMAS ELECTRICOS -->
+    <div class="section-title" style="font-size:20px;margin-bottom:14px;margin-top:24px;">Comparacion con Sistemas Electricos — Analogias Fundamentales</div>
+
+    <div class="info-box">
+      <div class="ib-content">Los sistemas electricos y los procesos quimicos obedecen las mismas ecuaciones diferenciales lineales de primer orden. Esta analogia no es coincidencia: ambos cumplen principios de conservacion (carga, masa, energia). Comprender la analogia permite usar la intuicion electrica para entender la dinamica de procesos y viceversa.
+      </div>
+    </div>
+
+    <table class="sensor-table">
+      <thead><tr>
+        <th>CONCEPTO DE CONTROL</th>
+        <th>SISTEMA ELECTRICO (RC)</th>
+        <th>PROCESO QUIMICO</th>
+        <th>ANALOGIA MATEMATICA</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Variable de estado (almacenada)</strong></td>
+          <td>Voltaje en capacitor: V_C(t)</td>
+          <td>Nivel en tanque: h(t) o T(t)</td>
+          <td>Ambas son el "inventario" del sistema</td>
+        </tr>
+        <tr>
+          <td><strong>Variable manipulada (flujo)</strong></td>
+          <td>Corriente de entrada: i_in(t)</td>
+          <td>Caudal de entrada: F_in(t)</td>
+          <td>La variable que el controlador ajusta</td>
+        </tr>
+        <tr>
+          <td><strong>Resistencia al flujo</strong></td>
+          <td>Resistencia R [Ohm]: V = i*R</td>
+          <td>Resistencia hidraulica: h = F*R_h</td>
+          <td>R_h = dh/dF en SS. Kp = R, tau = A*R_h</td>
+        </tr>
+        <tr>
+          <td><strong>Capacitancia (almacenamiento)</strong></td>
+          <td>Capacitor C [F]: i = C*dV/dt</td>
+          <td>Capacitancia termica o de nivel: A*dh/dt</td>
+          <td>C_hidraul. = A (area tanque)</td>
+        </tr>
+        <tr>
+          <td><strong>Constante de tiempo</strong></td>
+          <td>tau_RC = R*C [s]</td>
+          <td>tau = A*R_h = A/(beta/2sqrt(h_0))</td>
+          <td>tau = Capacidad / Conductancia</td>
+        </tr>
+        <tr>
+          <td><strong>Funcion de transferencia</strong></td>
+          <td>G(s) = V_C/V_in = 1/(R*C*s+1)</td>
+          <td>G(s) = h'/F' = Kp/(tau*s+1)</td>
+          <td>Identica forma matematica</td>
+        </tr>
+        <tr>
+          <td><strong>Cero en el numerador</strong></td>
+          <td>Red RC con derivador: G(s) = R2*C*s/(R1*C*s+1)</td>
+          <td>Respuesta inversa: cero SPD</td>
+          <td>Cero en el semiplano derecho</td>
+        </tr>
+        <tr>
+          <td><strong>Integrador puro</strong></td>
+          <td>Capacitor sin resistencia: G(s) = 1/(C*s)</td>
+          <td>Tanque de nivel sin valvula de salida: G(s) = 1/(A*s)</td>
+          <td>Polo en s=0, respuesta rampa al escalon</td>
+        </tr>
+        <tr>
+          <td><strong>Segundo orden (LC)</strong></td>
+          <td>Circuito RLC: 1/(LC*s² + R/L*s + 1)</td>
+          <td>CSTR con acoplamiento masa-energia</td>
+          <td>Mismos parametros zeta y omega_n</td>
+        </tr>
+        <tr>
+          <td><strong>Retroalimentacion</strong></td>
+          <td>Amplificador operacional con R de feedback</td>
+          <td>Lazo de control con transmisor y controlador</td>
+          <td>T(s) = G(s)/(1+G(s)*H(s))</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%">
+        <text x="360" y="16" fill="#c8d8f0" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Analogia Circuito RC — Tanque de Nivel — Misma Ecuacion</text>
+        <!-- RC circuit -->
+        <text x="155" y="42" fill="#00d4ff" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Circuito RC</text>
+        <line x1="60"  y1="70" x2="60"  y2="140" stroke="#00d4ff" stroke-width="2"/>
+        <line x1="60"  y1="70" x2="120" y2="70"  stroke="#00d4ff" stroke-width="2"/>
+        <line x1="60"  y1="140"x2="260" y2="140" stroke="#00d4ff" stroke-width="2"/>
+        <rect x="120" y="58" width="60" height="24" fill="#0f1626" stroke="#00d4ff" stroke-width="1.5" rx="2"/>
+        <text x="150" y="74" fill="#00d4ff" font-family="Share Tech Mono" font-size="10" text-anchor="middle">R</text>
+        <line x1="180" y1="70" x2="220" y2="70" stroke="#00d4ff" stroke-width="2"/>
+        <line x1="220" y1="55" x2="220" y2="85" stroke="#00d4ff" stroke-width="2.5"/>
+        <line x1="230" y1="55" x2="230" y2="85" stroke="#00d4ff" stroke-width="2.5"/>
+        <text x="240" y="74" fill="#00d4ff" font-family="Share Tech Mono" font-size="10">C</text>
+        <line x1="230" y1="70" x2="260" y2="70" stroke="#00d4ff" stroke-width="2"/>
+        <line x1="260" y1="70" x2="260" y2="140" stroke="#00d4ff" stroke-width="2"/>
+        <text x="30" y="110" fill="#00d4ff" font-family="Share Tech Mono" font-size="9">V_in</text>
+        <text x="263" y="110" fill="#ffd700" font-family="Share Tech Mono" font-size="9">V_C</text>
+        <text x="155" y="165" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">R*C*(dV_C/dt) + V_C = V_in</text>
+        <text x="155" y="180" fill="#39ff14" font-family="Share Tech Mono" font-size="9" text-anchor="middle">G(s) = 1/(R*C*s + 1)</text>
+        <text x="155" y="195" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">tau_RC = R*C</text>
+
+        <!-- Tank -->
+        <text x="540" y="42" fill="#ff6b35" font-family="Rajdhani,sans-serif" font-size="13" font-weight="700" text-anchor="middle">Tanque de Nivel</text>
+        <rect x="470" y="65" width="140" height="100" fill="rgba(255,107,53,0.06)" stroke="#ff6b35" stroke-width="2" rx="3"/>
+        <!-- Water fill -->
+        <rect x="471" y="125" width="138" height="39" fill="rgba(0,212,255,0.15)" stroke="none"/>
+        <text x="540" y="148" fill="#00d4ff" font-family="Share Tech Mono" font-size="10" text-anchor="middle">h(t)</text>
+        <!-- Arrow in -->
+        <line x1="510" y1="40" x2="510" y2="65" stroke="#ff6b35" stroke-width="2" marker-end="url(#bk2)"/>
+        <text x="530" y="56" fill="#ff6b35" font-family="Share Tech Mono" font-size="9">F_in</text>
+        <!-- Arrow out (valve) -->
+        <line x1="540" y1="165" x2="540" y2="195" stroke="#5a7a9a" stroke-width="2"/>
+        <rect x="525" y="195" width="30" height="12" fill="#0f1626" stroke="#5a7a9a" rx="1"/>
+        <text x="540" y="205" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">beta*sqrt(h)</text>
+        <text x="540" y="225" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">A*(dh'/dt) + h'/R_h = F_in'</text>
+        <text x="540" y="242" fill="#39ff14" font-family="Share Tech Mono" font-size="9" text-anchor="middle">G(s) = Kp/(tau*s + 1)</text>
+
+        <!-- Equivalence symbol -->
+        <text x="380" y="130" fill="#ffd700" font-family="Rajdhani,sans-serif" font-size="22" font-weight="700" text-anchor="middle">≡</text>
+        <text x="380" y="150" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">Misma EDO</text>
+        <text x="380" y="163" fill="#5a7a9a" font-family="Share Tech Mono" font-size="8" text-anchor="middle">tau=A*R_h=RC</text>
+      </svg>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'Share Tech Mono',monospace;">FIG. B1 — Analogia RC-Tanque. Ambos sistemas cumplen tau*(dy/dt) + y = Kp*u con exactamente la misma estructura matematica. R_h = dh/dF_out|_SS es la resistencia hidraulica; A es la capacitancia hidraulica.</div>
+    </div>
+
+    <!-- VIDEOS DE ACCIDENTES -->
+    <div class="section-title" style="font-size:20px;margin-bottom:12px;margin-top:24px;">Accidentes Industriales por Falta de Control de Procesos</div>
+
+    <div class="warn-box">
+      <div class="ib-content"><strong>Advertencia academica:</strong> Los siguientes casos se presentan exclusivamente con fines educativos para ilustrar las consecuencias criticas de fallas en sistemas de control de procesos. El analisis de accidentes es una herramienta fundamental de la ingenieria de seguridad de procesos (PSM) y una obligacion profesional del ingeniero quimico.</div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card orange">
+        <div class="card-tag">BHOPAL, INDIA — 1984</div>
+        <div class="card-title">Union Carbide — 3,500+ victimas</div>
+        <div class="card-body">Fallo catastrofico del sistema de enfriamiento del tanque de MIC (isocianato de metilo). El sistema de scrubber y antorcha estaban desactivados por mantenimiento. La temperatura del tanque supero el punto de ebullicion del MIC por falta de control. <strong>Falla de control:</strong> sensores de temperatura y presion mal calibrados o ignorados. <strong>Leccion:</strong> sistemas criticos nunca deben operar sin instrumentacion funcional ni alarmado activo.</div>
+      </div>
+      <div class="card orange">
+        <div class="card-tag">TEXAS CITY, USA — 2005</div>
+        <div class="card-title">BP Refinery — 15 muertos, 180 heridos</div>
+        <div class="card-body">Desbordamiento de la torre de destilacion de isomerizacion (ISOM). El nivel del reflujo se monitoreo con un indicador de nivel defectuoso que mostraba nivel bajo cuando en realidad era alto. El controlador de nivel siguio añadiendo alimentacion. <strong>Falla de control:</strong> indicador de nivel falso positivo + ausencia de alarma de alto nivel independiente. <strong>Leccion:</strong> redundancia de instrumentacion en variables criticas (SIL).</div>
+      </div>
+      <div class="card orange">
+        <div class="card-tag">CHERNOBYL, UCRANIA — 1986</div>
+        <div class="card-title">Reactor RBMK — Peor desastre nuclear</div>
+        <div class="card-body">La prueba de seguridad redujo la potencia del reactor a niveles donde el coeficiente de vacio de moderacion se volvio positivo (inestabilidad intrinseca). Al insertar las barras de control de emergencia, un defecto de diseño produjo un pico de reactividad. <strong>Falla de control:</strong> sistema opero en zona intrinsecamente inestable + defecto en diseño de actuadores. <strong>Leccion:</strong> el diseño de sistemas de control debe garantizar estabilidad termodinamica intrinseca.</div>
+      </div>
+      <div class="card orange">
+        <div class="card-tag">CHALLENGER, USA — 1986</div>
+        <div class="card-title">NASA — 7 astronautas</div>
+        <div class="card-body">Aunque no es un proceso quimico clasico, el fallo de los O-rings fue un fallo de control de temperatura: los sellos operaron fuera de su rango de temperatura validada (-2°C vs los 11°C de temperatura minima de lanzamiento valida). <strong>Falla de control:</strong> decision de lanzar fuera del envelope de diseño del proceso. <strong>Leccion:</strong> los limites de operacion validados deben ser respetados absolutamente (HAZOP, MOC).</div>
+      </div>
+    </div>
+
+    <!-- VIDEOS DE ACCIDENTES -->
+    <div class="section-title" style="font-size:18px;margin-bottom:12px;margin-top:10px;">Videos — Analisis de Accidentes Industriales</div>
+    <div class="video-grid" id="vg_accidentes"></div>
+
+    <!-- ANALISIS TECNICO -->
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;margin-top:20px;">Analisis Tecnico — ¿Que Falla de Control Causo Cada Accidente?</div>
+
+    <div class="accordion-item" onclick="toggleAccordion(this)">
+      <div class="accordion-header"><div class="accordion-title">Bhopal 1984 — Analisis de la Cadena de Fallas de Control</div><span class="accordion-icon">+</span></div>
+      <div class="accordion-body">
+        <strong>Descripcion del sistema de control:</strong> El tanque de MIC debia mantenerse a T &lt; 5°C con un sistema de refrigeracion por Freon. El gas liberado debia pasar por un scrubber de NaOH y una antorcha de gas.<br><br>
+        <strong>Fallas de control identificadas:</strong><br>
+        1. El sistema de refrigeracion fue desactivado meses antes para ahorrar costos.<br>
+        2. Los sensores de temperatura y presion del tanque no tenian alarmas independientes activas.<br>
+        3. El sistema de alarmado DCS fue ignorado por los operadores por falsas alarmas previas (problema de alarm flooding, ISA-18.2).<br>
+        4. El scrubber y la antorcha estaban en mantenimiento sin protocolo de gestion del cambio (MOC).<br><br>
+        <strong>Desde la perspectiva del control:</strong> El lazo de temperatura del tanque operaba en lazo ABIERTO (sin accion correctiva activa). Cualquier perturbacion (agua que entro al tanque) no podia ser compensada. La respuesta dinamica fue una reaccion exotermica no controlada con T → 200°C en minutos.<br><br>
+        <strong>Medidas preventivas modernas:</strong> SIL (Safety Integrity Level) IEC 61511, sistemas de instrumentacion de seguridad (SIS) independientes del DCS, redundancia de sensores (1oo2, 2oo3), prueba periodica de SIS, gestion de alarmas ISA-18.2.
+      </div>
+    </div>
+
+    <div class="accordion-item" onclick="toggleAccordion(this)">
+      <div class="accordion-header"><div class="accordion-title">Texas City 2005 — Fallo del Lazo de Nivel de Torre ISOM</div><span class="accordion-icon">+</span></div>
+      <div class="accordion-body">
+        <strong>El lazo de control involucrado:</strong> LIC (Level Indicating Controller) de la torre de isomerizacion. El instrumento de nivel era un flotador mecanico tipo bota (boot), susceptible a fallos de lectura. La torre se alimentaba con nafta para ser procesada.<br><br>
+        <strong>Analisis del fallo del lazo:</strong><br>
+        - LI mostraba 8 inches (bajo) cuando en realidad el nivel era de 98 inches (lleno).<br>
+        - El operador siguio añadiendo nafta porque el controlador de nivel pedia mas.<br>
+        - La torre se desbordio y la nafta caliente (200°C+) cayo al suelo, vaporizandose.<br>
+        - Un motor encendido causo la explosion e incendio.<br><br>
+        <strong>Conclusion de control:</strong> Un solo sensor critico sin respaldo (1oo1) en un proceso con alto riesgo. La norma API 670 y la IEC 61511 requieren nivel de integridad SIL-2 para este tipo de variables criticas, implicando minimo redundancia 1oo2.<br><br>
+        <strong>Implementacion moderna:</strong> Radar de nivel como sensor primario + flotador como respaldo + alta alta alarma de nivel independiente en SIS (Safety Instrumented System) separado del DCS.
+      </div>
+    </div>
+
+    <div class="accordion-item" onclick="toggleAccordion(this)">
+      <div class="accordion-header"><div class="accordion-title">Lecciones para el Ingeniero Quimico — Lista de Verificacion</div><span class="accordion-icon">+</span></div>
+      <div class="accordion-body">
+        <strong>Lista de verificacion de diseño de control seguro:</strong><br><br>
+        1. <strong>Toda variable critica tiene alarma y disparo (trip) independientes</strong> del lazo de control normal. Las alarmas del DCS son advertencias; el SIS es la ultima linea de defensa.<br><br>
+        2. <strong>Nunca operar sin instrumentacion funcionando:</strong> Si un sensor critico falla o da lecturas dudosas, el proceso debe detenerse o pasar a modo seguro (fail-safe).<br><br>
+        3. <strong>La redundancia de sensores es obligatoria para variables criticas:</strong> Nivel, temperatura y presion en puntos criticos deben tener minimo 2 sensores independientes (1oo2 o 2oo3).<br><br>
+        4. <strong>La gestion del cambio (MOC) aplica a los sistemas de control:</strong> Ninguna modificacion de parametros, lazos o instrumentacion se hace sin analisis de riesgo previo.<br><br>
+        5. <strong>Las alarmas deben ser significativas:</strong> Un sistema con muchas alarmas falsas lleva a que los operadores las ignoren. ALARM FLOODING = peligro. Norma ISA-18.2.<br><br>
+        6. <strong>Las pruebas periodicas del SIS son obligatorias</strong> (Proof Test Interval, PTI). Un sistema de seguridad que no se prueba puede estar silenciosamente fallido.<br><br>
+        7. <strong>El analisis HAZOP (Hazard and Operability Study)</strong> identifica desviaciones de parametros de proceso (presion, temperatura, flujo, nivel, composicion) y sus consecuencias. Es el puente entre el diseño de control y la seguridad del proceso.
+      </div>
+    </div>
+
+    <div class="ext-links-box">
+      <div class="ext-links-title">FUENTES — DIAGRAMAS DE BLOQUES Y SEGURIDAD DE PROCESOS</div>
+      <div class="ext-link-item"><span class="ext-link-icon">📗</span><div class="ext-link-info"><div class="ext-link-name">ISA-18.2 — Management of Alarm Systems</div><div class="ext-link-desc">Norma internacional para gestion de alarmas industriales. Incluye criterios de diseño de alarmas, filosofia de alarmas, flood management y prueba de efectividad. Fundamental post-Texas City.</div></div><a href="https://www.isa.org/products/ansi-isa-18-2-2016-management-of-alarm-systems-fo" class="ext-link-url" target="_blank" rel="noopener">ISA Store</a></div>
+      <div class="ext-link-item"><span class="ext-link-icon">🔧</span><div class="ext-link-info"><div class="ext-link-name">IEC 61511 — Safety Instrumented Systems</div><div class="ext-link-desc">Estandar para sistemas instrumentados de seguridad (SIS) en la industria de procesos. Define SIL 1-4, PFD, PTI y arquitecturas de redundancia. Obligatorio en plantas con riesgo alto en Colombia (Decreto 1609, RETIE).</div></div><a href="https://www.iec.ch/functional-safety/standards/61511" class="ext-link-url orange" target="_blank" rel="noopener">IEC 61511</a></div>
+      <div class="ext-link-item"><span class="ext-link-icon">📘</span><div class="ext-link-info"><div class="ext-link-name">CTMS — Control Tutorials for MATLAB and Simulink</div><div class="ext-link-desc">Universidad de Michigan: tutoriales de algebra de bloques, reduccion de diagramas y diseño de controladores con Simulink. Incluye ejemplos de sistemas electricos y de procesos.</div></div><a href="https://ctms.engin.umich.edu/CTMS/index.php?aux=Home" class="ext-link-url green" target="_blank" rel="noopener">CTMS Michigan</a></div>
+      <div class="ext-link-item"><span class="ext-link-icon">⚗️</span><div class="ext-link-info"><div class="ext-link-name">AIChE — CCPS Process Safety Library</div><div class="ext-link-desc">Biblioteca del Centro para la Seguridad de Procesos Quimicos (CCPS): casos de estudio de accidentes, HAZOP, LOPA, SIS y guias de Process Safety Management. Recurso obligatorio para ingenieros de proceso.</div></div><a href="https://www.aiche.org/ccps" class="ext-link-url gold" target="_blank" rel="noopener">AIChE CCPS</a></div>
+    </div>
+
+    <div class="quiz-box" id="qbloques">
+      <div class="quiz-q">Un sistema en lazo cerrado tiene G(s) = 5/(s+2) y H(s) = 1 (realimentacion unitaria). ¿Cual es la ganancia estatica T(0) del lazo cerrado?</div>
+      <div class="quiz-opt" onclick="checkQuiz('qbloques',this,'wrong')">A. T(0) = 5 (igual que lazo abierto)</div>
+      <div class="quiz-opt" onclick="checkQuiz('qbloques',this,'wrong')">B. T(0) = 2.5</div>
+      <div class="quiz-opt" onclick="checkQuiz('qbloques',this,'correct')">C. T(0) = 5/7 = 0.714</div>
+      <div class="quiz-opt" onclick="checkQuiz('qbloques',this,'wrong')">D. T(0) = 1.0</div>
+      <div class="quiz-feedback" id="qbloques-fb" style="background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.3);color:var(--accent3)">Correcto. T(s) = G/(1+G*H) = [5/(s+2)] / [1 + 5/(s+2)] = 5 / (s+2+5) = 5/(s+7). Evaluando en s=0: T(0) = 5/7 = 0.714. El lazo cerrado reduce la ganancia de 5/2=2.5 a 5/7=0.714, pero tambien acelera el sistema (tau de 0.5s a 1/7s).</div>
+    </div>
+  </div>
+
+
   </main>
 
   <!-- VIDEO MODAL -->
@@ -1919,22 +2209,211 @@ t = <span class="code-num">0</span>:<span class="code-num">0.5</span>:<span clas
     <button onclick="document.getElementById('rightsModal').classList.add('open')" style="display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;background:rgba(11,15,26,0.93);backdrop-filter:blur(12px);color:#ffd700;border:1px solid rgba(255,215,0,.25);padding:.55rem 1.1rem;border-radius:2rem;cursor:pointer;transition:all .25s;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap;" onmouseover="this.style.background='rgba(255,215,0,0.08)'" onmouseout="this.style.background='rgba(11,15,26,0.93)'">© Derechos</button>
   </div>
 
-  <!-- RIGHTS MODAL -->
-  <div class="rights-modal" id="rightsModal" onclick="if(event.target===this)this.classList.remove('open')">
-    <div class="rights-modal-box">
-      <button class="rights-close-btn" onclick="document.getElementById('rightsModal').classList.remove('open')">✕</button>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:2px;margin-bottom:14px;">// DERECHOS DE AUTOR Y LICENCIA</div>
-      <div style="font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:10px;">Material Didáctico 740021C</div>
-      <div style="font-size:13px;line-height:1.75;color:var(--text);">
-        <p>© 2026 <strong>Dr. Jose Antonio Lara Ramos</strong><br>
-        Escuela de Ingeniería Química · Universidad del Valle<br>
-        Grupo GAOX — Minciencias Categoría A1</p>
-        <p style="margin-top:10px;">Este material ha sido elaborado con fines educativos exclusivos para el curso <strong>740021C — Instrumentación y Control de Procesos</strong>, 8° semestre Ingeniería Química, Universidad del Valle, Cali, Colombia.</p>
-        <p style="margin-top:10px;"><strong>Uso permitido:</strong> Docencia universitaria, estudio personal, referencia académica con atribución al autor.</p>
-        <p style="margin-top:10px;"><strong>Uso no permitido:</strong> Reproducción comercial, distribución sin autorización escrita del autor, modificación sin crédito.</p>
-        <p style="margin-top:12px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent);">lara.jose@correounivalle.edu.co · Oficina 2027 E27</p>
-        <p style="margin-top:8px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);">Los videos enlazados son propiedad de sus respectivos autores en YouTube y se presentan exclusivamente como referencias educativas.</p>
+  <!-- RIGHTS MODAL — FULL DERECHOS DE AUTOR -->
+  <div class="rights-modal" id="rightsModal" onclick="if(event.target===this)this.classList.remove('open')" style="overflow-y:auto;">
+    <div class="rights-modal-box" style="max-width:860px;width:95%;max-height:90vh;overflow-y:auto;padding:30px 34px;">
+      <button class="rights-close-btn" onclick="document.getElementById('rightsModal').classList.remove('open')" style="font-size:18px;top:14px;right:16px;">✕ cerrar</button>
+
+    <div class="section-title">© Derechos de Autor y Uso Educativo</div>
+    <div class="section-desc">// AVISO LEGAL · FAIR USE / USO JUSTO · CRÉDITOS · PROPIEDAD INTELECTUAL</div>
+
+    <div class="warn-box" style="border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.04);">
+      <div class="ib-content" style="color:#e8d060;">
+        <strong>AVISO IMPORTANTE:</strong> Este material didáctico ha sido preparado exclusivamente para actividades académicas del curso 740021C — Instrumentación y Control de Procesos, Escuela de Ingeniería Química, Universidad del Valle. Los contenidos de terceros (imágenes, diagramas, tablas, textos y videos referenciados) se utilizan bajo el principio de <strong>Uso Justo (Fair Use / Uso Educativo)</strong> conforme a la legislación colombiana e internacional de propiedad intelectual. No se autoriza la reproducción, redistribución comercial ni la modificación de los materiales de terceros sin la autorización expresa de sus titulares.
       </div>
+    </div>
+
+    <!-- AVISO PRINCIPAL -->
+    <div class="diagram-box" style="border-color:rgba(255,215,0,0.3);text-align:left;">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
+        <span style="font-size:42px;">©</span>
+        <div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--accent4);">Material de Uso Exclusivamente Educativo</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);">Curso 740021C · Control de Procesos · Universidad del Valle · 2026</div>
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.8;color:var(--text);">
+        Este recurso educativo digital ha sido elaborado por el <strong>Ing. Qco. Jose Antonio Lara Ramos, M.Sc., Ph.D.</strong>, profesor de la Escuela de Ingeniería Química de la Universidad del Valle, adscrito al grupo de investigación <strong>GAOX (Minciencias Categoría A1)</strong>. El material integra contenido original del autor con recursos de terceros debidamente referenciados, empleados bajo el marco del uso educativo sin fines de lucro.
+      </div>
+    </div>
+
+    <!-- BASE LEGAL -->
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;color:var(--accent);">Marco Legal — Uso Educativo en Colombia</div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-tag">LEGISLACIÓN COLOMBIANA</div>
+        <div class="card-title">Ley 23 de 1982 — Ley de Derechos de Autor</div>
+        <div class="card-body">
+          El <strong>Artículo 31</strong> establece que es permitida la reproducción de fragmentos de obras protegidas para fines de enseñanza, crítica o investigación científica, sin necesidad de autorización del autor ni pago de remuneración, siempre que se cite la fuente y se respeten las condiciones de uso educativo no comercial.
+        </div>
+      </div>
+      <div class="card orange">
+        <div class="card-tag">NORMATIVA INTERNACIONAL</div>
+        <div class="card-title">Convenio de Berna / TRIPS / WIPO</div>
+        <div class="card-body">
+          El <strong>Artículo 10 del Convenio de Berna</strong> y el <strong>Acuerdo TRIPS (Art. 13)</strong> reconocen excepciones para usos educativos cuando: (1) el uso no persigue fines comerciales, (2) no perjudica injustificadamente los intereses del titular, y (3) no sustituye la obra original en el mercado.
+        </div>
+      </div>
+    </div>
+
+    <!-- CONDICIONES DE USO -->
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;color:var(--accent3);">Condiciones de Uso del Material</div>
+    <div class="term-grid">
+      <div class="term-card green">
+        <div class="term-title">✅ Usos Permitidos</div>
+        <div class="term-def">
+          • Visualización en clases presenciales y virtuales del curso 740021C.<br>
+          • Descarga personal por estudiantes matriculados para estudio individual.<br>
+          • Uso como referencia en trabajos académicos citando la fuente.<br>
+          • Discusión y análisis crítico en actividades académicas de la Universidad del Valle.
+        </div>
+      </div>
+      <div class="term-card orange">
+        <div class="term-title">❌ Usos No Permitidos</div>
+        <div class="term-def">
+          • Redistribución comercial o venta del material.<br>
+          • Publicación en sitios web públicos sin autorización del autor.<br>
+          • Modificación o edición del contenido sin autorización expresa.<br>
+          • Uso en otros cursos o instituciones sin autorización previa del docente.<br>
+          • Reproducción íntegra de textos o imágenes con derechos de terceros.
+        </div>
+      </div>
+      <div class="term-card">
+        <div class="term-title">📋 Cómo Citar este Material</div>
+        <div class="term-def">
+          Lara Ramos, J.A. (2026). <em>Control de Procesos — Unidad III</em> [Material didáctico digital]. Escuela de Ingeniería Química, Universidad del Valle. Curso 740021C.<br><br>
+          <strong>Formato APA 7:</strong><br>
+          Lara Ramos, J. A. (2026). <em>Control de Procesos — Unidades I, II y III</em>. Universidad del Valle.
+        </div>
+        <div class="term-formula">lara.jose@correounivalle.edu.co</div>
+      </div>
+      <div class="term-card gold">
+        <div class="term-title">🔍 Reporte de Infracciones</div>
+        <div class="term-def">
+          Si usted es titular de derechos sobre algún contenido incluido en este material y considera que su uso no se encuadra en la excepción educativa, comuníquese con el docente autor para resolver la situación:
+        </div>
+        <div class="term-formula">lara.jose@correounivalle.edu.co<br>Oficina 2027, Edificio E27 — UniValle</div>
+      </div>
+    </div>
+
+    <!-- CRÉDITOS DE CONTENIDOS TERCEROS -->
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;color:var(--accent2);">Créditos y Fuentes de Contenido de Terceros</div>
+
+    <table class="sensor-table">
+      <thead>
+        <tr><th>CONTENIDO</th><th>FUENTE / TITULAR</th><th>USO EN ESTE MATERIAL</th><th>TIPO DE USO</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Norma ISA-5.1-2009 (tablas de simbología)</td>
+          <td>International Society of Automation (ISA) — Research Triangle Park, NC, USA</td>
+          <td>Sección P&amp;ID — tabla de letras y símbolos</td>
+          <td style="color:var(--accent3)">Educativo / Referencia</td>
+        </tr>
+        <tr>
+          <td>Tablas de termopar tipo J, K, T, R/S</td>
+          <td>NIST (National Institute of Standards and Technology) — ITS-90</td>
+          <td>Sección Sensores — problema termopar</td>
+          <td style="color:var(--accent3)">Dominio público</td>
+        </tr>
+        <tr>
+          <td>Ecuaciones de sintonización Ziegler-Nichols e IMC</td>
+          <td>Smith, C.A. &amp; Corripio, A.B. — <em>Control Automático de Procesos</em>, Limusa Wiley, 2ª ed.</td>
+          <td>Sección Lazos de Control</td>
+          <td style="color:var(--accent3)">Referencia académica</td>
+        </tr>
+        <tr>
+          <td>Modelo FOPDT y criterios IAE/ISE/ITAE</td>
+          <td>Seborg, D.E. et al. — <em>Process Dynamics and Control</em>, Wiley, 4ª ed.</td>
+          <td>Sección Lazos de Control</td>
+          <td style="color:var(--accent3)">Referencia académica</td>
+        </tr>
+        <tr>
+          <td>Fórmulas Cv de válvulas de control</td>
+          <td>ISA-75.01.01 (IEC 60534-2-1) — Control Valve Sizing</td>
+          <td>Sección Válvulas &amp; Actuadores</td>
+          <td style="color:var(--accent3)">Educativo / Referencia</td>
+        </tr>
+        <tr>
+          <td>Ecuación de Bernoulli — placa orificio</td>
+          <td>ISO 5167-1:2022 — Measurement of fluid flow</td>
+          <td>Sección Sensores — flujo</td>
+          <td style="color:var(--accent3)">Referencia técnica</td>
+        </tr>
+        <tr>
+          <td>Ecuación de Nernst — electrodo pH</td>
+          <td>Skoog, D.A. et al. — <em>Principles of Instrumental Analysis</em>, Cengage</td>
+          <td>Sección Sensores — pH</td>
+          <td style="color:var(--accent3)">Referencia académica</td>
+        </tr>
+        <tr>
+          <td>Pirámide CIM / Automatización industrial</td>
+          <td>IEC 62264 (ISA-95) — Enterprise-Control System Integration</td>
+          <td>Sección Adquisición de Datos</td>
+          <td style="color:var(--accent3)">Educativo / Referencia</td>
+        </tr>
+        <tr>
+          <td>Gestión de alarmas — KPIs y norma</td>
+          <td>ISA-18.2-2016 / IEC 62682 — Management of Alarm Systems</td>
+          <td>Sección Adquisición de Datos</td>
+          <td style="color:var(--accent3)">Educativo / Referencia</td>
+        </tr>
+        <tr>
+          <td>Diapositivas de clase (contenido ISA, SAMA)</td>
+          <td>Lara Ramos, J.A. (2026) — Clase 4, Instrumentación y Control de Procesos I</td>
+          <td>Sección P&amp;ID — fundamento ISA vs SAMA</td>
+          <td style="color:var(--accent)">Material propio del autor</td>
+        </tr>
+        <tr>
+          <td>Imágenes, videos y recursos multimedia externos</td>
+          <td>Recursos específicos con atribución en cada uso</td>
+          <td>Ilustración de conceptos en clase</td>
+          <td style="color:var(--accent4)">Fair Use educativo — sin fines de lucro</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- AVISO ESPECÍFICO VIDEOS/IMÁGENES -->
+    <div class="industrial-example" style="border-left-color:var(--accent4);">
+      <div class="ie-title" style="color:var(--accent4);">▸ AVISO ESPECIAL — IMÁGENES Y VIDEOS DE TERCEROS</div>
+      <div class="ie-body">
+        <strong>Uso de imágenes:</strong> Las imágenes provenientes de catálogos técnicos de fabricantes (Emerson, Rosemount, Fisher, Siemens, ABB, Hach, etc.) utilizadas en presentaciones de clase se emplean exclusivamente con fines ilustrativos educativos, sin modificación de marca ni de contenido. Su uso no implica endorsement o relación comercial con los fabricantes.<br><br>
+        <strong>Uso de videos:</strong> Los videos de YouTube, Vimeo u otras plataformas que se proyecten durante las clases se utilizan bajo la política de <strong>fair use educativo</strong>. No se descargan ni redistribuyen. Se accede a ellos mediante enlace directo a las plataformas originales, respetando los términos de servicio de cada plataforma. Se reconoce explícitamente la autoría del creador original en cada caso.<br><br>
+        <strong>Diagramas P&amp;ID y esquemas técnicos:</strong> Los ejemplos de P&amp;ID de plantas reales (Ecopetrol, Ingenios azucareros, PTAR) son recreaciones esquemáticas con fines pedagógicos basadas en información pública y datos típicos de industria. No representan la ingeniería confidencial de ninguna empresa.<br><br>
+        <strong>Software de referencia:</strong> Las capturas de pantalla de MATLAB/Simulink, DCS (DeltaV, WinCC), SCADA (Ignition, Wonderware) mostradas en clase corresponden a versiones académicas o demos públicas de los fabricantes, utilizadas de conformidad con sus licencias de uso educativo.
+      </div>
+    </div>
+
+    <!-- BIBLIOGRAFÍA -->
+    <div class="section-title" style="font-size:19px;margin-bottom:14px;color:var(--text);">Bibliografía Principal del Curso</div>
+    <div class="math-box" style="border-left-color:var(--text-dim);">
+      <div class="math-title" style="color:var(--text);">📚 REFERENCIAS — APA 7</div>
+      <div class="math-step">Smith, C. A., &amp; Corripio, A. B. (2006). <em>Principles and Practice of Automatic Process Control</em> (3rd ed.). Wiley.</div>
+      <div class="math-step">Seborg, D. E., Edgar, T. F., Mellichamp, D. A., &amp; Doyle III, F. J. (2016). <em>Process Dynamics and Control</em> (4th ed.). Wiley.</div>
+      <div class="math-step">ISA. (2009). <em>ISA-5.1-2009: Instrumentation Symbols and Identification</em>. International Society of Automation.</div>
+      <div class="math-step">IEC. (2016). <em>IEC 61511: Functional Safety — Safety Instrumented Systems for the Process Industry Sector</em>. IEC.</div>
+      <div class="math-step">Bela G. Lipták (Ed.). (2006). <em>Instrument Engineers' Handbook: Process Measurement and Analysis</em> (4th ed., Vol. 1). CRC Press.</div>
+      <div class="math-step">Crowe, C. M. (1998). <em>Chemical Plant Simulation</em>. Prentice-Hall.</div>
+      <div class="math-step">Marlin, T. E. (2000). <em>Process Control: Designing Processes and Control Systems for Dynamic Performance</em> (2nd ed.). McGraw-Hill.</div>
+      <div class="math-step" style="color:var(--text-dim)">Consultas adicionales: Oficina 2027, Edificio E27 — lara.jose@correounivalle.edu.co</div>
+    </div>
+
+    <!-- FOOTER DE DERECHOS -->
+    <div style="margin-top:24px;padding:20px;background:var(--panel2);border:1px solid var(--border);text-align:center;">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;">
+        © 2026 · ING. QCO. JOSE ANTONIO LARA RAMOS, M.SC., PH.D. · UNIVERSIDAD DEL VALLE
+      </div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:6px;letter-spacing:1px;">
+        ESCUELA DE INGENIERÍA QUÍMICA · GRUPO GAOX · MINCIENCIAS CATEGORÍA A1
+      </div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);margin-top:6px;">
+        MATERIAL DE USO EDUCATIVO EXCLUSIVO · CURSO 740021C · 2026
+      </div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);margin-top:8px;">
+        Los derechos de los contenidos de terceros pertenecen a sus respectivos titulares. Su uso en este material se acoge a la excepción educativa de la Ley 23 de 1982 (Art. 31), el Convenio de Berna (Art. 10) y el Acuerdo TRIPS (Art. 13).
+      </div>
+    </div>
+  
     </div>
   </div>
 
@@ -1947,286 +2426,446 @@ t = <span class="code-num">0</span>:<span class="code-num">0.5</span>:<span clas
   </footer>
 
   <script>
-    /* ─── NAVIGATION ─── */
-    function showSection(id) {
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      const sec = document.getElementById(id);
-      if(sec) sec.classList.add('active');
-      if(event && event.currentTarget) event.currentTarget.classList.add('active');
-      window.scrollTo({top:0,behavior:'smooth'});
-      // Trigger canvas redraws when section becomes visible
-      if(id==='acciones') setTimeout(drawPID,50);
-      if(id==='smith')    setTimeout(drawSmith,50);
-      if(id==='empiricos') setTimeout(calcTuning,50);
-    }
-    function toggleAccordion(item){ item.classList.toggle('open'); }
-    function checkQuiz(quizId,el,result){
-      document.querySelectorAll('#'+quizId+' .quiz-opt').forEach(o=>o.style.pointerEvents='none');
-      el.classList.add(result);
-      const fb=document.getElementById(quizId+'-fb');
-      if(fb) fb.classList.add('show');
-    }
-    function runNb(n){
-      const el=document.getElementById('nb_out_'+n);
-      if(el){ el.classList.add('show'); }
-    }
+  /* NAV */
+  function showSection(id) {
+    var secs = document.querySelectorAll('.section');
+    for (var i = 0; i < secs.length; i++) secs[i].classList.remove('active');
+    var btns = document.querySelectorAll('.tab-btn');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+    var sec = document.getElementById(id);
+    if (sec) sec.classList.add('active');
+    if (event && event.currentTarget) event.currentTarget.classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    if (id === 'acciones')  { setTimeout(drawPID, 60); }
+    if (id === 'smith')     { setTimeout(drawSmith, 60); }
+    if (id === 'empiricos') { setTimeout(calcTuning, 60); }
+  }
+  function toggleAccordion(item) { item.classList.toggle('open'); }
+  function checkQuiz(quizId, el, result) {
+    var opts = document.querySelectorAll('#' + quizId + ' .quiz-opt');
+    for (var i = 0; i < opts.length; i++) opts[i].style.pointerEvents = 'none';
+    el.classList.add(result);
+    var fb = document.getElementById(quizId + '-fb');
+    if (fb) fb.classList.add('show');
+  }
+  function runNb(n) {
+    var el = document.getElementById('nb_out_' + n);
+    if (el) el.classList.add('show');
+  }
 
-    /* ─── VIDEO MODAL ─── */
-    function openVideo(id){
-      document.getElementById('videoFrame').src='https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0';
-      document.getElementById('videoModal').classList.add('open');
+  /* VIDEO MODAL */
+  function openVideo(id) {
+    document.getElementById('videoFrame').src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
+    document.getElementById('videoModal').classList.add('open');
+  }
+  function closeVideo(e) {
+    if (!e || e.target === document.getElementById('videoModal')) {
+      document.getElementById('videoModal').classList.remove('open');
+      document.getElementById('videoFrame').src = '';
     }
-    function closeVideo(e){
-      if(!e || e.target===document.getElementById('videoModal')){
-        document.getElementById('videoModal').classList.remove('open');
-        document.getElementById('videoFrame').src='';
+  }
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeVideo(null); });
+
+  /* VIDEO GRIDS - populated by JS to avoid broken img issues */
+  var VIDEO_DATA = {
+    vg_intro: [
+      ['mMhiTnH9HLs', 'Que es el Control PID? Intuicion matematica y visual', 'Brian Douglas', '16 min', 'FUNDAMENTOS'],
+      ['wkfEZmsQqiA', 'PID Control: Entendiendo cada termino (MATLAB Tech Talks)', 'MATLAB Tech Talks', '10 min', 'LAZO CERRADO'],
+      ['sFqFrmMJ-sg', 'Sintonizacion PID con Control System Designer', 'MATLAB', '12 min', 'SINTONIZACION']
+    ],
+    vg_acciones: [
+      ['4Y7zG48uHRo', 'Proporcional, Integral, Derivativo: Visualizacion completa', 'RealPars', '14 min', 'P-I-D'],
+      ['XfAt6jr9QvM', 'Anti-Windup en Controladores PID: Problema y solucion', 'MATLAB', '8 min', 'ANTI-WINDUP']
+    ],
+    vg_empiricos: [
+      ['uXnDwJkR5kg', 'Metodo Ziegler-Nichols: Lazo Abierto y Cerrado', 'Control Lectures', '18 min', 'Z-N'],
+      ['7dUVdrs1e18', 'Lambda Tuning e IMC para procesos con tiempo muerto', 'Process Control', '22 min', 'IMC'],
+      ['JEpAe4E9ssc', 'PID Tuning: Comparativa de metodos industriales', 'RealPars', '15 min', 'METODOS']
+    ],
+    vg_smith: [
+      ['ANAg4NQzjlU', 'Smith Predictor: Diseno y analisis completo', 'Control Systems', '20 min', 'SMITH'],
+      ['8hm-gKFBDMU', 'Control de procesos con tiempo muerto: Estrategias', 'Process Dynamics', '18 min', 'TIEMPO MUERTO']
+    ],
+    vg_cascada: [
+      ['7YmGf4pQWuE', 'Control Cascada: Diseno, sintonizacion y ejemplos', 'RealPars', '20 min', 'CASCADA'],
+      ['pR1SFAP9qVM', 'Cascade Control en industria: Temperatura con flujo', 'ISA', '18 min', 'INDUSTRIAL']
+    ]
+  };
+  VIDEO_DATA.vg_accidentes = [
+    ['NkIFKlqFdp4', 'Bhopal 1984 El peor desastre quimico industrial', 'Documentary', '28 min', 'BHOPAL 1984'],
+    ['KRRvkAjfpH4', 'Texas City 2005 Explosion BP Refineria CSB Report', 'CSB Safety', '12 min', 'TEXAS CITY'],
+    ['4N-dZ3eLEE8', 'Chernobyl Analisis tecnico del fallo del reactor RBMK', 'Engineering', '22 min', 'CHERNOBYL'],
+    ['WNZK3ADZ3JM', 'Process Safety Lessons from Industrial Accidents', 'CSB Safety', '15 min', 'PSM']
+  ];
+
+  function buildVideoCard(id, title, channel, duration, tag) {
+    var card = document.createElement('div');
+    card.className = 'video-card';
+    card.onclick = function() { openVideo(id); };
+
+    var thumb = document.createElement('div');
+    thumb.className = 'video-thumb';
+
+    var img = document.createElement('img');
+    img.alt = title;
+    img.loading = 'lazy';
+    img.src = 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg';
+    var fb = 0;
+    img.onerror = function() {
+      fb++;
+      if (fb === 1) {
+        this.src = 'https://i.ytimg.com/vi/' + id + '/mqdefault.jpg';
+      } else if (fb === 2) {
+        this.src = 'https://i.ytimg.com/vi/' + id + '/default.jpg';
+      } else {
+        this.style.display = 'none';
+        thumb.style.background = 'linear-gradient(135deg,#0f1626 0%,#1e2d4a 100%)';
+        var lbl = document.createElement('div');
+        lbl.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;';
+        lbl.innerHTML = '<div style="font-size:36px;color:#00d4ff;margin-bottom:8px">&#9654;</div>' +
+          '<div style="font-family:monospace;font-size:9px;color:#00d4ff;letter-spacing:1px;">VER EN YOUTUBE</div>';
+        thumb.appendChild(lbl);
+      }
+    };
+
+    var play = document.createElement('div');
+    play.className = 'video-play';
+    play.innerHTML = '<svg viewBox="0 0 24 24" fill="white" width="20" height="20"><polygon points="5,3 19,12 5,21"/></svg>';
+
+    var tagEl = document.createElement('div');
+    tagEl.style.cssText = 'position:absolute;top:8px;left:8px;font-family:monospace;font-size:9px;' +
+      'color:#fff;background:rgba(255,107,53,0.88);padding:2px 7px;letter-spacing:1px;border-radius:2px;z-index:2;';
+    tagEl.textContent = tag;
+
+    thumb.appendChild(img);
+    thumb.appendChild(play);
+    thumb.appendChild(tagEl);
+
+    var info = document.createElement('div');
+    info.className = 'video-info';
+    var titleEl = document.createElement('div');
+    titleEl.className = 'video-title';
+    titleEl.textContent = title;
+    var metaEl = document.createElement('div');
+    metaEl.className = 'video-meta';
+    var sp1 = document.createElement('span'); sp1.textContent = channel;
+    var sp2 = document.createElement('span'); sp2.textContent = duration;
+    metaEl.appendChild(sp1);
+    metaEl.appendChild(sp2);
+    info.appendChild(titleEl);
+    info.appendChild(metaEl);
+
+    card.appendChild(thumb);
+    card.appendChild(info);
+    return card;
+  }
+
+  function populateVideoGrids() {
+    var keys = Object.keys(VIDEO_DATA);
+    for (var k = 0; k < keys.length; k++) {
+      var gridId = keys[k];
+      var videos = VIDEO_DATA[gridId];
+      var grid = document.getElementById(gridId);
+      if (!grid) continue;
+      grid.innerHTML = '';
+      for (var v = 0; v < videos.length; v++) {
+        var vid = videos[v];
+        grid.appendChild(buildVideoCard(vid[0], vid[1], vid[2], vid[3], vid[4]));
       }
     }
-    document.addEventListener('keydown', e => { if(e.key==='Escape') closeVideo(null); });
+  }
 
-    /* ─── PID SIMULATOR ─── */
-    const pidSliders=['kc','ti','td','kp','tau','theta'];
-    pidSliders.forEach(id=>{
-      const el=document.getElementById('sl_'+id);
-      if(!el) return;
-      el.addEventListener('input',()=>{
-        document.getElementById('val_'+id).textContent=parseFloat(el.value).toFixed(id==='kc'||id==='kp'?2:1);
-        drawPID();
-      });
-    });
+  /* PID SIMULATOR */
+  function getV(id) {
+    var el = document.getElementById(id);
+    return el ? parseFloat(el.value) : 0;
+  }
 
-    function getV(id){ const el=document.getElementById(id); return el?parseFloat(el.value):0; }
-
-    function setPIDPreset(p){
-      const Kp=getV('sl_kp'), tau=getV('sl_tau'), theta=getV('sl_theta');
-      const presets={
-        P:    [tau/(Kp*Math.max(theta,0.1)), 20, 0],
-        PI:   [0.9*tau/(Kp*Math.max(theta,0.1)), 3.33*Math.max(theta,0.1), 0],
-        PID:  [1.2*tau/(Kp*Math.max(theta,0.1)), 2*Math.max(theta,0.1), 0.5*Math.max(theta,0.1)],
-        aggressive:[2.5*tau/(Kp*Math.max(theta,0.1)), 1.5*Math.max(theta,0.1), 0.3*Math.max(theta,0.1)],
-        ZN:   [1.2*tau/(Kp*Math.max(theta,0.1)), 2*Math.max(theta,0.1), 0.5*Math.max(theta,0.1)]
-      };
-      const [kc,ti,td]=presets[p]||presets.PI;
-      const set=(id,v,mn,mx)=>{
-        const el=document.getElementById('sl_'+id);
-        if(!el) return;
-        el.value=Math.min(Math.max(v,mn),mx);
-        document.getElementById('val_'+id).textContent=parseFloat(el.value).toFixed(id==='kc'?2:1);
-      };
-      set('kc',kc,0.1,5); set('ti',ti,0.5,20); set('td',td,0,5);
-      drawPID();
+  function initSliders() {
+    var ids = ['kc','ti','td','kp','tau','theta'];
+    for (var i = 0; i < ids.length; i++) {
+      (function(sid) {
+        var el = document.getElementById('sl_' + sid);
+        if (!el) return;
+        el.addEventListener('input', function() {
+          var digs = (sid === 'kc' || sid === 'kp') ? 2 : 1;
+          document.getElementById('val_' + sid).textContent = parseFloat(el.value).toFixed(digs);
+          drawPID();
+        });
+      })(ids[i]);
     }
+  }
 
-    function simFOPDTwithPID(Kc,tauI,tauD,Kp,tau,theta,T,N){
-      // Euler forward simulation of PID + FOPDT with Padé approximation for delay
-      const dt=T/N;
-      const y=new Array(N).fill(0), u=new Array(N).fill(0);
-      const e_hist=new Array(N).fill(0);
-      let integral=0, prev_e=0;
-      const delay_buf=new Array(Math.ceil(theta/dt)+1).fill(0);
-      let db_idx=0;
-      const delay_len=Math.ceil(theta/dt);
-      for(let k=1;k<N;k++){
-        const t=k*dt;
-        const sp=t>0?1:0;
-        const pv=y[k-1];
-        const e=sp-pv;
-        integral+=e*dt;
-        const de=(e-prev_e)/dt;
-        prev_e=e;
-        let uk=Kc*(e+(1/(Math.max(tauI,0.01)))*integral+tauD*de);
-        uk=Math.max(-2,Math.min(2,uk)); // saturation
-        // Delay buffer
-        delay_buf[db_idx%delay_buf.length]=uk;
-        const delayed_u=delay_buf[(db_idx-delay_len+delay_buf.length)%delay_buf.length]||0;
-        db_idx++;
-        // FOPDT response: dy/dt = (Kp*u_delayed - y)/tau
-        const dy=(Kp*delayed_u - y[k-1])/tau;
-        y[k]=y[k-1]+dy*dt;
-        u[k]=uk;
-      }
-      return {y,u};
+  function setPIDPreset(p) {
+    var Kp = getV('sl_kp'), tau = getV('sl_tau'), theta = getV('sl_theta');
+    var th = Math.max(theta, 0.1);
+    var presets = {
+      P:         [tau / (Kp * th), 20, 0],
+      PI:        [0.9 * tau / (Kp * th), 3.33 * th, 0],
+      PID:       [1.2 * tau / (Kp * th), 2 * th, 0.5 * th],
+      aggressive:[2.5 * tau / (Kp * th), 1.5 * th, 0.3 * th],
+      ZN:        [1.2 * tau / (Kp * th), 2 * th, 0.5 * th]
+    };
+    var vals = presets[p] || presets.PI;
+    var kc = vals[0], ti = vals[1], td = vals[2];
+    function setSlider(id, v, mn, mx, digs) {
+      var el = document.getElementById('sl_' + id);
+      if (!el) return;
+      el.value = Math.min(Math.max(v, mn), mx);
+      document.getElementById('val_' + id).textContent = parseFloat(el.value).toFixed(digs);
     }
+    setSlider('kc', kc, 0.1, 5, 2);
+    setSlider('ti', ti, 0.5, 20, 1);
+    setSlider('td', td, 0, 5, 1);
+    drawPID();
+  }
 
-    function drawPID(){
-      const canvas=document.getElementById('pidCanvas');
-      if(!canvas) return;
-      const ctx=canvas.getContext('2d');
-      const W=canvas.width, H=canvas.height;
-      ctx.clearRect(0,0,W,H);
-      ctx.fillStyle='#060a14'; ctx.fillRect(0,0,W,H);
+  function simFOPDT(Kc, tauI, tauD, Kp, tau, theta, T, N) {
+    var dt = T / N;
+    var y = new Array(N); for (var i = 0; i < N; i++) y[i] = 0;
+    var integral = 0, prev_e = 0;
+    var dlen = Math.ceil(theta / dt) + 1;
+    var dbuf = new Array(dlen); for (var i = 0; i < dlen; i++) dbuf[i] = 0;
+    var dlen2 = Math.ceil(theta / dt);
+    var db_idx = 0;
+    for (var k = 1; k < N; k++) {
+      var sp = (k * dt > 0) ? 1 : 0;
+      var e = sp - y[k - 1];
+      integral += e * dt;
+      var de = (e - prev_e) / dt;
+      prev_e = e;
+      var uk = Kc * (e + integral / Math.max(tauI, 0.01) + tauD * de);
+      uk = Math.max(-3, Math.min(3, uk));
+      dbuf[db_idx % dlen] = uk;
+      var di = (db_idx - dlen2 + dlen * 10) % dlen;
+      var du = dbuf[di] || 0;
+      db_idx++;
+      var dy = (Kp * du - y[k - 1]) / tau;
+      y[k] = y[k - 1] + dy * dt;
+    }
+    return y;
+  }
 
-      const Kc=getV('sl_kc'), tauI=Math.max(getV('sl_ti'),0.1)||8;
-      const tauD=getV('sl_td'), Kp=getV('sl_kp'), tau=getV('sl_tau'), theta=getV('sl_theta');
-      const T=Math.max(tau*6,theta*5+20), N=600;
-      const {y,u}=simFOPDTwithPID(Kc,tauI,tauD,Kp,tau,theta,T,N);
+  function drawPID() {
+    var canvas = document.getElementById('pidCanvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#060a14'; ctx.fillRect(0, 0, W, H);
 
-      const pad={l:45,r:20,t:20,b:30};
-      const cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
-      const ymax=Math.max(1.5,Math.max(...y.map(Math.abs))*1.1);
+    var Kc = getV('sl_kc'), tauI = Math.max(getV('sl_ti'), 0.1);
+    var tauD = getV('sl_td'), Kp = getV('sl_kp');
+    var tau = getV('sl_tau'), theta = getV('sl_theta');
+    var T = Math.max(tau * 6, theta * 5 + 20), N = 500;
+    var y = simFOPDT(Kc, tauI, tauD, Kp, tau, theta, T, N);
 
-      // Grid
-      ctx.strokeStyle='#1e2d4a'; ctx.lineWidth=0.5;
-      for(let i=0;i<=4;i++){
-        const cy=pad.t+cH*(1-i/4*(ymax-(-0.1))/(ymax+0.1));
-        // simplified: just draw SP=1 line
+    var pl = 45, pr = 20, pt = 20, pb = 30;
+    var cW = W - pl - pr, cH = H - pt - pb;
+    var ymax = 1.5;
+    for (var i = 0; i < y.length; i++) { if (Math.abs(y[i]) * 1.1 > ymax) ymax = Math.abs(y[i]) * 1.1; }
+
+    /* axes */
+    ctx.strokeStyle = '#1e2d4a'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pl, pt); ctx.lineTo(pl, pt + cH); ctx.lineTo(pl + cW, pt + cH); ctx.stroke();
+
+    /* SP line */
+    var spY = pt + cH * (1 - 1 / ymax);
+    ctx.strokeStyle = 'rgba(255,215,0,0.5)'; ctx.lineWidth = 1; ctx.setLineDash([5, 3]);
+    ctx.beginPath(); ctx.moveTo(pl, spY); ctx.lineTo(pl + cW, spY); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#ffd700'; ctx.font = '9px monospace'; ctx.fillText('SP=1', pl + 2, spY - 3);
+
+    /* response */
+    ctx.strokeStyle = '#00d4ff'; ctx.lineWidth = 2; ctx.beginPath();
+    for (var k = 0; k < y.length; k++) {
+      var x = pl + cW * k / N;
+      var cy = pt + cH * (1 - y[k] / ymax);
+      if (k === 0) ctx.moveTo(x, cy); else ctx.lineTo(x, cy);
+    }
+    ctx.stroke();
+
+    /* metrics */
+    var ss = y[N - 1];
+    var ymx = 0; for (var i = 0; i < y.length; i++) { if (y[i] > ymx) ymx = y[i]; }
+    var os = ss > 0.01 ? Math.max(0, (ymx - ss) / ss * 100) : 0;
+    var ts = T;
+    for (var i = N - 1; i >= 0; i--) {
+      if (Math.abs(y[i] - ss) > 0.02 * Math.abs(ss)) { ts = i * T / N; break; }
+    }
+    ctx.fillStyle = '#c8d8f0'; ctx.font = '10px monospace';
+    ctx.fillText('SS=' + ss.toFixed(3) + '  OS=' + os.toFixed(1) + '%  ts~' + ts.toFixed(1) + 'min  e_ss=' + Math.abs(1 - ss).toFixed(3), pl + 6, pt + 12);
+
+    var out = document.getElementById('pidOutput');
+    if (out) out.textContent = 'Kc=' + Kc.toFixed(2) + ' | tI=' + tauI.toFixed(1) + ' | tD=' + tauD.toFixed(1) +
+      ' | Proceso: Kp=' + Kp.toFixed(1) + ', tau=' + tau.toFixed(1) + ', theta=' + theta.toFixed(1) +
+      ' | SS=' + ss.toFixed(3) + ' | OS=' + os.toFixed(1) + '% | ts~' + ts.toFixed(1) + ' min';
+  }
+
+  /* SMITH PREDICTOR DEMO */
+  function updateSmith() {
+    var ratio = getV('sp_ratio'), lam_m = getV('sp_lam'), err = getV('sp_err');
+    document.getElementById('sp_ratio_v').textContent = ratio.toFixed(2);
+    document.getElementById('sp_lam_v').textContent = lam_m.toFixed(2) + 'tau';
+    document.getElementById('sp_err_v').textContent = err.toFixed(0) + '%';
+    drawSmith();
+  }
+
+  function drawSmith() {
+    var canvas = document.getElementById('smithCanvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#060a14'; ctx.fillRect(0, 0, W, H);
+
+    var ratio = getV('sp_ratio') || 0.48;
+    var lam_m = getV('sp_lam') || 0.5;
+    var err   = getV('sp_err') || 0;
+    var tau = 20, Kp = 1.0;
+    var theta = tau * ratio;
+    var lambda = lam_m * tau;
+    var Kc_s = tau / (Kp * lambda);
+    var Kc_c = Math.min(0.9 * tau / (Kp * Math.max(theta, 0.5)), Kc_s * 0.3);
+    var T = tau * 8, N = 500;
+
+    var ys = simFOPDT(Kc_s, tau, 0, Kp, tau, theta * (1 + err / 100), T, N);
+    var yc = simFOPDT(Kc_c, tau * 1.5, 0, Kp, tau, theta, T, N);
+
+    var pl = 45, pr = 20, pt = 20, pb = 30;
+    var cW = W - pl - pr, cH = H - pt - pb;
+    var ymax = 1.5;
+    for (var i = 0; i < ys.length; i++) { if (Math.abs(ys[i]) * 1.1 > ymax) ymax = Math.abs(ys[i]) * 1.1; }
+    for (var i = 0; i < yc.length; i++) { if (Math.abs(yc[i]) * 1.1 > ymax) ymax = Math.abs(yc[i]) * 1.1; }
+
+    var spY = pt + cH * (1 - 1 / ymax);
+    ctx.strokeStyle = 'rgba(255,215,0,0.4)'; ctx.lineWidth = 1; ctx.setLineDash([5, 3]);
+    ctx.beginPath(); ctx.moveTo(pl, spY); ctx.lineTo(pl + cW, spY); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#ffd700'; ctx.font = '9px monospace'; ctx.fillText('SP=1', pl + 2, spY - 3);
+
+    function drawCurve(data, color) {
+      ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.beginPath();
+      for (var k = 0; k < data.length; k++) {
+        var x = pl + cW * k / N;
+        var cy = pt + cH * (1 - data[k] / ymax);
+        if (k === 0) ctx.moveTo(x, cy); else ctx.lineTo(x, cy);
       }
-      // Axes
-      ctx.strokeStyle='#1e2d4a'; ctx.lineWidth=1;
-      ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+cH); ctx.lineTo(pad.l+cW,pad.t+cH); ctx.stroke();
-
-      // SP line
-      const spY=pad.t+cH*(1-1/ymax);
-      ctx.strokeStyle='rgba(255,215,0,0.5)'; ctx.lineWidth=1; ctx.setLineDash([5,3]);
-      ctx.beginPath(); ctx.moveTo(pad.l,spY); ctx.lineTo(pad.l+cW,spY); ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle='#ffd700'; ctx.font='9px Share Tech Mono'; ctx.fillText('SP=1',pad.l+2,spY-3);
-
-      // Zero line
-      const zY=pad.t+cH;
-      ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=0.5;
-      ctx.beginPath(); ctx.moveTo(pad.l,zY); ctx.lineTo(pad.l+cW,zY); ctx.stroke();
-
-      // Response curve
-      ctx.strokeStyle='#00d4ff'; ctx.lineWidth=2; ctx.beginPath();
-      y.forEach((v,k)=>{
-        const x=pad.l+cW*k/N;
-        const cy=pad.t+cH*(1-v/ymax);
-        k===0?ctx.moveTo(x,cy):ctx.lineTo(x,cy);
-      });
       ctx.stroke();
-
-      // Compute metrics
-      const ss=y[N-1];
-      const ymax_val=Math.max(...y);
-      const os=ss>0.01?Math.max(0,(ymax_val-ss)/ss*100):0;
-      const ts_idx=y.slice().reverse().findIndex(v=>Math.abs(v-ss)>0.02*Math.abs(ss));
-      const ts=ts_idx>=0?(N-1-ts_idx)*T/N:T;
-      ctx.fillStyle='#c8d8f0'; ctx.font='10px Share Tech Mono';
-      ctx.fillText(`SS=${ss.toFixed(3)}  OS=${os.toFixed(1)}%  ts≈${ts.toFixed(1)}min  e_ss=${Math.abs(1-ss).toFixed(3)}`,pad.l+6,pad.t+12);
-
-      const out=document.getElementById('pidOutput');
-      if(out) out.textContent=`Kc=${Kc.toFixed(2)} | τI=${tauI.toFixed(1)} | τD=${tauD.toFixed(1)} | Proceso: Kp=${Kp.toFixed(1)}, τ=${tau.toFixed(1)}, θ=${theta.toFixed(1)} | SS=${ss.toFixed(3)} | OS=${os.toFixed(1)}% | ts≈${ts.toFixed(1)} min`;
     }
+    drawCurve(ys, '#39ff14');
+    drawCurve(yc, '#ff6b35');
 
-    /* ─── SMITH PREDICTOR DEMO ─── */
-    function updateSmith(){
-      const ratio=getV('sp_ratio'), lam_mult=getV('sp_lam'), err_pct=getV('sp_err');
-      document.getElementById('sp_ratio_v').textContent=ratio.toFixed(2);
-      document.getElementById('sp_lam_v').textContent=lam_mult.toFixed(2)+'·τ';
-      document.getElementById('sp_err_v').textContent=err_pct.toFixed(0)+'%';
-      drawSmith();
-    }
+    ctx.font = '10px monospace';
+    ctx.fillStyle = '#39ff14';
+    ctx.fillText('Smith Predictor (Kc=' + Kc_s.toFixed(2) + ')', pl + 6, pt + 13);
+    ctx.fillStyle = '#ff6b35';
+    ctx.fillText('PID Convencional (Kc=' + Kc_c.toFixed(2) + ')', pl + 6, pt + 26);
 
-    function drawSmith(){
-      const canvas=document.getElementById('smithCanvas');
-      if(!canvas) return;
-      const ctx=canvas.getContext('2d');
-      const W=canvas.width, H=canvas.height;
-      ctx.clearRect(0,0,W,H); ctx.fillStyle='#060a14'; ctx.fillRect(0,0,W,H);
-      const ratio=getV('sp_ratio')||0.48, lam_m=getV('sp_lam')||0.5, err=getV('sp_err')||0;
-      const tau=20, theta=tau*ratio, Kp=1.0;
-      const lambda=lam_m*tau;
-      const Kc_smith=tau/(Kp*lambda);
-      // Conservative conventional PID: Kc_conv limited by theta
-      const Kc_conv=Math.min(0.9*tau/(Kp*Math.max(theta,0.5)), Kc_smith*0.3);
-      const tauI=tau;
+    var out = document.getElementById('smithOutput');
+    if (out) out.textContent = 'theta/tau=' + ratio.toFixed(2) +
+      ' | Smith SS=' + ys[N-1].toFixed(3) + ', Kc=' + Kc_s.toFixed(2) +
+      ' | PID conv SS=' + yc[N-1].toFixed(3) + ', Kc=' + Kc_c.toFixed(2) +
+      ' | Error modelo: ' + err + '%';
+  }
 
-      const T=tau*8, N=500;
-      const sim=(Kc,tauI_,theta_eff)=>simFOPDTwithPID(Kc,tauI_,0,Kp,tau,theta_eff,T,N);
-
-      const smith_res=sim(Kc_smith,tauI,theta*(1+err/100));
-      const conv_res=sim(Kc_conv,tauI*1.5,theta);
-
-      const pad={l:45,r:20,t:20,b:30};
-      const cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
-      const ymax=Math.max(1.5, Math.max(...smith_res.y.map(Math.abs), ...conv_res.y.map(Math.abs))*1.1);
-      const spY=pad.t+cH*(1-1/ymax);
-
-      ctx.strokeStyle='rgba(255,215,0,0.4)'; ctx.lineWidth=1; ctx.setLineDash([5,3]);
-      ctx.beginPath(); ctx.moveTo(pad.l,spY); ctx.lineTo(pad.l+cW,spY); ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle='#ffd700'; ctx.font='9px Share Tech Mono'; ctx.fillText('SP=1',pad.l+2,spY-3);
-
-      const drawCurve=(data,color,label)=>{
-        ctx.strokeStyle=color; ctx.lineWidth=2; ctx.beginPath();
-        data.y.forEach((v,k)=>{
-          const x=pad.l+cW*k/N, cy=pad.t+cH*(1-v/ymax);
-          k===0?ctx.moveTo(x,cy):ctx.lineTo(x,cy);
+  /* TUNING CALCULATOR */
+  function initTuningSliders() {
+    var ids = ['tc_kp','tc_tau','tc_theta','tc_lam'];
+    for (var i = 0; i < ids.length; i++) {
+      (function(sid) {
+        var el = document.getElementById(sid);
+        if (!el) return;
+        el.addEventListener('input', function() {
+          document.getElementById(sid + '_v').textContent = parseFloat(el.value).toFixed(1);
+          calcTuning();
         });
-        ctx.stroke();
-      };
-      drawCurve(smith_res,'#39ff14','Smith');
-      drawCurve(conv_res,'#ff6b35','Conv PID');
-
-      ctx.font='10px Share Tech Mono';
-      ctx.fillStyle='#39ff14'; ctx.fillText(`Smith Predictor (Kc=${Kc_smith.toFixed(2)})`,pad.l+6,pad.t+13);
-      ctx.fillStyle='#ff6b35'; ctx.fillText(`PID Convencional (Kc=${Kc_conv.toFixed(2)})`,pad.l+6,pad.t+26);
-
-      const ss_s=smith_res.y[N-1], ss_c=conv_res.y[N-1];
-      const out=document.getElementById('smithOutput');
-      if(out) out.textContent=`θ/τ=${ratio.toFixed(2)} | Smith SS=${ss_s.toFixed(3)}, Kc=${Kc_smith.toFixed(2)} | PID conv SS=${ss_c.toFixed(3)}, Kc=${Kc_conv.toFixed(2)} | Error modelo: ${err}%`;
+      })(ids[i]);
     }
+  }
 
-    /* ─── TUNING CALCULATOR ─── */
-    function calcTuning(){
-      const Kp=getV('tc_kp'), tau=getV('tc_tau'), theta=getV('tc_theta'), lam=getV('tc_lam');
-      document.getElementById('tc_kp_v').textContent=Kp.toFixed(1);
-      document.getElementById('tc_tau_v').textContent=tau.toFixed(1);
-      document.getElementById('tc_theta_v').textContent=theta.toFixed(1);
-      document.getElementById('tc_lam_v').textContent=lam.toFixed(1);
+  function calcTuning() {
+    var Kp    = getV('tc_kp')    || 1.8;
+    var tau   = getV('tc_tau')   || 6.5;
+    var theta = getV('tc_theta') || 1.8;
+    var lam   = getV('tc_lam')   || 3.0;
 
-      const th=Math.max(theta,0.001);
-      const r=th/tau;
-      // Methods
-      const methods=[
-        {name:'Z-N Lazo Abierto', color:'#ff6b35',
-          P: [tau/(Kp*th), '∞', '0'],
-          PI:[+(0.9*tau/(Kp*th)).toFixed(3), +(3.33*th).toFixed(3), '0'],
-          PID:[+(1.2*tau/(Kp*th)).toFixed(3), +(2*th).toFixed(3), +(0.5*th).toFixed(3)]},
-        {name:'Cohen-Coon PI', color:'#ffd700',
-          P: [+(1/(Kp*r)*(1+r/3)).toFixed(3),'∞','0'],
-          PI:[+(1/(Kp*r)*(0.9+r/12)).toFixed(3),+(th*(30+3*r)/(9+20*r)).toFixed(3),'0'],
-          PID:[+(1/(Kp*r)*(4/3+r/4)).toFixed(3),+(th*(32+6*r)/(13+8*r)).toFixed(3),+(4*th/(11+2*r)).toFixed(3)]},
-        {name:'IMC / SIMC', color:'#00d4ff',
-          P: ['—','—','—'],
-          PI:[+((tau+th/2)/(Kp*(lam+th/2))).toFixed(3),+(tau+th/2).toFixed(3),'0'],
-          PID:[+((tau+th/2)/(Kp*(lam+th/2))).toFixed(3),+(tau+th/2).toFixed(3),+(tau*th/(2*tau+th)).toFixed(3)]},
-        {name:'SIMC Skogestad', color:'#39ff14',
-          P: ['—','—','—'],
-          PI:[+(tau/(Kp*(lam+th))).toFixed(3),+(Math.min(tau,4*(lam+th))).toFixed(3),'0'],
-          PID:[+(tau/(Kp*(lam+th))).toFixed(3),+(Math.min(tau,4*(lam+th))).toFixed(3),+(th/2).toFixed(3)]}
-      ];
+    var el_kp  = document.getElementById('tc_kp_v');    if (el_kp)  el_kp.textContent  = Kp.toFixed(1);
+    var el_tau = document.getElementById('tc_tau_v');   if (el_tau) el_tau.textContent  = tau.toFixed(1);
+    var el_th  = document.getElementById('tc_theta_v'); if (el_th)  el_th.textContent   = theta.toFixed(1);
+    var el_lam = document.getElementById('tc_lam_v');   if (el_lam) el_lam.textContent  = lam.toFixed(1);
 
-      let html=`<table class="sensor-table"><thead><tr><th>MÉTODO</th><th>CTRL</th><th>Kc</th><th>τI (min)</th><th>τD (min)</th></tr></thead><tbody>`;
-      methods.forEach(m=>{
-        ['PI','PID'].forEach((t,i)=>{
-          const d=m[t];
-          html+=`<tr>${i===0?`<td rowspan="2" style="border-left:3px solid ${m.color};color:${m.color};font-weight:700;">${m.name}</td>`:''}
-          <td><span class="action-badge" style="border-color:${m.color}40;color:${m.color};background:${m.color}15;">${t}</span></td>
-          <td style="color:#fff;font-family:'Share Tech Mono',monospace;">${d[0]}</td>
-          <td style="font-family:'Share Tech Mono',monospace;">${d[1]}</td>
-          <td style="font-family:'Share Tech Mono',monospace;">${d[2]}</td></tr>`;
-        });
+    var th = Math.max(theta, 0.001);
+    var r  = th / tau;
+
+    /* rows: [name, color, PI_Kc, PI_tI, PI_tD, PID_Kc, PID_tI, PID_tD] */
+    var methods = [
+      {
+        name: 'Z-N Lazo Abierto', color: '#ff6b35',
+        PI:  [(0.9 * tau / (Kp * th)).toFixed(3),  (3.33 * th).toFixed(3),  '0'],
+        PID: [(1.2 * tau / (Kp * th)).toFixed(3),  (2 * th).toFixed(3),     (0.5 * th).toFixed(3)]
+      },
+      {
+        name: 'Cohen-Coon', color: '#ffd700',
+        PI:  [((1/(Kp*r))*(0.9+r/12)).toFixed(3),  (th*(30+3*r)/(9+20*r)).toFixed(3), '0'],
+        PID: [((1/(Kp*r))*(4/3+r/4)).toFixed(3),   (th*(32+6*r)/(13+8*r)).toFixed(3), (4*th/(11+2*r)).toFixed(3)]
+      },
+      {
+        name: 'IMC (lambda='+lam.toFixed(1)+')', color: '#00d4ff',
+        PI:  [((tau+th/2)/(Kp*(lam+th/2))).toFixed(3), (tau+th/2).toFixed(3), '0'],
+        PID: [((tau+th/2)/(Kp*(lam+th/2))).toFixed(3), (tau+th/2).toFixed(3), (tau*th/(2*tau+th)).toFixed(3)]
+      },
+      {
+        name: 'SIMC Skogestad', color: '#39ff14',
+        PI:  [(tau/(Kp*(lam+th))).toFixed(3), Math.min(tau,4*(lam+th)).toFixed(3), '0'],
+        PID: [(tau/(Kp*(lam+th))).toFixed(3), Math.min(tau,4*(lam+th)).toFixed(3), (th/2).toFixed(3)]
+      }
+    ];
+
+    var html = '<table class="sensor-table"><thead><tr>' +
+      '<th>METODO</th><th>CTRL</th><th>Kc</th><th>tauI (min)</th><th>tauD (min)</th>' +
+      '</tr></thead><tbody>';
+    for (var m = 0; m < methods.length; m++) {
+      var mt = methods[m];
+      ['PI','PID'].forEach(function(t, i) {
+        var d = mt[t];
+        html += '<tr>';
+        if (i === 0) {
+          html += '<td rowspan="2" style="border-left:3px solid ' + mt.color +
+            ';color:' + mt.color + ';font-weight:700;font-size:12px;">' + mt.name + '</td>';
+        }
+        html += '<td><span class="action-badge" style="border-color:' + mt.color +
+          '40;color:' + mt.color + ';background:' + mt.color + '15;">' + t + '</span></td>';
+        html += '<td style="color:#fff;font-family:monospace;">' + d[0] + '</td>';
+        html += '<td style="font-family:monospace;">' + d[1] + '</td>';
+        html += '<td style="font-family:monospace;">' + d[2] + '</td>';
+        html += '</tr>';
       });
-      html+='</tbody></table>';
-      document.getElementById('tuning_table').innerHTML=html;
-
-      const r_s=r.toFixed(2);
-      const advice=r<0.1?'θ/τ muy pequeño → Z-N puede ser agresivo. IMC con λ pequeño (λ=0.5τ) es ideal.':
-                   r<0.3?'θ/τ moderado → IMC o SIMC con λ=τ son las mejores opciones.':
-                   r<0.5?'θ/τ significativo → considere Predictor de Smith o IMC conservador (λ=2τ).':
-                         'θ/τ grande (>0.5) → Predictor de Smith o MPC recomendado. Z-N inestable.';
-      document.getElementById('tuning_advice').textContent=`θ/τ = ${r_s} → ${advice}`;
     }
+    html += '</tbody></table>';
 
-    /* ─── INIT ─── */
-    document.addEventListener('DOMContentLoaded', ()=>{
-      drawPID();
-      calcTuning();
-      updateSmith();
-    });
-  </script>
+    var tbl = document.getElementById('tuning_table');
+    if (tbl) tbl.innerHTML = html;
+
+    var advice;
+    if (r < 0.1)      advice = 'theta/tau muy pequeno. IMC con lambda pequeno (lambda=0.5*tau) es ideal.';
+    else if (r < 0.3) advice = 'theta/tau moderado. IMC o SIMC con lambda=tau son las mejores opciones.';
+    else if (r < 0.5) advice = 'theta/tau significativo. Considere Predictor de Smith o IMC conservador.';
+    else              advice = 'theta/tau grande (>0.5). Predictor de Smith o MPC recomendado.';
+
+    var adv = document.getElementById('tuning_advice');
+    if (adv) adv.textContent = 'theta/tau = ' + r.toFixed(2) + ' -> ' + advice;
+  }
+
+  /* INIT */
+  document.addEventListener('DOMContentLoaded', function() {
+    populateVideoGrids();
+    initSliders();
+    initTuningSliders();
+    drawPID();
+    calcTuning();
+    updateSmith();
+  });
+</script>
+
 </body>
 </html>
